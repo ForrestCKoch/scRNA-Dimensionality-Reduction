@@ -19,7 +19,7 @@ class E18MouseData(Dataset):
     def __init__(self, 
                  path: str,
                  nproc: Optional[int] = 1,
-                 ratio: Optional[float] = 1.0,
+                 selection: Optional[list] = None,
                  silent: Optional[bool] = False ) -> None:
         """
         PyTorch Dataset wrapper to handle the GSE93421 hdf5 dataset
@@ -27,12 +27,24 @@ class E18MouseData(Dataset):
         :param path: path to hdf5 file for e18 Mouse Data
         :param nproc: number of processes to use in contructing vectors
         :param ratio: ratio of the dataset to actually load
+        :param selection: list of cells to load data for
         :param silent: whether print statements should print
         """
-        # 
         hdf5 = h5py.File(path,'r',driver='core')
         self.dims = len(hdf5['mm10']['genes'])
-        self._len = int(len(hdf5['mm10']['indptr'])*ratio)
+        
+        # allow a customizable selection of cells
+        if selection is not None:
+            self._len = len(selection)
+        else:
+            self._len = len(hdf5['mm10']['indptr'])
+            selection = range(0,self._len)
+        self.selection = selection
+        # get a list that can be shared between processes
+        selected_cells = sm.empty(self._len,dtype=np.int)
+        for i in range(0,self._len):
+            selected_cells[i] = self.selection[i]
+        
         #self.cells = sm.full((self._len,self.dims),0,dtype=np.int16)
         # Load all of the important information into memory
 
@@ -101,7 +113,8 @@ class E18MouseData(Dataset):
             pool.map(_build_tensor, list(zip(
                     [self.cells] * nproc, [iptr] * nproc,
                     [indx] * nproc, [data] * nproc,
-                    range(0,nproc) ,[nproc] * nproc))
+                    range(0,nproc) ,[nproc] * nproc,
+                    [selected_cells] * nproc))
             )
 
         end = time()
@@ -112,6 +125,7 @@ class E18MouseData(Dataset):
         del iptr
         del indx
         del data
+        del selected_cells
    
     def __getitem__(self, index):
         return torch.Tensor(self.cells[index])
@@ -123,9 +137,10 @@ def _build_tensor(args):
     """
     Helper function to allow parallel loading of tensors 
     """
-    cells,iptr,indx,data,tid,nproc = args
+    cells,iptr,indx,data,tid,nproc,selected = args
 
-    for index in range(0+tid,len(cells),nproc):
+    for i in range(0+tid,len(cells),nproc):
+        index = selected[i]
         sidx = iptr[index]
         # find the number of gene entries for
         # this cell
@@ -136,9 +151,9 @@ def _build_tensor(args):
             # find length to the end
             nentries = len(data) - sidx
 
-        for i in range(0,nentries):
-            cells[index][indx[sidx+i]] = (data[sidx+i])
-            #cells[index][indx[sidx+i]] = float(data[sidx+i])
+        for j in range(0,nentries):
+            cells[index][indx[sidx+j]] = (data[sidx+j])
+            #cells[index][indx[sidx+j]] = float(data[sidx+j])
 
 if __name__ == '__main__':
     pass
