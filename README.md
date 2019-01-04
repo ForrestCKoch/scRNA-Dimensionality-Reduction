@@ -6,7 +6,7 @@ Repository for the deep learning models I used in my 2019 summer vacation resear
 `e18MouseData.py` provides a Dataset class `E18MouseData` which can be used create a PyTorch friendly Dataset from GSE93421_bbrain_aggregate_matrix.hdf5. 
 
 ## Data
-This code is intended to be used with [GSE93421_brain_aggregate_matrix.hdf5](ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5) (ftp link).  Further information is available [here](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE93421); however, I have been unable to find a thorough description detailing how this dataset is organized.
+This code is intended to be used with GSE93421_brain_aggregate_matrix.hdf5 (ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5).  Further information is available [here](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE93421); however, I have been unable to find a thorough description detailing how this dataset is organized.
 ### Dataset Structure
 The following sections represent my best guess at the dataset's structure. The hdf5 file contains 7 1D lists under the head node 'mm10'. 
 #### barcodes (n ~= 1.3 million)
