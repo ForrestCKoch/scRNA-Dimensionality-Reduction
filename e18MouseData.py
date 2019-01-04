@@ -152,8 +152,8 @@ def _build_tensor(args):
             nentries = len(data) - sidx
 
         for j in range(0,nentries):
-            cells[index][indx[sidx+j]] = (data[sidx+j])
-            #cells[index][indx[sidx+j]] = float(data[sidx+j])
+            cells[i][indx[sidx+j]] = (data[sidx+j])
+            #cells[i][indx[sidx+j]] = float(data[sidx+j])
 
 if __name__ == '__main__':
     pass
