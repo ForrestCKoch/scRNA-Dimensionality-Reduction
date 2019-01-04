@@ -24,10 +24,10 @@ This is has a 1-1 correspondence with `barcodes`.  Each entry ris a pointer to a
 This dataset is very large, especially in it's full sparse representation (~36 billion datapoints).  This code will require approximately 170GB of RAM to load the full dataset (I provide the option to only load a fraction of it in).  It takes about 15 minutes to load even using 20 processes in parallel on a dual socket Intel E5-2699 (2.2GHz).
 
 ## Dependencies
--[My fork of pt-sdae](https://github.com/ForrestCKoch/pt-sdae) (including a branch compatibale with PyTorch 0.35 for Cuda 7.5)
--[h5py](https://pypi.org/project/h5py/) (for loading in data)
--[sharedmem](https://pypi.org/project/sharedmem/) (to allow large shared-memory numpy arrays between processes)
+- [My fork of pt-sdae](https://github.com/ForrestCKoch/pt-sdae) (including a branch compatibale with PyTorch 0.35 for Cuda 7.5)
+- [h5py](https://pypi.org/project/h5py/) (for loading in data)
+- [sharedmem](https://pypi.org/project/sharedmem/) (to allow large shared-memory numpy arrays between processes)
 
 ## Supplementary documents
--[Clustering algorithm summaries -- Google Docs](https://docs.google.com/document/d/1mtiFeIoSJ_2lGqbVKKj2sYF2W-ETbNaZYS48rz337kk/edit?usp=sharing)
--[Other datasets -- Google Docs](https://docs.google.com/document/d/1Qq0xmSaUImlripmNJAZbTILBmiNIg5ApWcTIjz6eN18/edit?usp=sharing)
+- [Clustering algorithm summaries -- Google Docs](https://docs.google.com/document/d/1mtiFeIoSJ_2lGqbVKKj2sYF2W-ETbNaZYS48rz337kk/edit?usp=sharing)
+- [Other datasets -- Google Docs](https://docs.google.com/document/d/1Qq0xmSaUImlripmNJAZbTILBmiNIg5ApWcTIjz6eN18/edit?usp=sharing)
