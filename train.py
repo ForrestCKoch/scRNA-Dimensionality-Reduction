@@ -7,6 +7,8 @@ import torch
 import torch.utils.data
 import torch.optim
 
+import numpy as np
+
 from e18MouseData import E18MouseData
 
 import ptsdae
@@ -19,6 +21,10 @@ EPOCHS = 500
 RATIO = 0.01
 LOADING_PROCS = 20
 DL_WORKERS = 8
+
+TOTAL_SIZE = 1306127
+TRAIN_SIZE = 10000
+VALID_SIZE = 1000
 
 if __name__ == '__main__':
 
@@ -36,7 +42,16 @@ if __name__ == '__main__':
                     gamma = 0.1,
                     last_epoch = -1)
 
-    dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = None)
+
+    # get a selection
+    subset = np.random.choice(list(range(0,TOTAL_SIZE)),
+                        size = TRAIN_SIZE + VALID_SIZE)
+    np.random.shuffle(subset)
+    train_set = subset[0:TRAIN_SIZE]
+    valid_set = subset[TRAIN_SIZE:] 
+
+    dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
+    validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
     SDAE_DIMS = [dataset.dims, 5000, 500, 500, 2000, 30]
     ae = SDAE(SDAE_DIMS)
 
@@ -50,7 +65,7 @@ if __name__ == '__main__':
                 batch_size = BATCH_SIZE, 
                 optimizer = get_opt,
                 scheduler = get_sched,
-                validation = dataset,
+                validation = validation,
                 update_freq = EPOCHS // 50,
                 cuda = True,
                 num_workers = DL_WORKERS)
@@ -72,7 +87,7 @@ if __name__ == '__main__':
                 batch_size = BATCH_SIZE,
                 optimizer = opt,
                 scheduler = sched,
-                validation = dataset,
+                validation = validation,
                 update_freq = EPOCHS // 50,
                 cuda=True, 
                 num_workers = DL_WORKERS)
