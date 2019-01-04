@@ -42,4 +42,4 @@ if __name__ == '__main__':
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
-    torch.save(ae.state_dict(),os.path.join('model','ae_'+timestamp))
+    torch.save(ae.state_dict(),os.path.join('model'))
