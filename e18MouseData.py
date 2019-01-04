@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import h5py
+from typing import Any, Callable, Optional
+from time import time
 
 import numpy as np
 
@@ -8,21 +9,25 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 from tqdm import tqdm
-
-import multiprocessing as mp
-
+import h5py
 import sharedmem as sm
 
-from time import time
 
 
 class E18MouseData(Dataset):
 
-    def __init__(self, path: str,nproc = 1,ratio=1.0,silent=False):
+    def __init__(self, 
+                 path: str,
+                 nproc: Optional[int] = 1,
+                 ratio: Optional[float] = 1.0,
+                 silent: Optional[bool] = False ) -> None:
         """
         PyTorch Dataset wrapper to handle the GSE93421 hdf5 dataset
 
         :param path: path to hdf5 file for e18 Mouse Data
+        :param nproc: number of processes to use in contructing vectors
+        :param ratio: ratio of the dataset to actually load
+        :param silent: whether print statements should print
         """
         # 
         hdf5 = h5py.File(path,'r',driver='core')
@@ -115,6 +120,9 @@ class E18MouseData(Dataset):
         return self._len
 
 def _build_tensor(args):
+    """
+    Helper function to allow parallel loading of tensors 
+    """
     cells,iptr,indx,data,tid,nproc = args
 
     for index in range(0+tid,len(cells),nproc):
