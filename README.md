@@ -6,7 +6,7 @@ Repository for the deep learning models I used in my 2019 summer vacation resear
 `e18MouseData.py` provides a Dataset class `E18MouseData` which can be used create a PyTorch friendly Dataset from GSE93421_bbrain_aggregate_matrix.hdf5. 
 
 ## Data
-This code is intended to be used with [GSE93421_brain_aggregate_matrix.hdf5](ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5) (ftp link).  Further information is available [here](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE93421); however, I have been unable to find a thorough description detailing how this dataset is organized.
+This code is intended to be used with GSE93421_brain_aggregate_matrix.hdf5 (ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5).  Further information is available [here](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE93421); however, I have been unable to find a thorough description detailing how this dataset is organized.
 ### Dataset Structure
 The following sections represent my best guess at the dataset's structure. The hdf5 file contains 7 1D lists under the head node 'mm10'. 
 #### barcodes (n ~= 1.3 million)
@@ -24,7 +24,7 @@ This is has a 1-1 correspondence with `barcodes`.  Each entry ris a pointer to a
 This dataset is very large, especially in it's full sparse representation (~36 billion datapoints).  This code will require approximately 170GB of RAM to load the full dataset (I provide the option to only load a fraction of it in).  It takes about 15 minutes to load even using 20 processes in parallel on a dual socket Intel E5-2699 (2.2GHz).
 
 ## Dependencies
-- [My fork of pt-sdae](https://github.com/ForrestCKoch/pt-sdae) (including a branch compatibale with PyTorch 0.35 for Cuda 7.5)
+- [My fork of pt-sdae](https://github.com/ForrestCKoch/pt-sdae) (including a branch compatible with PyTorch 0.35 for Cuda 7.5)
 - [h5py](https://pypi.org/project/h5py/) (for loading in data)
 - [sharedmem](https://pypi.org/project/sharedmem/) (to allow large shared-memory numpy arrays between processes)
 
