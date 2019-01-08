@@ -27,6 +27,9 @@ This dataset is very large, especially in it's full sparse representation (~36 b
 - [My fork of pt-sdae](https://github.com/ForrestCKoch/pt-sdae) (including a branch compatible with PyTorch 0.35 for Cuda 7.5)
 - [h5py](https://pypi.org/project/h5py/) (for loading in data)
 - [sharedmem](https://pypi.org/project/sharedmem/) (to allow large shared-memory numpy arrays between processes)
+- [sklearn](https://scikit-learn.org/stable/) (for tsne)
+- [MulticoreTSNE](https://github.com/DmitryUlyanov/Multicore-TSNE) (for multicore compatible tsne)
+- [umap-learn](https://umap-learn.readthedocs.io/en/latest/) (for umap)
 
 ## Supplementary documents
 - [Clustering algorithm summaries -- Google Docs](https://docs.google.com/document/d/1mtiFeIoSJ_2lGqbVKKj2sYF2W-ETbNaZYS48rz337kk/edit?usp=sharing)
