@@ -8,6 +8,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 from sklearn.manifold import TSNE as sk_tsne
+from sklearn.decomposition import PCA
 from MulticoreTSNE import MulticoreTSNE as mc_tsne
 import umap
 
@@ -19,6 +20,17 @@ def get_embedding(embed_func,npoints):
                       selection=list(range(0,npoints)))
     print('Generating Embedding ...')
     embedding = embed_func(ds.cells)
+    return embedding
+
+def umap_to_tsne(x):
+    semi_embedded = umap.UMAP(ncomponents=50).fit_transform(x)
+    embedded = mc_tsne(n_components=2,n_jobs=NPROCS).fit_transform(semi_embedded)
+    return embedded
+
+def pca_to_tsne(x):
+    semi_embedded = PCA(n_components=50).fit_transform(x)
+    embedded = mc_tsne(n_components=2,n_jobs=NPROCS).fit_transform(semi_embedded)
+    return embedded
 
 if __name__ == '__main__':
 
@@ -26,10 +38,12 @@ if __name__ == '__main__':
 
     if embed_opt == 'umap':
         embed_func = umap.UMAP().fit_transform
-    elif embed_opt == 'sk_tsne':
-        embed_func = sk_tsne(n_components=2).fit_transform
-    elif embed_opt == 'mc_tsne':
-        embed_func = mc_tsne(n_components=2).fit_transform
+    elif embed_opt == 'pca':
+        embed_func = PCA(n_components=2).fit_transform
+    elif embed_opt == 'umap-mctsne':
+        embed_func = umap_to_tsne
+    elif embed_opt == 'pca-mctsne':
+        embed_func = pca_to_tsne
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
         exit()
