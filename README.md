@@ -29,7 +29,6 @@ This dataset is very large, especially in it's full sparse representation (~36 b
 - [sharedmem](https://pypi.org/project/sharedmem/) (to allow large shared-memory numpy arrays between processes)
 - [sklearn](https://scikit-learn.org/stable/) (for tsne)
 - [MulticoreTSNE](https://github.com/DmitryUlyanov/Multicore-TSNE) (for multicore compatible tsne)
-- [tsne-cuda](https://github.com/CannyLab/tsne-cuda) (for cuda compatible tsne)
 - [umap-learn](https://umap-learn.readthedocs.io/en/latest/) (for umap)
 
 ## Supplementary documents
