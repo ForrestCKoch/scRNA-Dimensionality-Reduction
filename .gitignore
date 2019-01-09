@@ -2,5 +2,7 @@ GSE93421_brain_aggregate_matrix.hdf5
 *.pyc
 *.swp
 models
+plots
+embeddings
 *.pdf
 __pycache__

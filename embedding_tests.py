@@ -23,7 +23,7 @@ def get_embedding(embed_func,npoints):
     return embedding
 
 def umap_to_tsne(x):
-    semi_embedded = umap.UMAP(ncomponents=50).fit_transform(x)
+    semi_embedded = umap.UMAP(n_components=50).fit_transform(x)
     embedded = mc_tsne(n_components=2,n_jobs=NPROCS).fit_transform(semi_embedded)
     return embedded
 
@@ -52,9 +52,9 @@ if __name__ == '__main__':
 
     print('saving image')
     plt.scatter(embedded[:,0],embedded[:,1])
-    plt.savefig(embed_opt+'-250k.pdf')
+    plt.savefig('plots/'+embed_opt+'-250k.pdf')
 
     print('saving embedding')
-    with open(embed_opt+'-250k-embedding.pickle','wb') as fh:
+    with open('embeddings/'+embed_opt+'-250k-embedding.pickle','wb') as fh:
         pickle.dump(embedded,fh,protocol=4)
 

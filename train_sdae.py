@@ -44,15 +44,19 @@ if __name__ == '__main__':
 
 
     # get a selection
+    """
     subset = np.random.choice(list(range(0,TOTAL_SIZE)),
                         size = TRAIN_SIZE + VALID_SIZE)
     np.random.shuffle(subset)
     train_set = subset[0:TRAIN_SIZE]
     valid_set = subset[TRAIN_SIZE:] 
+    """
+    train_set = list(range(0,250000))
+    valid_set = list(range(250000,260000))
 
     dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
     validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
-    SDAE_DIMS = [dataset.dims, 5000, 500, 500, 2000, 30]
+    SDAE_DIMS = [dataset.dims, 10000, 5000, 500, 500, 2000, 50]
     ae = SDAE(SDAE_DIMS)
 
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
@@ -94,4 +98,5 @@ if __name__ == '__main__':
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
-    torch.save(ae.state_dict(),os.path.join('models','ae_'+timestamp+'.pt'))
+    model_name = 'sdae_250k_10k-5k-500-500-2k-50_'+timestamp+'.pt' 
+    torch.save(ae.state_dict(),os.path.join('models','sdae_'+timestamp+'.pt'))
