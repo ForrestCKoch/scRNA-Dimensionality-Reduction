@@ -17,7 +17,7 @@ import ptsdae.model
 
 
 BATCH_SIZE = 256
-EPOCHS = 500
+EPOCHS = 250
 RATIO = 0.01
 LOADING_PROCS = 20
 DL_WORKERS = 8
@@ -29,16 +29,16 @@ VALID_SIZE = 1000
 if __name__ == '__main__':
 
     # a couple of local functions
-    def get_opt(model):
+    def get_opt(model, lr = 1.0):
         return torch.optim.SGD(
                     params = model.parameters(),
-                    lr = 0.1, 
+                    lr = lr, 
                     momentum = 0.9)
 
     def get_sched(opt):
         return torch.optim.lr_scheduler.StepLR(
                     optimizer = opt,
-                    step_size = 7500,
+                    step_size = 50000,
                     gamma = 0.1,
                     last_epoch = -1)
 
@@ -55,8 +55,9 @@ if __name__ == '__main__':
     valid_set = list(range(250000,260000))
 
     dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
-    validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
-    SDAE_DIMS = [dataset.dims, 10000, 5000, 500, 500, 2000, 50]
+    #validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
+    validation = None
+    SDAE_DIMS = [dataset.dims, 5000, 5000, 500, 500, 2000, 50]
     ae = SDAE(SDAE_DIMS)
 
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
@@ -81,7 +82,7 @@ if __name__ == '__main__':
     ae.cuda()
 
     # get our scheduler and optimizers
-    opt = get_opt(ae)
+    opt = get_opt(ae,lr = 0.1)
     sched = get_sched(opt)
 
     ptsdae.model.train(
@@ -98,5 +99,5 @@ if __name__ == '__main__':
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
-    model_name = 'sdae_250k_10k-5k-500-500-2k-50_'+timestamp+'.pt' 
-    torch.save(ae.state_dict(),os.path.join('models','sdae_'+timestamp+'.pt'))
+    model_name = 'sdae_250k_5k-5k-500-500-2k-50_'+timestamp+'.pt' 
+    torch.save(ae.state_dict(),os.path.join('data','models','sdae_'+timestamp+'.pt'))

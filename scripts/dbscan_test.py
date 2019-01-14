@@ -5,17 +5,15 @@ import sys
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 import numpy as np
 
 from sklearn.cluster import DBSCAN
-from sklearn import metrics
-from sklearn.datasets.samples_generator import make_blobs
-from sklearn.preprocessing import StandardScaler
-
 
 # #############################################################################
-X = pickle.load(open('embeddings/umap-250k-embedding.pickle','rb'))
+emb_file = 'data/embeddings/' + sys.argv[1] + '-250k-embedding.pickle'
+X = pickle.load(open(emb_file,'rb'))
 
 #X = StandardScaler().fit_transform(X)
 
@@ -40,9 +38,12 @@ print('Estimated number of noise points: %d' % n_noise_)
 unique_labels = set(labels)
 #colors = [plt.cm.Spectral(each)
 #          for each in np.linspace(0, 1, len(unique_labels))]
-colors = plt.cm.Spectral(labels)
+#colors = plt.cm.Spectral(labels)
+#colors = cm.get_cmap()(labels)
 
-plt.scatter(X[:,0],X[:,1],c=colors,s=1,marker=',')
+plt_file = 'data/plots/'+sys.argv[1]+'-250k.pdf'
+
+plt.scatter(X[:,0],X[:,1],c=labels,s=1,marker=',')
 
 plt.title('Estimated number of clusters: %d' % n_clusters_)
-plt.savefig('test.pdf')
+plt.savefig(plt_file)

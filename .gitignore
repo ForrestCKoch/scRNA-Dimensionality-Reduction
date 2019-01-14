@@ -1,8 +1,10 @@
 GSE93421_brain_aggregate_matrix.hdf5
 *.pyc
 *.swp
+*.csv
+*.pdf
+__pycache__
 models
 plots
 embeddings
-*.pdf
-__pycache__
+data
