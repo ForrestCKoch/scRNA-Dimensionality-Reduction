@@ -9,7 +9,7 @@ import torch.optim
 
 import numpy as np
 
-from e18MouseData import E18MouseData
+from svr2019.datasets import E18MouseData
 
 import ptsdae
 from ptsdae.sdae import StackedDenoisingAutoEncoder as SDAE

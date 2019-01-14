@@ -1,4 +1,4 @@
-from e18MouseData import E18MouseData
+from svr2019.datasets import E18MouseData
 
 import pickle
 import sys
