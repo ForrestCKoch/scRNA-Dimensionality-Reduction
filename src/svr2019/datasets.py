@@ -21,8 +21,8 @@ class DuoBenchmark(Dataset):
         """
         self.data = np.transpose(np.genfromtxt(path,delimiter=',')[1:])
         with open(path,'r') as fh:
-            head = fh.readline.rstrip('\n').replace('"','')
-            self.labels = [(x.split('-'))[1].lstrip(' ') for x in head]
+            head = fh.readline().rstrip('\n').replace('"','')
+            self.labels = [(x.split('-'))[1].lstrip(' ') for x in head.split(',')]
         
 
     def __getitem__(self, index):
