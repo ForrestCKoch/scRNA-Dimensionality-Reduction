@@ -13,17 +13,29 @@ import h5py
 import sharedmem as sm
 
 class DuoBenchmark(Dataset):
-    def __init__(self,path):
+    def __init__(self,path,log1p=False):
         """
         PyTorch Dataset wrapper to load one of the Duo 2018 benchmark dataset
 
         :param path: path to csv file
         """
+        
         self.data = np.transpose(np.genfromtxt(path,delimiter=',',skip_header=1,dtype=np.float32))
+        if log1p:
+            self.data = np.log(1+self.data)
+
         with open(path,'r') as fh:
             head = fh.readline().rstrip('\n').replace('"','')
             self.labels = [(x.split('-'))[1].lstrip(' ') for x in head.split(',')]
         self.dims = len(self.data[0])
+        
+        label_dict = dict()
+        count = 0
+        for label in self.labels:
+            if label not in label_dict:
+                label_dict[label] = count
+                count += 1
+        self.tags = [label_dict[l] for l in self.labels]
         
 
     def __getitem__(self, index):
@@ -37,6 +49,7 @@ class E18MouseData(Dataset):
 
     def __init__(self, 
                  path: str,
+                 log1p: Optional[bool] = False,
                  nproc: Optional[int] = 1,
                  selection: Optional[list] = None,
                  silent: Optional[bool] = False ) -> None:
@@ -133,7 +146,8 @@ class E18MouseData(Dataset):
                     [self.cells] * nproc, [iptr] * nproc,
                     [indx] * nproc, [data] * nproc,
                     range(0,nproc) ,[nproc] * nproc,
-                    [selected_cells] * nproc))
+                    [selected_cells] * nproc,
+                    [log1p] * nproc))
             )
 
         end = time()
@@ -156,7 +170,7 @@ def _build_tensor(args):
     """
     Helper function to allow parallel loading of tensors 
     """
-    cells,iptr,indx,data,tid,nproc,selected = args
+    cells,iptr,indx,data,tid,nproc,selected,log1p = args
 
     for i in range(0+tid,len(cells),nproc):
         index = selected[i]
@@ -171,7 +185,10 @@ def _build_tensor(args):
             nentries = len(data) - sidx
 
         for j in range(0,nentries):
-            cells[i][indx[sidx+j]] = (data[sidx+j])
+            if log1p:
+                cells[i][indx[sidx+j]] = np.log(1+(data[sidx+j]))
+            else:
+                cells[i][indx[sidx+j]] = (data[sidx+j])
             #cells[i][indx[sidx+j]] = float(data[sidx+j])
 
 if __name__ == '__main__':

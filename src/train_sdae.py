@@ -30,7 +30,7 @@ VALID_SIZE = 1000
 if __name__ == '__main__':
 
     # a couple of local functions
-    def get_opt(model, lr = 1.0):
+    def get_opt(model, lr = 0.1):
         return torch.optim.SGD(
                     params = model.parameters(),
                     lr = lr, 
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     def get_sched(opt):
         return torch.optim.lr_scheduler.StepLR(
                     optimizer = opt,
-                    step_size = 3000,
-                    gamma = 0.1,
+                    step_size = 1000,
+                    gamma = 0.2,
                     last_epoch = -1)
 
 
@@ -56,10 +56,12 @@ if __name__ == '__main__':
     valid_set = list(range(250000,260000))
 
     #dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
-    dataset = DuoBenchmark(sys.argv[1])
+    ds_name = sys.argv[1]
+    ds_path = 'data/datasets/'+ds_name+'.csv'
+    dataset = DuoBenchmark(ds_path,log1p=True)
     #validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
     validation = None
-    SDAE_DIMS = [dataset.dims, 5000, 500, 2000, 50]
+    SDAE_DIMS = [dataset.dims, 2500, 500, 2000, 50]
     ae = SDAE(SDAE_DIMS)
 
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
@@ -101,5 +103,5 @@ if __name__ == '__main__':
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
-    model_name = 'sdae_250k_5k-5k-500-500-2k-50_'+timestamp+'.pt' 
-    torch.save(ae.state_dict(),os.path.join('data','models','sdae_'+timestamp+'.pt'))
+    model_name = ds_name+'_sdae__5k-500-2k-50_'+timestamp+'.pt' 
+    torch.save(ae.state_dict(),os.path.join('data','models',model_name))
