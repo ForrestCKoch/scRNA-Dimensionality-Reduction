@@ -56,7 +56,7 @@ if __name__ == '__main__':
     valid_set = list(range(250000,260000))
 
     #dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
-    dataset = DuoBenchmark('data/datasets/zhengmix8eq.csv')
+    dataset = DuoBenchmark(sys.argv[1])
     #validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
     validation = None
     SDAE_DIMS = [dataset.dims, 5000, 500, 2000, 50]
