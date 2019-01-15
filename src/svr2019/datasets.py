@@ -19,14 +19,15 @@ class DuoBenchmark(Dataset):
 
         :param path: path to csv file
         """
-        self.data = np.transpose(np.genfromtxt(path,delimiter=',')[1:])
+        self.data = np.transpose(np.genfromtxt(path,delimiter=',',skip_header=1,dtype=np.float32))
         with open(path,'r') as fh:
             head = fh.readline().rstrip('\n').replace('"','')
             self.labels = [(x.split('-'))[1].lstrip(' ') for x in head.split(',')]
+        self.dims = len(self.data[0])
         
 
     def __getitem__(self, index):
-        return (torch.Tensor(self.data[index]),self.labels[index])
+        return self.data[index]
 
     def __len__(self):
         return len(self.labels)

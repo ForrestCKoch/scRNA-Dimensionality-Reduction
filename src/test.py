@@ -1,8 +1,10 @@
 from svr2019.datasets import E18MouseData
+from svr2019.datasets import DuoBenchmark
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-ds = E18MouseData('data/datasets/GSE93421_brain_aggregate_matrix.hdf5',nproc=20,selection=list(range(0,1000)))
+#ds = E18MouseData('data/datasets/GSE93421_brain_aggregate_matrix.hdf5',nproc=20,selection=list(range(0,1000)))
+ds = DuoBenchmark('data/datasets/zhengmix8eq.csv')
 dl = DataLoader(ds,num_workers=8)
 
 """

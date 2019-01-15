@@ -10,14 +10,15 @@ import torch.optim
 import numpy as np
 
 from svr2019.datasets import E18MouseData
+from svr2019.datasets import DuoBenchmark
 
 import ptsdae
 from ptsdae.sdae import StackedDenoisingAutoEncoder as SDAE
 import ptsdae.model
 
 
-BATCH_SIZE = 256
-EPOCHS = 250
+BATCH_SIZE = 128
+EPOCHS = 500
 RATIO = 0.01
 LOADING_PROCS = 20
 DL_WORKERS = 8
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     def get_sched(opt):
         return torch.optim.lr_scheduler.StepLR(
                     optimizer = opt,
-                    step_size = 50000,
+                    step_size = 3000,
                     gamma = 0.1,
                     last_epoch = -1)
 
@@ -54,10 +55,11 @@ if __name__ == '__main__':
     train_set = list(range(0,250000))
     valid_set = list(range(250000,260000))
 
-    dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
+    #dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
+    dataset = DuoBenchmark('data/datasets/zhengmix8eq.csv')
     #validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
     validation = None
-    SDAE_DIMS = [dataset.dims, 5000, 5000, 500, 500, 2000, 50]
+    SDAE_DIMS = [dataset.dims, 5000, 500, 2000, 50]
     ae = SDAE(SDAE_DIMS)
 
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
