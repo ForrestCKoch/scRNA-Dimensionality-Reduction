@@ -23,7 +23,10 @@ dset = sys.argv[1]
 raw_data = DuoBenchmark('data/datasets/'+dset+'.csv')
 model = SDAE([raw_data.dims,2500,500,2000,50])
 model.load_state_dict(torch.load('data/models/'+dset+'.pt'))
-var = torch.autograd.variable.Variable(torch.Tensor(raw_data.data))
+if int(torch.__version__.split('.')[1]) == 3:
+    var = torch.autograd.variable.Variable(torch.Tensor(raw_data.data))
+else:
+    var = torch.Tensor(raw_data.data)
 embedding = model.encoder(var).data.numpy()
 
 tsne_embedding = TSNE(n_components=2).fit_transform(embedding)
