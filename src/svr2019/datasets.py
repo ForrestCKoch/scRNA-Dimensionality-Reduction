@@ -12,6 +12,8 @@ from tqdm import tqdm
 import h5py
 import sharedmem as sm
 
+from sklearn.decomposition import PCA
+
 class DuoBenchmark(Dataset):
     def __init__(self,path,log1p=False):
         """
@@ -43,6 +45,13 @@ class DuoBenchmark(Dataset):
 
     def __len__(self):
         return len(self.labels)
+
+class PCAReducedDuo(DuoBenchmark):
+    def __init__(self,path,log1p=False):
+        super(PCAReducedDuo,self).__init__(path,log1p=log1p)
+        self.old_data = self.data
+        self.data = PCA(n_components=15000).fit_transform(self.old_data)
+        
 
 
 class E18MouseData(Dataset):
