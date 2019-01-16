@@ -50,7 +50,7 @@ class PCAReducedDuo(DuoBenchmark):
     def __init__(self,path,log1p=False):
         super(PCAReducedDuo,self).__init__(path,log1p=log1p)
         self.old_data = self.data
-        self.data = PCA(n_components=15000).fit_transform(self.old_data)
+        self.data = PCA(n_components='mle').fit_transform(self.old_data)
         
 
 
