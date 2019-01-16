@@ -51,6 +51,7 @@ class PCAReducedDuo(DuoBenchmark):
         super(PCAReducedDuo,self).__init__(path,log1p=log1p)
         self.old_data = self.data
         self.data = PCA(n_components='mle').fit_transform(self.old_data)
+        self.dims = len(self.data[0])
         
 
 
