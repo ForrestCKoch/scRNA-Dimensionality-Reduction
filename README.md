@@ -34,3 +34,4 @@ This dataset is very large, especially in it's full sparse representation (~36 b
 ## Supplementary documents
 - [Clustering algorithm summaries -- Google Docs](https://docs.google.com/document/d/1mtiFeIoSJ_2lGqbVKKj2sYF2W-ETbNaZYS48rz337kk/edit?usp=sharing)
 - [Other datasets -- Google Docs](https://docs.google.com/document/d/1Qq0xmSaUImlripmNJAZbTILBmiNIg5ApWcTIjz6eN18/edit?usp=sharing)
+- [Clustering Slides/Notes](https://docs.google.com/presentation/d/1VC3Psb4-JlNbP3QoBZR5r6zvzZ3Z6osEPoVwXBnsiJc/edit?usp=sharing)
