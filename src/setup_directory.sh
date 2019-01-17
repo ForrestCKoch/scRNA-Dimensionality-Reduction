@@ -9,6 +9,6 @@ mkdir -p data/models
 mkdir -p data/plots
 mkdir -p data/embeddings
 
-wget "ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5" -P "data/datasets/"
+#wget "ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE93nnn/GSE93421/suppl/GSE93421_brain_aggregate_matrix.hdf5" -P "data/datasets/"
 Rscript scripts/get_datasets.R
 

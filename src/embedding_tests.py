@@ -13,35 +13,26 @@ import umap
 
 import argparse
 
-NPROCS=10
-
-def get_embedding(embed_func,ds):
+def get_embedding(embed_obj,data):
     print('Generating Embedding ...')
-    embedding = embed_func(ds.data)
+    embedding = embed_obj.fit_transform(data)
     return embedding
 
-def umap_to_tsne(x):
-    semi_embedded = umap.UMAP(n_components=50).fit_transform(x)
-    embedded = TNSE(n_components=2,n_jobs=NPROCS).fit_transform(semi_embedded)
-    return embedded
-
-def pca_to_tsne(x):
-    semi_embedded = PCA(n_components=50).fit_transform(x)
-    embedded = TNSE(n_components=2,n_jobs=NPROCS).fit_transform(semi_embedded)
-    return embedded
+def str2bool(value):
+    return value.lower() == 'true'
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--method",
-        choice = ["umap","pca","tsne"],
+        choices = ["umap","pca","tsne"],
         default = 'pca'
     )
 
     parser.add_argument(
         "--dataset",
-        choice = ["mouse","koh","kumar",
+        choices = ["mouse","koh","kumar",
                   "simk4easy","simk4hard","simk8hard",
                   "zhengmix4eq","zhengmix8eq"],
         default = 'koh' 
@@ -53,38 +44,60 @@ if __name__ == '__main__':
         default=50
     )
 
-    parser.parse_args()
+    parser.add_argument(
+        "--processes",
+        type=int,
+        default=10
+    )
+
+    parser.add_argument(
+        "--npoints",
+        type=int,
+        default=250000
+    )
+
+    parser.add_argument(
+        "--log1p",
+        type=str2bool,
+        default=False
+    )
+
+    args = parser.parse_args()
 
     
-    if dataset = 'mouse':
-        ds = E18MouseData('GSE93421_brain_aggregate_matrix.hdf5',
-                          nproc=NPROCS,
-                          selection=list(range(0,npoints)))
+    if args.dataset == 'mouse':
+        ds_path = 'data/datasets/GSE93421_brain_aggregate_matrix.hdf5'
+        data = E18MouseData(ds_path,
+                          nproc=args.processes,
+                          selection=list(range(0,args.npoints)),
+                          log1p=args.log1p).data
     else:
-        ds_path = 'data/datasets/'+dataset+'.csv'
-        ds = DuoBenchmark(ds_path,log1p=True) 
+        ds_path = 'data/datasets/'+args.dataset+'.csv'
+        data = DuoBenchmark(ds_path,log1p=args.log1p).data
 
-    if method == 'umap':
-        embed_func = umap.UMAP(n_components=dims).fit_transform
-    elif method == 'pca':
-        embed_func = PCA(n_components=dims).fit_transform
-    elif method == 'tsne':
-        embed_func = TSNE(n_components=dims).fit_transform
-    elif method == 'umap-mctsne':
-        embed_func = umap_to_tsne
-    elif method == 'pca-mctsne':
-        embed_func = pca_to_tsne
+    if args.method == 'umap':
+        embed_obj = umap.UMAP(n_components=args.dims)
+    elif args.method == 'pca':
+        embed_obj = PCA(n_components=args.dims)
+    elif agrs.method == 'tsne':
+        embed_obj = TSNE(n_components=args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
         exit()
 
-    embedded = get_embedding(embed_func,ds)
+    embedded = get_embedding(embed_obj,data)
 
     #print('saving image')
     #plt.scatter(embedded[:,0],embedded[:,1])
     #plt.savefig('data/plots/'+method+'-250k.pdf')
 
     print('saving embedding')
-    with open('data/embeddings/'+dataset+'-'+method+'-'+dims+'.pickle','wb') as fh:
+    emb_file='data/embeddings/'+args.dataset+'-'+args.method+'-'+str(args.dims)+'-log1p-'+str(args.log1p)+'.pickle'
+    obj_file='data/embeddings/'+args.dataset+'-'+args.method+'-'+str(args.dims)+'-log1p-'+str(args.log1p)+'-object.pickle'
+
+    with open(emb_file,'wb') as fh:
         pickle.dump(embedded,fh,protocol=4)
+
+    with open(obj_file,'wb') as fh:
+        pickle.dump(embed_obj,fh,protocol=4)
 

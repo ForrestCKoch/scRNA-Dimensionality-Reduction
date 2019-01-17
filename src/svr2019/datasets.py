@@ -6,7 +6,6 @@ import numpy as np
 
 import torch
 from torch.utils.data import Dataset
-from torchvision import transforms
 
 from tqdm import tqdm
 import h5py
@@ -140,7 +139,7 @@ class E18MouseData(Dataset):
         if not silent: print("Creating 0 vectors ...")
         start = time()
 
-        self.cells = sm.full((self._len,self.dims),0,dtype=tmp)
+        self.data = sm.full((self._len,self.dims),0,dtype=tmp)
         #self.cells = sm.full((self._len,self.dims),0,dtype=float)
         
         end = time()
@@ -153,7 +152,7 @@ class E18MouseData(Dataset):
         start = time()
         with sm.MapReduce(np = nproc) as pool:
             pool.map(_build_tensor, list(zip(
-                    [self.cells] * nproc, [iptr] * nproc,
+                    [self.data] * nproc, [iptr] * nproc,
                     [indx] * nproc, [data] * nproc,
                     range(0,nproc) ,[nproc] * nproc,
                     [selected_cells] * nproc,
@@ -171,7 +170,7 @@ class E18MouseData(Dataset):
         del selected_cells
    
     def __getitem__(self, index):
-        return torch.Tensor(self.cells[index])
+        return torch.Tensor(self.data[index])
 
     def __len__(self):
         return self._len
