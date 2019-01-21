@@ -14,7 +14,7 @@ import sharedmem as sm
 from sklearn.decomposition import PCA
 
 class DuoBenchmark(Dataset):
-    def __init__(self,path,log1p=False):
+    def __init__(self,path,log_trans=False,log1p=False):
         """
         PyTorch Dataset wrapper to load one of the Duo 2018 benchmark dataset
 
@@ -22,7 +22,9 @@ class DuoBenchmark(Dataset):
         """
         
         self.data = np.transpose(np.genfromtxt(path,delimiter=',',skip_header=1,dtype=np.float32))
-        if log1p:
+        if log_trans:
+            self.data = np.log(self.data)
+        elif log1p:
             self.data = np.log(1+self.data)
 
         with open(path,'r') as fh:
@@ -46,10 +48,10 @@ class DuoBenchmark(Dataset):
         return len(self.labels)
 
 class PCAReducedDuo(DuoBenchmark):
-    def __init__(self,path,log1p=False):
-        super(PCAReducedDuo,self).__init__(path,log1p=log1p)
+    def __init__(self,path,n_components=2,log_trans=False,log1p=False):
+        super(PCAReducedDuo,self).__init__(path,log_trans=log_trans,log1p=log1p)
         self.old_data = self.data
-        self.data = PCA(n_components='mle').fit_transform(self.old_data)
+        self.data = PCA(n_components=n_components).fit_transform(self.old_data)
         self.dims = len(self.data[0])
         
 
@@ -194,7 +196,7 @@ def _build_tensor(args):
             nentries = len(data) - sidx
 
         for j in range(0,nentries):
-            if log1p:
+            if log_trans:
                 cells[i][indx[sidx+j]] = np.log(1+(data[sidx+j]))
             else:
                 cells[i][indx[sidx+j]] = (data[sidx+j])
