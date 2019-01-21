@@ -62,6 +62,12 @@ if __name__ == '__main__':
         default=False
     )
 
+    parser.add_argument(
+        "--log-trans",
+        type=str2bool,
+        default=False
+    )
+
     args = parser.parse_args()
 
     
@@ -73,7 +79,7 @@ if __name__ == '__main__':
                           log1p=args.log1p).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
-        data = DuoBenchmark(ds_path,log1p=args.log1p).data
+        data = DuoBenchmark(ds_path,log_trans=args.log_trans,log1p=args.log1p).data
 
     if args.method == 'umap':
         embed_obj = umap.UMAP(n_components=args.dims)
