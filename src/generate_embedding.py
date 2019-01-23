@@ -8,7 +8,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 
-from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,
+from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,\
                              SpectralEmbedding, MDS
 from sklearn.decomposition import PCA, FactorAnalysis, FastICA
 import umap
