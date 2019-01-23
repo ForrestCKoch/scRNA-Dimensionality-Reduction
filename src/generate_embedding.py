@@ -19,7 +19,7 @@ import argparse
 def get_embedding(model,data):
     print('Generating Embedding ...')
     embedding = model.fit_transform(data)
-    return embedding
+    return embedding.astype(np.float32)
 
 def str2bool(value):
     return value.lower() == 'true'
@@ -32,7 +32,8 @@ def get_parser():
                    "mctsne", "isomap", "lle",
                    "spectral", "mds",
                    "fa","fica"],
-        default = 'pca'
+        default = 'pca',
+        help="method for dimension reduction"
     )
 
     parser.add_argument(
@@ -40,43 +41,43 @@ def get_parser():
         choices = ["mouse","koh","kumar",
                   "simk4easy","simk4hard","simk8hard",
                   "zhengmix4eq","zhengmix8eq"],
-        default = 'koh' 
+        default = 'koh',
+        help="dataset to be used"
     )
 
     parser.add_argument(
         "--dims",
         type=int,
-        default=50
-    )
-
-    parser.add_argument(
-        "--processes",
-        type=int,
-        default=10
+        default=50,
+        help="number of dimensions to reduce to"
     )
 
     parser.add_argument(
         "--npoints",
         type=int,
-        default=250000
+        default=250000,
+        help="number of points to load from mouse dataset"
     )
 
     parser.add_argument(
         "--njobs",
         type=int,
-        default=1
+        default=1,
+        help="number of jobs to run"
     )
 
     parser.add_argument(
         "--log1p",
         type=str2bool,
-        default=False
+        default=False,
+        help="whether to apply log(1+x) transform"
     )
 
     parser.add_argument(
         "--log-trans",
         type=str2bool,
-        default=False
+        default=False,
+        help="whether to apply log transform"
     )
     
     return parser
@@ -86,21 +87,21 @@ def get_model(args):
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
-    elif agrs.method == 'tsne':
+    elif args.method == 'tsne':
         model = TSNE(n_components=args.dims)
-    elif agrs.method == 'mctsne':
+    elif args.method == 'mctsne':
         model = MCTSNE(n_components=args.dims,n_jobs=args.njobs)
-    elif agrs.method == 'spectral':
+    elif args.method == 'spectral':
         model = SpectralEmbedding(n_components=args.dims,n_jobs=args.njobs)
-    elif agrs.method == 'lle':
+    elif args.method == 'lle':
         model = LocallyLinearEmbedding(n_components=args.dims,n_jobs=args.njobs)
-    elif agrs.method == 'isomap':
+    elif args.method == 'isomap':
         model = Isomap(n_components=args.dims,n_jobs=args.njobs)
-    elif agrs.method == 'mds':
+    elif args.method == 'mds':
         model = MDS(n_components=args.dims,n_jobs=args.njobs)
-    elif agrs.method == 'fa':
+    elif args.method == 'fa':
         model = FactorAnalysis(n_components=args.dims)
-    elif agrs.method == 'fica':
+    elif args.method == 'fica':
         model = FastICA(n_components=args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
@@ -130,7 +131,7 @@ def get_data(args):
     if args.dataset == 'mouse':
         ds_path = 'data/datasets/GSE93421_brain_aggregate_matrix.hdf5'
         data = E18MouseData(ds_path,
-                          nproc=args.processes,
+                          nproc=args.njobs,
                           selection=list(range(0,args.npoints)),
                           log1p=args.log1p).data
     else:
