@@ -20,23 +20,27 @@ from ptsdae.sdae import StackedDenoisingAutoEncoder as SDAE
 
 # #############################################################################
 dset = sys.argv[1]
-raw_data = DuoBenchmark('data/datasets/'+dset+'.csv')
-model = SDAE([raw_data.dims,2500,500,2000,50])
-model.load_state_dict(torch.load('data/models/'+dset+'.pt'))
+#raw_data = DuoBenchmark('data/datasets/'+dset+'.csv')
+raw_data = FromPickle('data/embeddings/mouse-pca-15000-log1p-True.pickle')
+model = SDAE([raw_data.dims,7500,500,2000,50])
+#model.load_state_dict(torch.load('data/models/'+dset+'.pt'))
+model.load_state_dict(torch.load(sys.argv[1]))
 if int(torch.__version__.split('.')[1]) == 3:
     var = torch.autograd.variable.Variable(torch.Tensor(raw_data.data))
 else:
     var = torch.Tensor(raw_data.data)
 embedding = model.encoder(var).data.numpy()
 
+labels = DBSCAN().fit(embedding).labels_
+
 tsne_embedding = TSNE(n_components=2).fit_transform(embedding)
 
 # #############################################################################
 
 
-plt_file = 'data/plots/'+dset+'_SDAE.pdf'
+plt_file = 'data/plots/mouse_SDAE.pdf'
 
-plt.scatter(tsne_embedding[:,0],tsne_embedding[:,1],c=raw_data.tags,s=1,marker=',')
+plt.scatter(tsne_embedding[:,0],tsne_embedding[:,1],c=labels,s=1,marker=',')
 
-plt.title('Actual clusters in %s: %d' % (dset,max(raw_data.tags)+1))
+plt.title('Clusters in %s: %d' % (dset,max(labels)+1))
 plt.savefig(plt_file)
