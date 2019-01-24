@@ -141,6 +141,9 @@ def get_data(args):
 
 if __name__ == '__main__':
 
+    print('Running ...')
+    print(os.environ)
+
     parser = get_parser()
     args = parser.parse_args()
     data = get_data(args)
