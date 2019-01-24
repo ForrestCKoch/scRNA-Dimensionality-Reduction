@@ -17,15 +17,15 @@ import ptsdae.model
 
 import argparse
 
-BATCH_SIZE = 256
-EPOCHS = 250
-RATIO = 0.01
-LOADING_PROCS = 20
-DL_WORKERS = 8
-
-TOTAL_SIZE = 1306127
-TRAIN_SIZE = 10000
-VALID_SIZE = 1000
+DEFAULT_DATASET='mouse'
+DEFAULT_PRETRAIN_EPOCHS=250
+DEFAULT_TRAIN_EPOCHS=2*DEFAULT_PRETRAIN_EPOCHS
+DEFAULT_BATCH_SIZE=256
+DEFAULT_PRETRAIN_LR=1.0
+DEFAULT_TRAIN_LR=0.1
+DEFAULT_NJOBS=1
+DEFAULT_NPOINTS=250000
+DEFAULT_LAYERS=[5000,500,2000,50]
 
 def get_parser():
     parser = argparse.ArgumentParser()
@@ -36,8 +36,8 @@ def get_parser():
         choices=['mouse','koh','kumar'
                  'simk4easy','simk4hard','simk8hard',
                  'zhengmix4eq','zhengmix8eq','pickle'],
-        default='mouse',
-        help='dataset to be used [Default: \'koh\']'
+        default=DEFAULT_DATASET,
+        help='dataset to be used [Default: \'mouse\']'
     )
 
     parser.add_argument(
@@ -46,39 +46,46 @@ def get_parser():
         default=None,
         help='if --dataset is set to pickle, load from this path [Default=None]'
     )
+    
+    parser.add_argument(
+        '--pickle-name', 
+        type=str,
+        default=None,
+        help='if --dataset is set to pickle, this will be the name written to file'
+    )
 
     parser.add_argument(
         '--pretrain-epochs',
         type=int,
-        default=250,
+        default=DEFAULT_PRETRAIN_EPOCHS,
         help='the number of epochs to run at each stage during pretraining [Default: 250]'
     )
 
     parser.add_argument(
         '--train-epochs',
         type=int,
-        default=500,
+        default=DEFAULT_TRAIN_EPOCHS,
         help='the number of epochs to run at each stage during training [Default: 500]'
     )
 
     parser.add_argument(
         '--batch-size',
         type=int,
-        default=256,
+        default=DEFAULT_BATCH_SIZE,
         help='the batch size to be used [Default: 256]'
     )
 
     parser.add_argument(
         '--pretrain-lr',
         type=float,
-        default=1.0,
+        default=DEFAULT_PRETRAIN_LR,
         help='the learning rate to be used for pretraining [Default: 1.0]'
     )
 
     parser.add_argument(
         '--train-lr',
         type=float,
-        default=0.1,
+        default=DEFAULT_TRAIN_LR,
         help='the learning rate to be used for training [Default: 0.1]'
     )
 
@@ -97,28 +104,53 @@ def get_parser():
     parser.add_argument(
         '--njobs',
         type=int,
-        default=1,
+        default=DEFAULT_NJOBS,
         help='how many jobs to use for loading data [Default: 1]',
     )
 
     parser.add_argument(
         '--npoints',
         type=int,
-        default=250000,
+        default=DEFAULT_NPOINTS,
         help='how many points to load from the mouse dataset [Default: 250000]'
     )
 
-    
-
-
+    parser.add_argument(
+        '--layers',
+        nargs='+',
+        type=int,
+        default=DEFAULT_LAYERS
+    ) 
 
     return parser
+
+def get_dataset(args):
+    if args.npoints == -1:
+        selection = None
+    else:
+        selection = list(range(0,args.npoints))
+
+    if args.dataset == 'mouse':
+        ds_path = 'data/datasets/GSE93421_brain_aggregate_matrix.hdf5'
+        data = E18MouseData(ds_path,
+                          nproc=args.njobs,
+                          selection=selection,
+                          log1p=args.log1p)
+    elif args.dataset == 'pickle':
+        data = FromPickle(args.pickle_path)
+    else:
+        ds_path = 'data/datasets/'+args.dataset+'.csv'
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p)
+    return data
 
 
 if __name__ == '__main__':
 
+    parser = get_parser()
+    args = parser.parse_args()
+
     # a couple of local functions
-    def get_opt(model, lr = 1.0):
+    def get_opt(model, lr = args.pretrain_lr):
         return torch.optim.SGD(
                     params = model.parameters(),
                     lr = lr, 
@@ -131,45 +163,28 @@ if __name__ == '__main__':
                     gamma = 0.975,
                     last_epoch = -1)
 
+    print("Loading Data ...")
+    dataset = get_dataset(args)
 
-    # get a selection
-    """
-    subset = np.random.choice(list(range(0,TOTAL_SIZE)),
-                        size = TRAIN_SIZE + VALID_SIZE)
-    np.random.shuffle(subset)
-    train_set = subset[0:TRAIN_SIZE]
-    valid_set = subset[TRAIN_SIZE:] 
-    """
-    train_set = list(range(0,250000))
-    valid_set = list(range(250000,260000))
-
-    #dataset = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = train_set)
-    ds_name = sys.argv[1]
-    ds_path = 'data/datasets/'+ds_name+'.csv'
-    #dataset = DuoBenchmark(ds_path,log1p=True)
-    #dataset = PCAReducedDuo(ds_path,n_components=250,log_trans=True)
-    ds_path = 'data/embeddings/mouse-pca-15000-log1p-True.pickle'
-    dataset = FromPickle(ds_path)
-    #validation = E18MouseData(sys.argv[1],nproc = LOADING_PROCS,selection = valid_set)
     validation = None
-    SDAE_DIMS = [dataset.dims, 7500, 500, 2000, 50]
-    #SDAE_DIMS = [dataset.dims, 250, 1000, 50]
-    ae = SDAE(SDAE_DIMS)
+
+    ae = SDAE([dataset.dims] + args.layers)
 
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     
+    print("Pretraining ...")
     # pretrain
     ptsdae.model.pretrain(
                 dataset,
                 autoencoder = ae,
-                epochs = EPOCHS,
-                batch_size = BATCH_SIZE, 
+                epochs = args.train_epochs,
+                batch_size = args.batch_size, 
                 optimizer = get_opt,
                 scheduler = get_sched,
                 validation = validation,
-                update_freq = EPOCHS // 50,
+                update_freq = args.train_epochs // 50,
                 cuda = True,
-                num_workers = DL_WORKERS)
+                num_workers = args.njobs)
                             
 
     # train 
@@ -178,26 +193,44 @@ if __name__ == '__main__':
     ae.cuda()
 
     # get our scheduler and optimizers
-    opt = get_opt(ae,lr = 0.1)
+    opt = get_opt(ae,lr = args.train_lr)
     sched = get_sched(opt)
 
+    print("Training ...")
     ptsdae.model.train(
                 dataset,
                 autoencoder = ae,
-                epochs = 2 * EPOCHS,
-                batch_size = BATCH_SIZE,
+                epochs = args.train_epochs,
+                batch_size = args.batch_size,
                 optimizer = opt,
                 scheduler = sched,
                 validation = validation,
-                update_freq = EPOCHS // 50,
+                update_freq = args.train_epochs // 50,
                 cuda=True, 
-                num_workers = DL_WORKERS)
+                num_workers = args.njobs)
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
-    #model_name = ds_name+'_sdae_5k-500-2k-50_'+timestamp+'.pt' 
-    model_name = ds_name +
-                 '_sdae_' +
-                 '-'.join(SDAE_DIMS +
-                 '_' + timestamp +'.pt'
+
+    samples = len(dataset)
+    if args.dataset == 'pickle':
+        set_name = args.pickle_name + '-pickle'
+    else:
+        set_name = args.dataset
+
+    if args.log1p or args.log:
+        log_flag = 'true'
+    else: 
+        log_flag = 'false'
+
+    model_name = '_'.join(
+                    [set_name] +
+                    ['-'.join(args.layers)] +
+                    ['plr-'+args.pretrain_lr] +
+                    ['tlr-'+args.train_lr] +
+                    ['pepoch-'+args.pretrain_epochs] +
+                    ['tepoch-'+args.train_epochs] +
+                    ['log-'+log_flag]
+                 )
+
     torch.save(ae.state_dict(),os.path.join('data','models',model_name))
