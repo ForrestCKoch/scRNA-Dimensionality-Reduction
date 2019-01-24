@@ -11,6 +11,8 @@ from tqdm import tqdm
 import h5py
 import sharedmem as sm
 
+import pickle
+
 from sklearn.decomposition import PCA
 
 class DuoBenchmark(Dataset):
@@ -53,7 +55,18 @@ class PCAReducedDuo(DuoBenchmark):
         self.old_data = self.data
         self.data = PCA(n_components=n_components).fit_transform(self.old_data)
         self.dims = len(self.data[0])
-        
+
+class FromPickle(Dataset):
+    def __init__(self,path):
+        with open(path,'rb') as fh:
+            self.data = pickle.load(fh).astype(np.float32)
+        self.dims = len(self.data[0])
+  
+    def __getitem__(self,index):
+        return self.data[index]
+
+    def __len__(self):
+        return len(self.data) 
 
 
 class E18MouseData(Dataset):
@@ -196,7 +209,7 @@ def _build_tensor(args):
             nentries = len(data) - sidx
 
         for j in range(0,nentries):
-            if log_trans:
+            if log1p:
                 cells[i][indx[sidx+j]] = np.log(1+(data[sidx+j]))
             else:
                 cells[i][indx[sidx+j]] = (data[sidx+j])

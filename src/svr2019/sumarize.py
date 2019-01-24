@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import sklearn.metrics as metrics
+from sklearn.metrics import calinski_harabaz_score, silhouette_score
 import numpy as np
-from scipy.spatial.distance import pdist, euclidean
-from sklearn.utils import safe_indexing
+
+from metrics import davies_bouldin_score, dunn_index
 
 def internal_summary(points, labels):
     """
@@ -17,10 +17,13 @@ def internal_summary(points, labels):
     :param points: a numpy array of data points
     :param labels: a numpy array of labels for each point
     """
-    calinski_harabaz = metrics.calinski_harabaz_score(points, labels)
+
+    labels = np.array(labels)
+
+    calinski_harabaz = calinski_harabaz_score(points, labels)
     davies_bouldin = davies_bouldin_score(points, labels)
     di = dunn_index(points, labels)
-    silhouette_score = metrics.silhouette_score(points, labels)
+    silhouette_score = silhouette_score(points, labels)
 
     return {
             'calinski-harabaz':calinski_harabaz,
