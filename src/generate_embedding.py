@@ -128,11 +128,23 @@ def write_results(model,embedded,args):
         pickle.dump(model,fh,protocol=4)
 
 def get_data(args):
+    if args.npoints == -1:
+        selection = None
+    else:   
+        selection = list(range(0,args.npoints))
+
+    # early exit ...
+
+    if args.method == 'tsne' and args.dims > 4:
+        exit()
+    elif args.method == 'mctsne' and args.dims > 250:
+        exit()
+
     if args.dataset == 'mouse':
         ds_path = 'data/datasets/GSE93421_brain_aggregate_matrix.hdf5'
         data = E18MouseData(ds_path,
                           nproc=args.njobs,
-                          selection=list(range(0,args.npoints)),
+                          selection=selection,
                           log1p=args.log1p).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
