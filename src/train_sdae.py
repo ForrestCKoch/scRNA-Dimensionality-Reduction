@@ -226,10 +226,10 @@ if __name__ == '__main__':
     model_name = '_'.join(
                     [set_name] +
                     ['-'.join(args.layers)] +
-                    ['plr-'+args.pretrain_lr] +
-                    ['tlr-'+args.train_lr] +
-                    ['pepoch-'+args.pretrain_epochs] +
-                    ['tepoch-'+args.train_epochs] +
+                    ['plr-'+str(args.pretrain_lr)] +
+                    ['tlr-'+str(args.train_lr)] +
+                    ['pepoch-'+str(args.pretrain_epochs)] +
+                    ['tepoch-'+str(args.train_epochs)] +
                     ['log-'+log_flag]
                  )
 
