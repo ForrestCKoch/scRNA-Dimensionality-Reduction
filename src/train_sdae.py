@@ -236,6 +236,7 @@ if __name__ == '__main__':
                     ['-'.join([str(x) for x in args.layers])] +
                     ['plr-'+str(args.pretrain_lr)] +
                     ['tlr-'+str(args.train_lr)] +
+                    ['step-'+str(args.lr_step)] +
                     ['pepoch-'+str(args.pretrain_epochs)] +
                     ['tepoch-'+str(args.train_epochs)] +
                     ['log-'+log_flag]
