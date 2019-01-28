@@ -23,6 +23,7 @@ DEFAULT_TRAIN_EPOCHS=2*DEFAULT_PRETRAIN_EPOCHS
 DEFAULT_BATCH_SIZE=256
 DEFAULT_PRETRAIN_LR=1.0
 DEFAULT_TRAIN_LR=0.1
+DEFAULT_LR_STEP=0.975
 DEFAULT_NJOBS=1
 DEFAULT_NPOINTS=250000
 DEFAULT_LAYERS=[5000,500,2000,50]
@@ -87,6 +88,13 @@ def get_parser():
         type=float,
         default=DEFAULT_TRAIN_LR,
         help='the learning rate to be used for training [Default: 0.1]'
+    )
+
+    parser.add_argument(
+        '--lr-step',
+        type=float,
+        default=DEFAULT_LR_STEP,
+        help='multiplicative factor for LR at end of each epoch'
     )
 
     parser.add_argument(
@@ -160,7 +168,7 @@ if __name__ == '__main__':
         return torch.optim.lr_scheduler.StepLR(
                     optimizer = opt,
                     step_size = 1,
-                    gamma = 0.975,
+                    gamma = args.lr_step,
                     last_epoch = -1)
 
     print("Loading Data ...")
@@ -228,6 +236,7 @@ if __name__ == '__main__':
                     ['-'.join([str(x) for x in args.layers])] +
                     ['plr-'+str(args.pretrain_lr)] +
                     ['tlr-'+str(args.train_lr)] +
+                    ['step-'+str(args.lr_step)] +
                     ['pepoch-'+str(args.pretrain_epochs)] +
                     ['tepoch-'+str(args.train_epochs)] +
                     ['log-'+log_flag]
