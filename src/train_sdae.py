@@ -110,6 +110,12 @@ def get_parser():
     )
 
     parser.add_argument(
+        '--scale',
+        action='store_true',
+        help='scale each feature 0-1 [Default: False]'
+    )
+
+    parser.add_argument(
         '--njobs',
         type=int,
         default=DEFAULT_NJOBS,
@@ -149,6 +155,10 @@ def get_dataset(args):
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
         data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p)
+
+    if args.scale:
+        print("Scaling dataset")
+        scale_dataset(data)
     return data
 
 
@@ -239,7 +249,8 @@ if __name__ == '__main__':
                     ['step-'+str(args.lr_step)] +
                     ['pepoch-'+str(args.pretrain_epochs)] +
                     ['tepoch-'+str(args.train_epochs)] +
-                    ['log-'+log_flag]
+                    ['log-'+log_flag] +
+                    ['scale-'+str(args.scale).lower()]
                  )
 
     torch.save(ae.state_dict(),os.path.join('data','models',model_name))
