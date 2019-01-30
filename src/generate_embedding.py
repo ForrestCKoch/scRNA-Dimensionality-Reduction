@@ -22,9 +22,6 @@ def get_embedding(model,data):
     embedding = model.fit_transform(data)
     return embedding.astype(np.float32)
 
-def str2bool(value):
-    return value.lower() == 'true'
-
 def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -70,15 +67,13 @@ def get_parser():
 
     parser.add_argument(
         "--log1p",
-        type=str2bool,
-        default=False,
+        action='store_true',
         help="whether to apply log(1+x) transform"
     )
 
     parser.add_argument(
-        "--log-trans",
-        type=str2bool,
-        default=False,
+        "--log",
+        action='store_true',
         help="whether to apply log transform"
     )
     
