@@ -35,7 +35,7 @@ def internal_summary(points, labels):
 
 
 def print_summaries(path_list):
-    for path,datset in path_list:
+    for path,dataset in path_list:
         labels = DuoBenchmark('data/datasets/'+dataset+'.csv').tags 
         with open(path,'rb') as fh:
             embedding = np.load(fh).astype(np.float32)
