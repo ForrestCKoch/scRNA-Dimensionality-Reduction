@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,\
                              SpectralEmbedding, MDS
 from sklearn.decomposition import PCA, FactorAnalysis, FastICA
+
 import umap
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
 
@@ -30,6 +31,7 @@ def get_parser():
         "--method",
         choices = ["umap","pca","tsne",
                    "mctsne", "isomap", "lle",
+                   "rpca",
                    "spectral", "mds",
                    "fa","fica"],
         default = 'pca',
@@ -87,6 +89,8 @@ def get_model(args):
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
+    elif args.method == 'rpca':
+        model = RandomizedPCA(n_components=args.dims)
     elif args.method == 'tsne':
         model = TSNE(n_components=args.dims)
     elif args.method == 'mctsne':
@@ -137,7 +141,7 @@ def get_data(args):
 
     if args.method == 'tsne' and args.dims > 4:
         exit()
-    elif args.method == 'mctsne' and args.dims > 250:
+    elif args.method == 'mctsne' and args.dims > 10:
         exit()
 
     if args.dataset == 'mouse':
