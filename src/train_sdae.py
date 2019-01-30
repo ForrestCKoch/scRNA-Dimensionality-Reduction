@@ -182,6 +182,7 @@ if __name__ == '__main__':
                     last_epoch = -1)
 
     print("Loading Data ...")
+    sys.stdout.flush()
     dataset = get_dataset(args)
 
     validation = None
@@ -191,6 +192,7 @@ if __name__ == '__main__':
     timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     
     print("Pretraining ...")
+    sys.stdout.flush()
     # pretrain
     ptsdae.model.pretrain(
                 dataset,
@@ -215,6 +217,7 @@ if __name__ == '__main__':
     sched = get_sched(opt)
 
     print("Training ...")
+    sys.stdout.flush()
     ptsdae.model.train(
                 dataset,
                 autoencoder = ae,
@@ -229,6 +232,7 @@ if __name__ == '__main__':
 
     # Save just the autoencoder model
     print("Saving Autoencoder model ...")
+    sys.stdout.flush()
 
     samples = len(dataset)
     if args.dataset == 'pickle':
