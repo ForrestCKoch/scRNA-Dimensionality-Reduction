@@ -117,7 +117,7 @@ def write_results(model,embedded,args):
         os.makedirs(model_dir)
 
     print('saving embedding')
-    log_flag = str(args.log1p or args.log_trans)
+    log_flag = str(args.log1p or args.log)
     filename  = str(args.dims)+'-log-'+log_flag+'.pickle'
 
     with open(os.path.join(embed_dir,filename),'wb') as fh:
@@ -147,7 +147,7 @@ def get_data(args):
                           log1p=args.log1p).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
-        data = DuoBenchmark(ds_path,log_trans=args.log_trans,log1p=args.log1p).data
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p).data
     return data
 
 if __name__ == '__main__':
