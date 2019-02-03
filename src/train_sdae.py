@@ -136,6 +136,12 @@ def get_parser():
         default=DEFAULT_LAYERS
     ) 
 
+    parser.add_argument(
+        '--model-dir',
+        type=str,
+        default='data/models',
+    )
+
     return parser
 
 def get_dataset(args):
@@ -255,6 +261,6 @@ if __name__ == '__main__':
                     ['tepoch-'+str(args.train_epochs)] +
                     ['log-'+log_flag] +
                     ['scale-'+str(args.scale).lower()]
-                 )
+                 )+'.pt'
 
-    torch.save(ae.state_dict(),os.path.join('data','models',model_name))
+    torch.save(ae.state_dict(),os.path.join(args.model_dir,model_name))
