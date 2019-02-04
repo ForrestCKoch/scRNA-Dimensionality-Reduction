@@ -215,5 +215,20 @@ def _build_tensor(args):
                 cells[i][indx[sidx+j]] = (data[sidx+j])
             #cells[i][indx[sidx+j]] = float(data[sidx+j])
 
+def scale_dataset(ds):
+    """
+    Scale each feature to be between 0 and 1
+    """
+    for i in range(0,ds.dims):
+        fmax = ds.data[0][i]
+        for j in range(1,len(ds)):
+            curr = ds.data[j][i]
+            if curr > fmax:
+                fmax = curr           
+        if fmax > 0:
+            for j in range(0,len(ds)):
+                ds.data[j][i] /= fmax
+    
+
 if __name__ == '__main__':
     pass
