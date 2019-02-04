@@ -4,7 +4,7 @@
 #PBS -l mem=32GB
 #PBS -l ngpus=2
 #PBS -l wd
-#PBS -l walltime=1:00:00
+#PBS -l walltime=7:00:00
 #PBS -P yr31
 
 
@@ -35,4 +35,4 @@ export LD_PRELOAD=/apps/gcc/6.2.0/lib64/libstdc++.so.6
 export PYTHONPATH="/short/ey6/fk5479/local/lib/python3.6/site-packages":$PYTHONPATH
 
 # and run ...
-python3 -u src/train_sdae.py --dataset koh --batch-size 64 --pretrain-epochs 100 --train-epochs 100 --layers 3000 1000 500 2000 50 --log --lr-step 0.95
+python3 src/train_sdae.py $args --decay 5

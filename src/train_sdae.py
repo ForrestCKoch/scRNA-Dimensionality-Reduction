@@ -34,7 +34,7 @@ def get_parser():
     parser.add_argument(
         '--dataset',
         type=str,
-        choices=['mouse','koh','kumar'
+        choices=['mouse','koh','kumar',
                  'simk4easy','simk4hard','simk8hard',
                  'zhengmix4eq','zhengmix8eq','pickle'],
         default=DEFAULT_DATASET,
