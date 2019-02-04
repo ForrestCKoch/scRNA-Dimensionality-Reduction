@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,\
                              SpectralEmbedding, MDS
 from sklearn.decomposition import PCA, FactorAnalysis, FastICA
+
 import umap
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
 
@@ -21,15 +22,13 @@ def get_embedding(model,data):
     embedding = model.fit_transform(data)
     return embedding.astype(np.float32)
 
-def str2bool(value):
-    return value.lower() == 'true'
-
 def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--method",
         choices = ["umap","pca","tsne",
                    "mctsne", "isomap", "lle",
+                   "rpca",
                    "spectral", "mds",
                    "fa","fica"],
         default = 'pca',
@@ -68,15 +67,13 @@ def get_parser():
 
     parser.add_argument(
         "--log1p",
-        type=str2bool,
-        default=False,
+        action='store_true',
         help="whether to apply log(1+x) transform"
     )
 
     parser.add_argument(
-        "--log-trans",
-        type=str2bool,
-        default=False,
+        "--log",
+        action='store_true',
         help="whether to apply log transform"
     )
     
@@ -87,6 +84,8 @@ def get_model(args):
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
+    elif args.method == 'rpca':
+        model = RandomizedPCA(n_components=args.dims)
     elif args.method == 'tsne':
         model = TSNE(n_components=args.dims)
     elif args.method == 'mctsne':
@@ -118,7 +117,7 @@ def write_results(model,embedded,args):
         os.makedirs(model_dir)
 
     print('saving embedding')
-    log_flag = str(args.log1p or args.log_trans)
+    log_flag = str(args.log1p or args.log)
     filename  = str(args.dims)+'-log-'+log_flag+'.pickle'
 
     with open(os.path.join(embed_dir,filename),'wb') as fh:
@@ -137,7 +136,7 @@ def get_data(args):
 
     if args.method == 'tsne' and args.dims > 4:
         exit()
-    elif args.method == 'mctsne' and args.dims > 250:
+    elif args.method == 'mctsne' and args.dims > 10:
         exit()
 
     if args.dataset == 'mouse':
@@ -148,10 +147,13 @@ def get_data(args):
                           log1p=args.log1p).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
-        data = DuoBenchmark(ds_path,log_trans=args.log_trans,log1p=args.log1p).data
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p).data
     return data
 
 if __name__ == '__main__':
+
+    print('Running ...')
+    print(os.environ)
 
     parser = get_parser()
     args = parser.parse_args()
