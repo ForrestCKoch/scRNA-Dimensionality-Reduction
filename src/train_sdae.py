@@ -203,12 +203,12 @@ if __name__ == '__main__':
     ptsdae.model.pretrain(
                 dataset,
                 autoencoder = ae,
-                epochs = args.train_epochs,
+                epochs = args.pretrain_epochs,
                 batch_size = args.batch_size, 
                 optimizer = get_opt,
                 scheduler = get_sched,
                 validation = validation,
-                update_freq = args.train_epochs // 50,
+                update_freq = args.pretrain_epochs // 50,
                 cuda = True,
                 num_workers = args.njobs)
                             
