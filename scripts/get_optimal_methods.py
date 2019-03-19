@@ -5,6 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# This script should be called from the base directory after generating
+# the results the internal statistics of the embeddings
+
+# It will generate a heatmap of rankings foreach dataset & the internal statistics of the embeddings
+
+
 def get_rankings(table_dict,score):
     res_dict = dict()
     for key in table_dict.keys():

@@ -7,6 +7,11 @@
 #PBS -l walltime=7:00:00
 #PBS -P yr31
 
+####################################
+# This script is used to run
+# src/train_sdae.py on raijin
+####################################
+
 
 ####################################
 # Fixup our environment as necessary

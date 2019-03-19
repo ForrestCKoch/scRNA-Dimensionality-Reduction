@@ -1,9 +1,16 @@
 #!/bin/sh
 
+# This script is used to submit jobs to the queue at Raijin.
+# generate_sequences.py should have been called prior to running this script
+# and the output stored in scripts/target_seqs/decay?.csv where ? is the decay rate
 
+
+# All datasets we want to run
 for dataset in "koh" "kumar" "simk4easy" "simk4hard" "simk8hard" "zhengmix8eq" "zhengmix4eq"; do
-#for dataset in "kumar" "simk4easy" "simk4hard"; do
-#for dataset in "koh"; do
+
+        #######################
+        # handle log/scale options
+        #######################
 
         # --log and ' '
         for log in '--log'; do
