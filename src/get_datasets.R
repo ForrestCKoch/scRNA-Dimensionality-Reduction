@@ -1,5 +1,9 @@
 #!/usr/bin/Rscript
 
+# Download the Duo2018 datasets and write to a csv in
+# a format that will be recognized by the DuoBenchmark
+# class implementation of PyTorch Dataset
+
 library(SingleCellExperiment)
 library(DuoClustering2018)
 

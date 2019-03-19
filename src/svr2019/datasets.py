@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+###########################################
+# This module implements a few classes to 
+# help load data into PyTorch compatible 
+# datasets.
+#
+# Although the aim is PyTorch compatibility
+# there is no problem in utilizing these
+# datasets for general computation
+###########################################
 from typing import Any, Callable, Optional
 from time import time
 
