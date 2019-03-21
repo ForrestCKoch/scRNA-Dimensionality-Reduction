@@ -36,7 +36,9 @@ def get_parser():
         type=str,
         choices=['mouse','koh','kumar',
                  'simk4easy','simk4hard','simk8hard',
-                 'zhengmix4eq','zhengmix8eq','pickle'],
+                 'zhengmix4eq','zhengmix8eq','pickle',
+                 'chen','baron-human','campbell',
+                 'macosko','marques','shekhar'],
         default=DEFAULT_DATASET,
         help='dataset to be used [Default: \'mouse\']'
     )
@@ -158,6 +160,9 @@ def get_dataset(args):
                           log1p=args.log1p)
     elif args.dataset == 'pickle':
         data = FromPickle(args.pickle_path)
+    elif args.dataset in ['chen','baron-human','campbell','macosko','marques','shekhar']:
+        ds_path = 'data/datasets/'+args.dataset+'.csv'
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p,split_head=False)
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
         data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p)
