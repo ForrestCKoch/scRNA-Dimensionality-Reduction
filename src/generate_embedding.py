@@ -10,12 +10,25 @@ import matplotlib.pyplot as plt
 
 from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,\
                              SpectralEmbedding, MDS
-from sklearn.decomposition import PCA, FactorAnalysis, FastICA
+from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
+                                  LatentDirichletAllocation, NMF
 
 import umap
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
 
+from ZIFA import ZIFA
+
 import argparse
+
+class ZIFA_Wrapper():
+
+    def __init__(self,k):
+        self.k = k
+
+    def fit_transform(self,data):
+        embedding, model = ZIFA.fitModel(data-1,self.k)
+        self.model = model
+        return embedding
 
 def get_embedding(model,data):
     print('Generating Embedding ...')
@@ -28,7 +41,7 @@ def get_parser():
         "--method",
         choices = ["umap","pca","tsne",
                    "mctsne", "isomap", "lle",
-                   "rpca",
+                   "nmf","lda","zifa",
                    "spectral", "mds",
                    "fa","fica"],
         default = 'pca',
@@ -39,7 +52,9 @@ def get_parser():
         "--dataset",
         choices = ["mouse","koh","kumar",
                   "simk4easy","simk4hard","simk8hard",
-                  "zhengmix4eq","zhengmix8eq"],
+                  "zhengmix4eq","zhengmix8eq","chen",
+                  "baron-human","campbell","macosko",
+                  "marques","shekhar"],
         default = 'koh',
         help="dataset to be used"
     )
@@ -102,6 +117,12 @@ def get_model(args):
         model = FactorAnalysis(n_components=args.dims)
     elif args.method == 'fica':
         model = FastICA(n_components=args.dims)
+    elif args.method == 'zifa':
+        model = ZIFA_Wrapper(args.dims)
+    elif args.method == 'lda':
+        model = LatentDirichletAllocation(args.dims)
+    elif args.method == 'nmf':
+        model = NMF(args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
         exit()
@@ -136,8 +157,8 @@ def get_data(args):
 
     if args.method == 'tsne' and args.dims > 4:
         exit()
-    elif args.method == 'mctsne' and args.dims > 10:
-        exit()
+    #elif args.method == 'mctsne' and args.dims > 10:
+    #    exit()
 
     if args.dataset == 'mouse':
         ds_path = 'data/datasets/GSE93421_brain_aggregate_matrix.hdf5'
@@ -145,6 +166,9 @@ def get_data(args):
                           nproc=args.njobs,
                           selection=selection,
                           log1p=args.log1p).data
+    elif args.dataset in ['chen','baron-human','campbell','macosko','marques','shekhar']:
+        ds_path = 'data/datasets/'+args.dataset+'.csv'
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p,split_head=False).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
         data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p).data
@@ -153,7 +177,6 @@ def get_data(args):
 if __name__ == '__main__':
 
     print('Running ...')
-    print(os.environ)
 
     parser = get_parser()
     args = parser.parse_args()

@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+###########################################
+# This module implements a few classes to 
+# help load data into PyTorch compatible 
+# datasets.
+#
+# Although the aim is PyTorch compatibility
+# there is no problem in utilizing these
+# datasets for general computation
+###########################################
 from typing import Any, Callable, Optional
 from time import time
 
@@ -16,40 +25,80 @@ import pickle
 from sklearn.decomposition import PCA
 
 class DuoBenchmark(Dataset):
-    def __init__(self,path,log_trans=False,log1p=False):
+    def __init__(self,path,log_trans=False,log1p=False,split_head=True):
         """
-        PyTorch Dataset wrapper to load one of the Duo 2018 benchmark dataset
+        Load a dataset from a given path.
+
+        The supplied file should be ',' separated with the first row
+        consisting of cell identifiers in one of two formats indicated by
+        the split_head parameter.
+            -- split_head=True : identifiers are in the format 'id - type'
+            -- split_head=False : identifiers are just the cell type
+
+        Each remaining row are the counts for a particular gene
+            ** note that there are no gene identifiers in this format
+               ... this may need to be considered in future revisions
+    
+        Note: this was originally written to be used with datasets from the
+        2018 Duo paper; however, it's utility has evolved beyond this
+        and hence the name should be changed in future revisions.
 
         :param path: path to csv file
+        :param log_trans: whether to take the log transform of the cell counts
+        :param log1p: whether to take the log(1+x) transform of the cell counts
+        :param split_head: indicated whether the header is 'id - type' (True) or 'type'
         """
         
+        # Read the data in as np.float32
         self.data = np.transpose(np.genfromtxt(path,delimiter=',',skip_header=1,dtype=np.float32))
+
+        # take the log transform if necessary
         if log_trans:
             self.data = np.log(self.data)
         elif log1p:
             self.data = np.log(1+self.data)
 
+        # capture the labels from the header
         with open(path,'r') as fh:
             head = fh.readline().rstrip('\n').replace('"','')
-            self.labels = [(x.split('-'))[1].lstrip(' ') for x in head.split(',')]
-        self.dims = len(self.data[0])
+            if split_head:
+                self.labels = [(x.split('-'))[1].lstrip(' ') for x in head.split(',')]
+            else:
+                self.labels = head.split(',')
+
+        # note for the following code block, there is
+        # probably a cleaner way of doing this using
+        # sklearn.preprocessing.LabelEncoder
         
+        # assign each label a unique numerical id
         label_dict = dict()
         count = 0
         for label in self.labels:
             if label not in label_dict:
                 label_dict[label] = count
                 count += 1
+
+        # assign each cell it's corresponding numerical id
         self.tags = [label_dict[l] for l in self.labels]
+
+        # get the number of dimensions
+        self.dims = len(self.data[0])
         
 
+    # necessary for Dataset class
     def __getitem__(self, index):
         return self.data[index]
 
+    # necessary for Dataset class
     def __len__(self):
         return len(self.labels)
 
 class PCAReducedDuo(DuoBenchmark):
+    """
+    Same as DuoBenchmark but performs a preliminary PCA on the data.
+    Usage is discouraged as it has not been updated to reflect recent
+    Changes to the DuoBenchmark class
+    """
     def __init__(self,path,n_components=2,log_trans=False,log1p=False):
         super(PCAReducedDuo,self).__init__(path,log_trans=log_trans,log1p=log1p)
         self.old_data = self.data
@@ -57,6 +106,14 @@ class PCAReducedDuo(DuoBenchmark):
         self.dims = len(self.data[0])
 
 class FromPickle(Dataset):
+    """
+    Load a Dataset from a pickled object.
+    At this stage, however, labels will not be available
+    for the Dataset.
+
+    It is currently being used in scripts to compare
+    embeddings.  Labels can be taken from the full dataset
+    """
     def __init__(self,path):
         with open(path,'rb') as fh:
             self.data = pickle.load(fh).astype(np.float32)
