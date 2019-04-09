@@ -1,11 +1,16 @@
 #!/bin/sh
 #PBS -q gpu
 #PBS -l ncpus=6
-#PBS -l mem=32GB
+#PBS -l mem=24GB
 #PBS -l ngpus=2
 #PBS -l wd
-#PBS -l walltime=7:00:00
-#PBS -P yr31
+#PBS -l walltime=8:00:00
+#PBS -P ey6
+
+####################################
+# This script is used to run
+# src/train_sdae.py on raijin
+####################################
 
 
 ####################################
@@ -35,4 +40,4 @@ export LD_PRELOAD=/apps/gcc/6.2.0/lib64/libstdc++.so.6
 export PYTHONPATH="/short/ey6/fk5479/local/lib/python3.6/site-packages":$PYTHONPATH
 
 # and run ...
-python3 src/train_sdae.py $args --decay 5
+python3 src/train_sdae.py $args

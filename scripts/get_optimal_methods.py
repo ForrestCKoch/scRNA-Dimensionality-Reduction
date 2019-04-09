@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def get_rankings(table_dict,score,methods):
+# the results the internal statistics of the embeddings
+
+# It will generate a heatmap of rankings foreach dataset & the internal statistics of the embeddings
+
     res_dict = dict()
     for key in table_dict.keys():
         res_dict[key] = list() 
@@ -38,7 +42,7 @@ def get_rankings(table_dict,score,methods):
 
 table_dict = dict()
 
-with open('results/csvs/internal_metrics_norm.csv','r') as fh:
+with open('results/csvs/internal_metrics_reduced.csv','r') as fh:
     methods = list()
     header = fh.readline().rstrip('\n')
     for line in fh:
@@ -92,8 +96,6 @@ for i in sorted(ss_res.keys()):
 annot = np.array(annot)
 ylabs = sorted(ss_res.keys())
 xlabs = sorted([x[2] for x in ss_res['chen']])
-print(data)
-print(annot)
 #sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,cmap="YlGnBu")
 sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,annot=annot,fmt="s")
 plt.tight_layout()

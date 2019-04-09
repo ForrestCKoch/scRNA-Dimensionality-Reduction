@@ -26,7 +26,7 @@ class ZIFA_Wrapper():
         self.k = k
 
     def fit_transform(self,data):
-        embedding, model = ZIFA.fitModel(data,self.k)
+        embedding, model = ZIFA.fitModel(data-1,self.k)
         self.model = model
         return embedding
 
@@ -52,7 +52,9 @@ def get_parser():
         "--dataset",
         choices = ["mouse","koh","kumar",
                   "simk4easy","simk4hard","simk8hard",
-                  "zhengmix4eq","zhengmix8eq"],
+                  "zhengmix4eq","zhengmix8eq","chen",
+                  "baron-human","campbell","macosko",
+                  "marques","shekhar"],
         default = 'koh',
         help="dataset to be used"
     )
@@ -117,9 +119,9 @@ def get_model(args):
         model = FastICA(n_components=args.dims)
     elif args.method == 'zifa':
         model = ZIFA_Wrapper(args.dims)
-    elif args.method == 'zifa':
+    elif args.method == 'lda':
         model = LatentDirichletAllocation(args.dims)
-    elif args.method == 'zifa':
+    elif args.method == 'nmf':
         model = NMF(args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
@@ -164,6 +166,9 @@ def get_data(args):
                           nproc=args.njobs,
                           selection=selection,
                           log1p=args.log1p).data
+    elif args.dataset in ['chen','baron-human','campbell','macosko','marques','shekhar']:
+        ds_path = 'data/datasets/'+args.dataset+'.csv'
+        data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p,split_head=False).data
     else:
         ds_path = 'data/datasets/'+args.dataset+'.csv'
         data = DuoBenchmark(ds_path,log_trans=args.log,log1p=args.log1p).data

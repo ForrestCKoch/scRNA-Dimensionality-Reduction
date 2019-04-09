@@ -1,5 +1,7 @@
 #!/usr/bin/Rscript
 library(ggplot2)
+# This script is used to generate a plot of Dimensions Vs Score for the
+# provided results csv 
 
 data <- read.table('results/csvs/internal_metrics_reduced.csv',sep=',',header=TRUE)
 metrics <- c("variance.ratio.criterion","davies.bouldin",
@@ -21,7 +23,6 @@ for( ds in unique(data$dataset)){
                ggtitle(paste(ds,'dimensions vs', metric)) +
                ylab(metric) + theme(plot.title = element_text(hjust = 0.5)) + 
                theme(legend.title = element_blank())
-
         }else{
             ggplot(data=set_data,aes(x=dimensions,y=get(metric),
                group=method,color=factor(method))) +
@@ -33,6 +34,7 @@ for( ds in unique(data$dataset)){
                theme(legend.title = element_blank()) +
                 scale_fill_brewer(palette="Set2")
         }
+<<<<<<< HEAD
         ggsave(paste('results/plots/internal_metrics',metric,paste(ds,'png',sep='.'),sep='/'),device='png')
 #        }
     }
