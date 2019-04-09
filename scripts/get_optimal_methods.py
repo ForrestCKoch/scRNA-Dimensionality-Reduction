@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-
+import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def get_rankings(table_dict,score):
+def get_rankings(table_dict,score,methods):
     res_dict = dict()
     for key in table_dict.keys():
         res_dict[key] = list() 
@@ -21,18 +21,25 @@ def get_rankings(table_dict,score):
         if score == 'db':
             order = 1
         c = 1
+
         for i,entry in enumerate(sorted(table_dict[key][score],key = lambda x: order*x[0])):
             if entry[2] not in seen:
                 seen.append(entry[2]) 
                 entry.append(c)    
                 c += 1
                 res_dict[key].append(entry)
+
+        for m in methods:
+            if m not in seen:
+                res_dict[key].append([np.nan,np.nan,m,len(m)])
+                
     return res_dict
             
 
 table_dict = dict()
 
-with open('results/csvs/reduced_internal_stats.csv','r') as fh:
+with open('results/csvs/internal_metrics_norm.csv','r') as fh:
+    methods = list()
     header = fh.readline().rstrip('\n')
     for line in fh:
         # extract our values
@@ -40,8 +47,10 @@ with open('results/csvs/reduced_internal_stats.csv','r') as fh:
         name = v[0]
         meth = v[1]
         dims = v[2]
+        if meth not in methods:
+            methods.append(meth)
 
-        if int(dims) < 10 or int(dims) >= 5000:
+        if int(dims) < 2 or int(dims) >= 5000:
             continue
         ch = [float(v[4]),dims,meth]
         db = [float(v[5]),dims,meth]
@@ -72,14 +81,20 @@ with open('results/csvs/reduced_internal_stats.csv','r') as fh:
         table_dict[name]['di'].append(di)
         table_dict[name]['ss'].append(ss)
 
-ss_res = get_rankings(table_dict,'ch')
+ss_res = get_rankings(table_dict,sys.argv[1],methods)
 for i in sorted(ss_res.keys()):
     ss_res[i] = sorted(ss_res[i],key = lambda x: x[2])
 data = list()
+annot = list()
 for i in sorted(ss_res.keys()):
     data.append([x[-1] for x in ss_res[i]])
+    annot.append([x[1] for x in ss_res[i]])
+annot = np.array(annot)
 ylabs = sorted(ss_res.keys())
-xlabs = sorted([x[2] for x in ss_res['koh']])
-sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,cmap="YlGnBu")
-plt.show()
-
+xlabs = sorted([x[2] for x in ss_res['chen']])
+print(data)
+print(annot)
+#sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,cmap="YlGnBu")
+sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,annot=annot,fmt="s")
+plt.tight_layout()
+plt.savefig(os.path.join('results/plots',sys.argv[1]))
