@@ -54,8 +54,11 @@ with open('results/csvs/internal_metrics_reduced.csv','r') as fh:
         if meth not in methods:
             methods.append(meth)
 
-        if int(dims) < 2 or int(dims) >= 5000:
-            continue
+        try:
+            if int(dims) < 2 or int(dims) >= 90:
+                continue
+        except:
+            pass
         ch = [float(v[4]),dims,meth]
         db = [float(v[5]),dims,meth]
         di = [float(v[6]),dims,meth]
