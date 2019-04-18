@@ -6,8 +6,10 @@ import os
 
 
 path_list = list()
-for dataset in os.listdir('data/embeddings/'):
+dataset_list = ['baron-human','campbell','chen','macosko','marques','shekar']
+#for dataset in os.listdir('data/embeddings/'):
 #for dataset in ['koh']:
+for dataset in dataset_list:
     ds = DuoBenchmark('data/datasets/'+dataset+'.csv')
     labels = ds.tags
     for reduction in os.listdir('data/embeddings/'+dataset):
@@ -17,7 +19,8 @@ for dataset in os.listdir('data/embeddings/'):
 
 print_summaries(path_list)
 
-for dataset in os.listdir('data/embeddings/'):
+#for dataset in os.listdir('data/embeddings/'):
+for dataset in dataset_list:
     ds = DuoBenchmark('data/datasets/'+dataset+'.csv',log_trans=False)
     labels = ds.tags
     points = ds.data

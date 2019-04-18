@@ -14,6 +14,8 @@ from sklearn.cluster import DBSCAN
 
 from svr2019.datasets import *
 
+import umap
+
 #############################################################################
 # Uses DBSCAN to cluster umap embedding.
 # Plots are generated for both the true labelling as well as the
@@ -26,12 +28,14 @@ from svr2019.datasets import *
 
 ##############################################################################
 dset = sys.argv[1]
-emb_file = 'data/embeddings/' + dset + '-umap.pickle'
-emb2_file = 'data/embeddings/' + dset + '-umap-mctsne.pickle'
+emb_file = 'data/embeddings/' + dset + '/umap/2-log-False.pickle'
 emb = pickle.load(open(emb_file,'rb'))
-X = pickle.load(open(emb2_file,'rb'))
 
-raw_data = DuoBenchmark('data/datasets/'+dset+'.csv')
+# X should be a 2D embedding of embedding
+#X = umap.UMAP(n_components=2).fit_transform(emb)
+X = emb
+
+raw_data = DuoBenchmark('data/datasets/'+dset+'.csv',split_head=False)
 ##############################################################################
 # Compute DBSCAN
 ##############################################################################
