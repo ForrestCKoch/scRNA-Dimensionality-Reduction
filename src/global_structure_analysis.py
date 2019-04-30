@@ -5,7 +5,6 @@ import pickle
 
 import numpy as np
 import matplotlib as mpl
-mpl.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -73,11 +72,13 @@ n_data = len(ss_res.keys())
 count = 1
 
 plt.rcParams["figure.figsize"] = (8,11)
+first_row=True
 for dataset in ss_res.keys():
     print(dataset)
     #ds = DuoBenchmark('data/datasets/'+dataset+'.csv',split_head=False)
     #raw_data = ds.data
     #pw_raw = pairwise_distances(raw_data)
+    first_col=True
     for entry in sorted(ss_res[dataset],key = lambda x:x[2]):
         method = entry[2]
         dims = entry[1]
@@ -90,13 +91,28 @@ for dataset in ss_res.keys():
         with open(emb_file,'rb') as fh:
             emb_data = pickle.load(fh)
         pw_emb = pairwise_distances(emb_data)
+        
         plt.subplot(n_data,n_meth,count)
         count += 1
-        plt.hist(pw_emb.flatten(),bins=200)
+        #r = np.random.randn(100,100).flatten()
+        #p = plt.hist(r,bins=50)[0]
+        p = plt.hist(pw_emb.flatten())[0]
+        # remove our ticks and labels
+        plt.xticks(ticks=[],labels=[])
+        # add the dataset to the first column
+        if first_col:
+            plt.yticks(ticks=[max(p)/2],labels=[dataset])
+            first_col=False
+        else:
+            plt.yticks(ticks=[],labels=[])
+        # add titles only to the first row
+        if first_row:
+            plt.title(method)
 
         #scor = np.mean([spearmanr(pw_emb[i],pw_raw[i]).correlation for i in range(0,len(pw_emb))])
         #print('\t'+method+' : '+str(scor))
-        #print('\t'+method)
+        print('\t'+method)
+    first_row = False
         
 #plt.savefig('test.pdf') 
 plt.show(block=True)
