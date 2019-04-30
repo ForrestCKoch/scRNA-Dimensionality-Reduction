@@ -37,6 +37,11 @@ def get_rankings(table_dict,score,methods):
                 res_dict[key].append([np.nan,np.nan,m,len(m)])
                 
     return res_dict
+
+def reject_outliers(data, m=5):
+    mu = np.mean(data)
+    sd = np.std(data)
+    return data[abs(data - mu) < m * sd]
             
 
 table_dict = dict()
@@ -79,6 +84,7 @@ for dataset in ss_res.keys():
     #raw_data = ds.data
     #pw_raw = pairwise_distances(raw_data)
     first_col=True
+    colour = 1
     for entry in sorted(ss_res[dataset],key = lambda x:x[2]):
         method = entry[2]
         dims = entry[1]
@@ -90,13 +96,13 @@ for dataset in ss_res.keys():
             emb_file = 'data/embeddings/'+dataset+'/'+method+'/'+dims+'-log-False.pickle'
         with open(emb_file,'rb') as fh:
             emb_data = pickle.load(fh)
-        pw_emb = pairwise_distances(emb_data)
+#        pw_emb = pairwise_distances(emb_data).flatten()
         
         plt.subplot(n_data,n_meth,count)
         count += 1
-        #r = np.random.randn(100,100).flatten()
-        #p = plt.hist(r,bins=50)[0]
-        p = plt.hist(pw_emb.flatten())[0]
+        r = np.random.randn(100,100).flatten()
+        p = plt.hist(r,bins='scott')[0]
+#        p = plt.hist(reject_outliers(pw_emb),bins='scott')[0]
         # remove our ticks and labels
         plt.xticks(ticks=[],labels=[])
         # add the dataset to the first column
