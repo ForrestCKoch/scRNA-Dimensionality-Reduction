@@ -1,4 +1,14 @@
 #!/usr/bin/python
+###############################################################
+# print_all.py
+#
+# Description:
+#   This script will produce a csv of the following format:
+#       path_to_embedding,vrc,davies.bouldin,dunn.index,silhouette.score 
+#   Note that most of the following scripts require this to be
+#   (currently manually) converted to:
+#       dataset,method,log,vrc,db,di,ss
+###############################################################
 
 from svr2019.datasets import *
 from svr2019.sumarize import *
@@ -7,14 +17,14 @@ import os
 
 
 path_list = list()
+<<<<<<< HEAD
 #dataset_list = ['campbell','chen','shekhar']
-dataset_list = ['baron-human']
+dataset_list = ['baron-human','campbell','chen','macosko','marques','shekar']
+#dataset_list = ['baron-human']
 
 #bad_types = ['"unknown"','"miss"','"zothers"',]
-bad_types = ['"acinar"','"activated_stellate"','"alpha"','"beta"','"delta"','"ductal"','"endothelial"','"gamma"','"quiescent_stellate"'
+#bad_types = ['"acinar"','"activated_stellate"','"alpha"','"beta"','"delta"','"ductal"','"endothelial"','"gamma"','"quiescent_stellate"'
 ]
-#for dataset in os.listdir('data/embeddings/'):
-#for dataset in ['koh']:
 for dataset in dataset_list:
     with open('data/datasets/'+dataset+'.csv','r') as fh:
         cell_types = fh.readline().rstrip('\n').split(',')
@@ -34,11 +44,8 @@ for dataset in dataset_list:
     for reduction in os.listdir('data/embeddings/'+dataset):
         for item in os.listdir('data/embeddings/'+dataset+'/'+reduction):
             path_list.append((os.path.join('data/embeddings/',dataset,reduction,item),dataset,labels,exclude))
-print('hi')
 print_summaries(path_list)
 
-exit()
-#for dataset in os.listdir('data/embeddings/'):
 for dataset in dataset_list:
     ds = DuoBenchmark('data/datasets/'+dataset+'.csv',log_trans=False,split_head=False)
     labels = ds.tags

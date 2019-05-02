@@ -15,62 +15,19 @@ from scipy.stats import spearmanr
 from sklearn.metrics import pairwise_distances
 
 from svr2019.datasets import *
-
-def get_rankings(table_dict,score,methods):
-    res_dict = dict()
-    for key in table_dict.keys():
-        res_dict[key] = list() 
-        #print(key)
-        seen = list()
-        order = -1
-        if score == 'db':
-            order = 1
-        c = 1
-
-        for i,entry in enumerate(sorted(table_dict[key][score],key = lambda x: order*x[0])):
-            if entry[2] not in seen:
-                seen.append(entry[2]) 
-                entry.append(c)    
-                c += 1
-                res_dict[key].append(entry)
-
-        for m in methods:
-            if m not in seen:
-                res_dict[key].append([np.nan,np.nan,m,len(m)])
-                
-    return res_dict
+from svr2019.sumarize import *
 
 def reject_outliers(data, m=5):
     mu = np.mean(data)
     sd = np.std(data)
     return data[abs(data - mu) < m * sd]
-            
 
-table_dict = dict()
+def trim_data(data, m=0.5):
+    intvl = np.percentile(data,[m,100-m])
+    return data[(data >= intvl[0]) & (data <= intvl[1])]
+        
 
-with open('results/csvs/internal_metrics_reduced.csv','r') as fh:
-    methods = list()
-    header = fh.readline().rstrip('\n')
-    for line in fh:
-        # extract our values
-        v = line.rstrip('\n').split(',')
-        name = v[0]
-        meth = v[1]
-        dims = v[2]
-        if meth not in methods:
-            methods.append(meth)
-        try:
-            if int(dims) < 2 or int(dims) >= 90:
-                continue
-        except:
-            pass
-
-        ss = [float(v[7]),dims,meth]
-      
-        if name not in table_dict.keys():
-            table_dict[name] = {'ss' : list()}
-
-        table_dict[name]['ss'].append(ss)
+table_dict,methods = get_table_dict('results/csvs/internal_metrics_reduced.csv')
 
 ss_res = get_rankings(table_dict,'ss',methods)
 
@@ -103,13 +60,18 @@ for dataset in ss_res.keys():
         plt.subplot(n_data,n_meth,count)
         count += 1
         r = np.random.randn(100,100).flatten()
-        p = plt.hist(r,bins='scott')[0]
-#        p = plt.hist(reject_outliers(pw_emb),bins='scott')[0]
+        hist = plt.hist(trim_data(r),bins='scott')
+        yl,yh = plt.ylim()
+        plt.ylim((yl,yh*1.1))
+        xl,xh = plt.xlim()
+#        hist = plt.hist(reject_outliers(pw_emb),bins='scott')
+#        hist = plt.hist(trim_data(pw_emb),bins='scott')
         # remove our ticks and labels
         plt.xticks(ticks=[],labels=[])
         # add the dataset to the first column
+        p = hist[0]
         if first_col:
-            plt.yticks(ticks=[max(p)/2],labels=[dataset])
+            plt.yticks(ticks=[np.max(p)/2],labels=[dataset])
             first_col=False
         else:
             plt.yticks(ticks=[],labels=[])
@@ -117,7 +79,10 @@ for dataset in ss_res.keys():
         if first_row:
             plt.title(method)
 
-        #scor = np.mean([spearmanr(pw_emb[i],pw_raw[i]).correlation for i in range(0,len(pw_emb))])
+    
+#        scor = np.mean([spearmanr(pw_emb[i],pw_raw[i]).correlation for i in range(0,len(pw_emb))])
+        scor = 3.143452345
+        plt.text(xl,.95*yh,' r = {:.2f}'.format(scor),fontsize=8)
         #print('\t'+method+' : '+str(scor))
         print('\t'+method)
     first_row = False
