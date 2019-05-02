@@ -109,7 +109,7 @@ def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
             table_dict[name]['di'].append(di)
             table_dict[name]['ss'].append(ss)
 
-    return table_dict
+    return table_dict,methods
 
 def get_rankings(table_dict,score,methods):
     res_dict = dict()
