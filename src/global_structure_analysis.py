@@ -23,7 +23,13 @@ def reject_outliers(data, m=5):
 def trim_data(data, m=0.5):
     intvl = np.percentile(data,[m,100-m])
     return data[(data >= intvl[0]) & (data <= intvl[1])]
-        
+
+color_dict=dict()
+for i in range(0,11):
+    x = (i/11.0)
+    y = (1-x)/2
+    z = 1- (x**2 + y**2)
+    color_dict[i] = [x,y,z]
 
 table_dict,methods = get_table_dict('results/csvs/internal_metrics_reduced.csv')
 
@@ -42,7 +48,7 @@ for dataset in ss_res.keys():
     #pw_raw = pairwise_distances(raw_data)
     first_col=True
     colour = 1
-    for entry in sorted(ss_res[dataset],key = lambda x:x[2]):
+    for i,entry in enumerate(sorted(ss_res[dataset],key = lambda x:x[2])):
         method = entry[2]
         dims = entry[1]
         if method == 'full':
@@ -55,10 +61,10 @@ for dataset in ss_res.keys():
             emb_data = pickle.load(fh)
 #        pw_emb = pairwise_distances(emb_data).flatten()
         
-        plt.subplot(n_data,n_meth,count)
+        plt.subplot(n_data,n_meth+1,count)
         count += 1
         r = np.random.randn(100,100).flatten()
-        hist = plt.hist(trim_data(r),bins='scott')
+        hist = plt.hist(trim_data(r),bins='scott',color=color_dict[i])
         yl,yh = plt.ylim()
         plt.ylim((yl,yh*1.1))
         xl,xh = plt.xlim()
@@ -83,6 +89,18 @@ for dataset in ss_res.keys():
         plt.text(xl,.95*yh,' r = {:.2f}'.format(scor),fontsize=8)
         #print('\t'+method+' : '+str(scor))
         print('\t'+method)
+
+    # and then plot the histogram 
+    plt.subplot(n_data,n_meth+1,count)
+    count += 1
+    r = np.random.randn(100,100).flatten()
+    hist = plt.hist(trim_data(r),bins='scott',color=[0,1,0])
+    plt.xticks(ticks=[],labels=[])
+    plt.yticks(ticks=[],labels=[])
+    if first_row:
+        plt.title('Original')
+
+
     first_row = False
         
 #plt.savefig('test.pdf') 
