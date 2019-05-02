@@ -4,7 +4,9 @@ import sys
 import pickle
 
 import numpy as np
+
 import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -103,5 +105,5 @@ for dataset in ss_res.keys():
 
     first_row = False
         
-#plt.savefig('test.pdf') 
-plt.show(block=True)
+plt.savefig('test.pdf') 
+#plt.show(block=True)

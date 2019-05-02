@@ -1,3 +1,4 @@
+#!/usr/bin/evn python3 -u
 
 import pickle
 import sys
@@ -42,7 +43,7 @@ for model in model_list:
     ds_name = tokens[0]
     layers = [int(x) for x in tokens[1].split('-')]
     log = str2bool(tokens[7].split('-')[1]) 
-    scale  = str2bool(tokens[8].split('-')[1]) 
+    scale  = str2bool(tokens[8].split('-')[1].split('.')[0]) 
     if ds_name not in model_dict:
         # Don't touch the following line... I don't remember
         # why it works but it does so don't break it!
@@ -53,12 +54,12 @@ print("Calculating embeddings ...")
 # To avoid loading in each dataset a bazillion times
 # work on one dataset at a time
 for ds_name in model_dict.keys():
-    for log in [True, False]:
+    for log in [True]:
         print("Loading "+ds_name+"-log-" + str(log) +" dataset")
         ds_path = os.path.join('data/datasets',ds_name+'.csv')
-        dataset = DuoBenchmark(ds_path,log_trans=log)
+        dataset = DuoBenchmark(ds_path,log1p=log,split_head=False)
         
-        for scale in [False, True]:
+        for scale in [True]:
             # Do scaling second as the function will 
             # overwrite the existing data
             # yes - yes I know this is bad design but it's too late now

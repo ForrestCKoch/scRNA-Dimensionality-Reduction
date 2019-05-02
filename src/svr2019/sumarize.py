@@ -26,8 +26,10 @@ def internal_summary(points, labels):
     labels = np.array(labels)
 
     calinski_harabaz = calinski_harabaz_score(points, labels)
-    davies_bouldin = davies_bouldin_score(points, labels)
-    di = dunn_index(points, labels)
+    #davies_bouldin = davies_bouldin_score(points, labels)
+    davies_bouldin = -1
+    #di = dunn_index(points, labels)
+    di = -1
     silhouette = silhouette_score(points, labels)
 
     return {
@@ -40,10 +42,14 @@ def internal_summary(points, labels):
 
 def print_summaries(path_list):
     head = True
-    for path,dataset,labels in path_list:
+    for path,dataset,labels,exclude in path_list:
         #labels = DuoBenchmark('data/datasets/'+dataset+'.csv').tags 
         with open(path,'rb') as fh:
             embedding = np.load(fh).astype(np.float32)
+
+        embedding = np.delete(embedding,exclude,axis=0)
+        labels = np.delete(labels,exclude,axis=0)
+
         try:
             summary_dict = internal_summary(embedding, labels)
             summary_list = [path]+[str(summary_dict[x]) for x in sorted(summary_dict.keys())]
