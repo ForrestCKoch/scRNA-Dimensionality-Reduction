@@ -4,14 +4,16 @@ library(ggplot2)
 # provided results csv 
 
 data <- read.table('results/csvs/internal_metrics_reduced.csv',sep=',',header=TRUE)
-metrics <- c("variance.ratio.criterion","davies.bouldin",
-             "dunn.index","silhouette.score")
+#data <- read.table('results/csvs/baron_rare.txt',sep=',',header=TRUE)
+#metrics <- c("variance.ratio.criterion","davies.bouldin",
+#             "dunn.index","silhouette.score")
+metrics <- c("silhouette.score")
 
 for( ds in unique(data$dataset)){
     for( metric in metrics){
 #        for( l in c(0,1) ){
         set_data <- subset(data,(dataset==ds)  &
-                           (dimensions < 80) & (dimensions >= 2)) 
+                           (dimensions < 120) & (dimensions >= 2)) 
         hbar <- subset(data,(dataset==ds) & (method=="full"))[metric]
         if(metric == "silhouette.score" | 
            metric == "dunn.index"){
@@ -34,8 +36,7 @@ for( ds in unique(data$dataset)){
                theme(legend.title = element_blank()) +
                 scale_fill_brewer(palette="Set2")
         }
-<<<<<<< HEAD
-        ggsave(paste('results/plots/internal_metrics',metric,paste(ds,'png',sep='.'),sep='/'),device='png')
+        ggsave(paste('results/plots/internal_metrics',metric,paste(ds,'png',sep='-rare.'),sep='/'),device='png')
 #        }
     }
 }
