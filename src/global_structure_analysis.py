@@ -1,4 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+##################################################
+# global_structure_analysis.py
+##################################################
+
 import os
 import sys
 import pickle

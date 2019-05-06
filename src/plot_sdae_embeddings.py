@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+##################################################
+# plot_sdae_embeddings.py
+##################################################
 
 import pickle
 import sys

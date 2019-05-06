@@ -1,4 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+##################################################
+# plot_timings.py
+##################################################
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np

@@ -1,4 +1,7 @@
-#!/usr/bin/evn python3 -u
+#!/usr/bin/env python3
+##################################################
+# get_sdae_embedding.py
+##################################################
 
 import pickle
 import sys
