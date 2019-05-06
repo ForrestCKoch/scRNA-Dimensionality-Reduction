@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+#################################################
+# generate_embedding.py
+#
+# Create a low dimensional embedding of a dataset
+# with a specific DR method
+#################################################
 from svr2019.datasets import *
 
 import pickle
@@ -16,7 +23,7 @@ from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
 import umap
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
 
-from ZIFA import ZIFA
+#from ZIFA import ZIFA
 
 import argparse
 
