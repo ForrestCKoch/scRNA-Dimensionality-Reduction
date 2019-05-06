@@ -11,10 +11,15 @@ Welcome to Dimensionality Reduction in scRNA's documentation!
    :caption: Contents:
 
 
-
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+SVR2019
+=======
+
+.. automodule:: svr2019
+    :members:
