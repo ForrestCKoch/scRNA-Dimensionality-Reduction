@@ -9,3 +9,4 @@ torch
 pandas
 sphinx
 sphinx_rtd_theme
+h5py
