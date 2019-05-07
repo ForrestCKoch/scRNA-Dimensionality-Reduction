@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+import pickle
 
 from sklearn.metrics import calinski_harabaz_score, silhouette_score
 import numpy as np
@@ -142,7 +143,7 @@ def get_rankings(table_dict,score,methods):
 
 def plot_optimal_heatmap(metric, results_file, methods):
 
-    table_dict = get_table_dict(results_file)
+    table_dict,_ = get_table_dict(results_file)
 
     # produce a dictionary of rankings from the table
     # but only for the metric of intrest
@@ -161,6 +162,11 @@ def plot_optimal_heatmap(metric, results_file, methods):
     sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,annot=annot,fmt="s")
     plt.tight_layout()
     plt.savefig(os.path.join('results/plots',metric))
+
+def plot_embedding(pickled_file,xd=0,yd=1):
+    x = pickle.load(open(pickled_file,'rb'))
+    plt.scatter(x=x[:,xd],y=x[:,yd],s=0.5)
+    plt.show()
 
 if __name__ == '__main__':
     pass
