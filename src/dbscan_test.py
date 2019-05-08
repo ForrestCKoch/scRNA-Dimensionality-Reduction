@@ -3,8 +3,6 @@
 # dbscan_test.py
 ##################################################
 
-#!/usr/bin/python3
-
 import pickle
 import sys
 

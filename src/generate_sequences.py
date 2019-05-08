@@ -32,5 +32,3 @@ if __name__ == '__main__':
             trial.append(str(t))
             seqs.append(trial)
         print(','.join([key]+['"'+" ".join([x for x in s])+'"' for s in seqs]))
-        
-    

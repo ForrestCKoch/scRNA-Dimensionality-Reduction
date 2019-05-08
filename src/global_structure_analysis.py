@@ -22,14 +22,30 @@ from svr2019.datasets import *
 from svr2019.sumarize import *
 
 def reject_outliers(data, m=5):
+    """
+    Remove samples > m standard deviations from the mean
+    
+    :param data: data to work on
+    :param m: threshold # of sd's
+    """
     mu = np.mean(data)
     sd = np.std(data)
     return data[abs(data - mu) < m * sd]
 
 def trim_data(data, m=0.5):
+    """
+    Remove the upper and lower m% quantiles
+
+    :param data: data to work on
+    :param m: threshold upper/lower quantile
+    """
     intvl = np.percentile(data,[m,100-m])
     return data[(data >= intvl[0]) & (data <= intvl[1])]
 
+###############################
+# Generate colours to be used
+# by various plots
+###############################
 color_dict=dict()
 for j in range(0,11):
     i = j*13%10

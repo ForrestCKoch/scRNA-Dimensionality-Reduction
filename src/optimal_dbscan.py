@@ -20,7 +20,11 @@ from sklearn.preprocessing import LabelEncoder
 from svr2019.datasets import *
 
 def warn(*args, **kwargs):
+    """
+    hack to stop sklearn from throwing annoying warnings
+    """
     pass
+
 if __name__ == '__main__':
     import warnings
     warnings.warn = warn

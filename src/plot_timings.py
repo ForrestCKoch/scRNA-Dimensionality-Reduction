@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 ##################################################
 # plot_timings.py
+# 
+# Used to plot run time against dimensions
+# for each of the datasets/dimension
 ##################################################
 
 import matplotlib.pyplot as plt
