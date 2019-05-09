@@ -46,9 +46,6 @@ def dunn_index(X, labels, metric = 'euclidean'):
         valid values are from scipy.spatial.distance
     """
 
-    # TODO: implement I am currently concerned about
-    #       runtime for larger datasets, so I am
-    #       leaving this until later ...    
     n_labels = max(labels)+1
 
     intra_dists = np.zeros(n_labels)
@@ -65,7 +62,6 @@ def dunn_index(X, labels, metric = 'euclidean'):
         centroid_distances[i][i] = np.inf
     
     return min([min(x) for x in centroid_distances])/max(intra_dists)
-    #return min([min(x) for x in centroid_distances]),max(intra_dists)
 
 
 if __name__ == '__main__':

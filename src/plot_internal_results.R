@@ -3,20 +3,17 @@ library(ggplot2)
 # This script is used to generate a plot of Dimensions Vs Score for the
 # provided results csv 
 
-# Call this script from the base directory -- Rscript scripts/plot_internal_results.R
-
-results_csv = 'results/csvs/internal_stats_new2.csv'
-plots_dir = 'results/plots/internal_metrics'
-
-data <- read.table(results,sep=',',header=TRUE)
-metrics <- c("variance.ratio.criterion","davies.bouldin",
-             "dunn.index","silhouette.score")
+data <- read.table('results/csvs/internal_metrics_reduced.csv',sep=',',header=TRUE)
+#data <- read.table('results/csvs/baron_rare.txt',sep=',',header=TRUE)
+#metrics <- c("variance.ratio.criterion","davies.bouldin",
+#             "dunn.index","silhouette.score")
+metrics <- c("silhouette.score")
 
 for( ds in unique(data$dataset)){
     for( metric in metrics){
 #        for( l in c(0,1) ){
         set_data <- subset(data,(dataset==ds)  &
-                           (dimensions < 10000) & (dimensions >= 10)) 
+                           (dimensions < 120) & (dimensions >= 2)) 
         hbar <- subset(data,(dataset==ds) & (method=="full"))[metric]
         if(metric == "silhouette.score" | 
            metric == "dunn.index"){
@@ -39,7 +36,7 @@ for( ds in unique(data$dataset)){
                theme(legend.title = element_blank()) +
                 scale_fill_brewer(palette="Set2")
         }
-        ggsave(paste(plots_dir,metric,paste(ds,'pdf',sep='.'),sep='/'),device='pdf')
+        ggsave(paste('results/plots/internal_metrics',metric,paste(ds,'png',sep='-rare.'),sep='/'),device='png')
 #        }
     }
 }

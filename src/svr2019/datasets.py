@@ -275,6 +275,11 @@ def _build_tensor(args):
 def scale_dataset(ds):
     """
     Scale each feature to be between 0 and 1
+    Note that overwrites the original data.
+    In the future, this function should be changed
+    to retain scaling information
+    
+    :param ds: dataset to be scaled
     """
     for i in range(0,ds.dims):
         fmax = ds.data[0][i]
