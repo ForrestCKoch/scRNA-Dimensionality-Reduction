@@ -11,6 +11,8 @@ from svr2019.datasets import *
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from scipy.stats import chi2
+
 def internal_summary(points, labels):
     """
     Generate a summary of internal validation measures.
@@ -69,14 +71,15 @@ def print_summaries(path_list):
 
 def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
     """
+    Note that due to upr/lwr bounds, 'full' datasets will likely be excluded.
+    To work around this format the dimension like '22k' 
+
     :param results_file: path to results file. Should be a csv in the format
     dataset,method,dimensions,log,vrc,db,di,ss
     however, do not include both log = True/False for the same entry
-    : param lwr_bnd_dims: exclude entries with dimensionality below this
-    : param upr_bnd_dims: exclude entries with dimensionality above this
-    
-    Note that due to upr/lwr bounds, 'full' datasets will likely be excluded.
-    To work around this format the dimension like '22k' 
+    :param lwr_bnd_dims: exclude entries with dimensionality below this
+    :param upr_bnd_dims: exclude entries with dimensionality above this
+    :return: table_dict, method    
     """
     table_dict = dict()
     # organize results into a dictionary
@@ -192,6 +195,25 @@ def plot_embedding(pickled_file,xd=0,yd=1):
     x = pickle.load(open(pickled_file,'rb'))
     plt.scatter(x=x[:,xd],y=x[:,yd],s=0.5)
     plt.show()
+
+def get_concordance(table_dict,methods,score):
+    n = len(methods)
+    ranks = get_rankings(table_dict,score,methods)
+    k = len(ranks.keys())
+
+    rank_sums = list()
+    for m in methods:
+        s = 0
+        for d in table_dict.keys():
+            idx = [ranks[d][x][2] == m for x in range(0,n)].index(True)
+            s += ranks[d][idx][-1]
+        rank_sums.append(s)
+    
+    rank_sums = np.array(rank_sums)
+    
+    W = np.sum((rank_sums-(k*(n+1)/2))**2)
+    Q = (12*W*k*(n-1))/(k**2*n*(n**2-1))
+    return chi2.cdf(Q,df=k-1)
 
 if __name__ == '__main__':
     pass
