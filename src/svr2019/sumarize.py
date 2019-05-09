@@ -197,6 +197,19 @@ def plot_embedding(pickled_file,xd=0,yd=1):
     plt.show()
 
 def get_concordance(table_dict,methods,score):
+    """
+    Calculates the concordance of ranking by 'score' across
+    each of the datasets in 'table_dict'.  The statistic
+    calculated is Kendall's W which asymptotically follows
+    a chi-square with n-1 d.o.f where n is the number of methods.
+    
+    :param table_dict: a dictionary of results for methods & datasets 
+    provided by get_table_dict
+    :param methods: methods for which you wish to obtain the ranking over
+    :param score: one of \{'ch','ss','db','di'\}. the score you wish to
+    obtain the ranking over 
+    :return: a tuple of (p.value,W)
+    """
     n = len(methods)
     ranks = get_rankings(table_dict,score,methods)
     k = len(ranks.keys())
