@@ -15,10 +15,10 @@ def internal_summary(points, labels):
     """
     Generate a summary of internal validation measures.
     Returns a dictionary containing elements:
-        - 'calinski-harabaz'
-        - 'davies-bouldin'
-        - 'dunn-index'
-        - 'silhouette-score'
+    - 'calinski-harabaz'
+    - 'davies-bouldin'
+    - 'dunn-index'
+    - 'silhouette-score'
     
     :param points: a numpy array of data points
     :param labels: a numpy array of labels for each point
@@ -70,8 +70,8 @@ def print_summaries(path_list):
 def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
     """
     :param results_file: path to results file. Should be a csv in the format
-        dataset,method,dimensions,log,vrc,db,di,ss
-        however, do not include both log = True/False for the same entry
+    dataset,method,dimensions,log,vrc,db,di,ss
+    however, do not include both log = True/False for the same entry
     : param lwr_bnd_dims: exclude entries with dimensionality below this
     : param upr_bnd_dims: exclude entries with dimensionality above this
     
@@ -128,11 +128,11 @@ def get_rankings(table_dict,score,methods):
     """
     Obtain the rankings of each method within each dataset according
     to it's performance on 'score'
-    
+
     :param table_dict: a dictionary of results for methods & datasets 
-        provided by get_table_dict
-    :param score: one of {'ch','ss','db','di'} -- the score you wish to
-        obtain the ranking over 
+    provided by get_table_dict
+    :param score: one of \{'ch','ss','db','di'\}. the score you wish to
+    obtain the ranking over 
     :param methods: methods for which you wish to obtain the ranking over
     """
     res_dict = dict()

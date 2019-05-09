@@ -20,6 +20,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from svr2019.datasets import *
 from svr2019.metrics import davies_bouldin_score
+from svr2019.metrics import dunn_index
 
 def warn(*args, **kwargs):
     """
@@ -49,19 +50,24 @@ def dbscan_trial(data,true_labels,eps,min_samp):
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
-        vrc = calinski_harabaz_score(emb,labels)
-        ss = silhouette_score(emb,labels)
-        db = davies_bouldin_score(emb,labels)
-        ari = adjusted_rand_score(true_labels,labels)
-        nmi = normalized_mutual_info_score(true_labels,labels)
+        try:
+            vrc = calinski_harabaz_score(emb,labels)
+            ss = silhouette_score(emb,labels)
+            db = davies_bouldin_score(emb,labels)
+            di = dunn_index(emb,labels)
+            ari = adjusted_rand_score(true_labels,labels)
+            nmi = normalized_mutual_info_score(true_labels,labels)
+        except:
+            vrc,ss,db,di,ari,nmi = [np.nan]*6
     else:
-        vrc,ss,db,ari,nmi = [np.nan]*5
+        vrc,ss,db,di,ari,nmi = [np.nan]*6
     return {'clusters':n_clusters,
             'epsilon':eps,
             'min_samples':min_samp,
             'vrc':vrc,
             'ss':ss,
             'db':db,
+            'di':di,
             'ari':ari,
             'nmi':nmi}
 
@@ -77,12 +83,12 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
     :param true_labels: true labels for the data
     :param eps_choices: list of epsilon choices for grid search
     :param ms_choices: list of minimum sample choices for grid search
-    :return: dictionary in form {'vrc','ss','db','ari','nmi'}
+    :return: dictionary in form {'vrc','ss','db','di','ari','nmi'}
     """
     def isBetter(x,y,m):
         if not y[m]:
             return True
-        if m == 'db': # special case for davies bouldin score
+        if m == 'di': # special case for dunn index
             return x[m]<y[m][m]
         else:
             return x[m]>y[m][m]
@@ -90,6 +96,7 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
     optimal_results = {'vrc':False,
                        'ss':False,
                        'db':False,
+                       'di':False,
                        'ari':False,
                        'nmi':False}
     for eps,ms in itertools.product(eps_choices,ms_choices):
@@ -101,7 +108,7 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                 optimal_results[metric] = outcome 
     return optimal_results 
 
-def print_optimal_dbscans(ds,m,f,d):
+def print_optimal_dbscans(ds,m,f,d,header=False):
     """
     Print out the results of `optimize_dbscan`
 
@@ -110,6 +117,9 @@ def print_optimal_dbscans(ds,m,f,d):
     :param f: name of pickle file
     :param d: results dictionary
     """
+    if header:
+        print('dataset,method,file,opt_res,'+','.join(d['vrc'].keys()))
+     
     for key in d.keys():
         print(','.join([ds,m,f,key]+[str(d[key][x]) for x in d[key].keys()]))
 
@@ -130,13 +140,14 @@ if __name__ == '__main__':
     # Extract following code into function which takes:
     # - true labels
     # - pickle file to load 
-
+    first = True
     eps_choices = list(np.arange(0.025,0.5,0.025))
     ms_choices = list(range(2,15))
     for emb_file in os.listdir('data/embeddings/'+dset+'/'+method):
         full_path = 'data/embeddings/'+dset+'/'+method+'/'+emb_file
         emb = pickle.load(open(full_path,'rb'))
         result = dbscan_optimization(emb,true_labels,eps_choices,ms_choices)
-        print_optimal_dbscans(dset,method,emb_file,result)
+        print_optimal_dbscans(dset,method,emb_file,result,header=first)
+        first = False
 
 

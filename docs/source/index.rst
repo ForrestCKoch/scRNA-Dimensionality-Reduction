@@ -7,8 +7,11 @@ Welcome to Dimensionality Reduction in scRNA's documentation!
 =============================================================
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
    :caption: Contents:
+
+   code/svr2019 
 
 
 Indices and tables
@@ -16,10 +19,3 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
-
-SVR2019
-=======
-
-.. automodule:: svr2019
-    :members:
