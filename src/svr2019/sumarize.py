@@ -227,7 +227,7 @@ def get_concordance(table_dict,methods,score):
     S = np.sum((rank_sums-(k*(n+1)/2))**2)
     W = (12*S)/(k**2*n*(n**2-1))
     Q = W*(n-1)*k
-    return chi2.cdf(Q,df=k-1),W
+    return chi2.cdf(Q,df=n-1),W
 
 if __name__ == '__main__':
     pass
