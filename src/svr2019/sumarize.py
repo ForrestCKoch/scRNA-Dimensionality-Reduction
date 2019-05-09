@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+import pickle
 
 from sklearn.metrics import calinski_harabaz_score, silhouette_score
 import numpy as np
@@ -41,6 +42,12 @@ def internal_summary(points, labels):
 
 
 def print_summaries(path_list):
+    """
+    Print out a comma separated summary for each
+    element in the provided list    
+
+    :param path_list: list of paths to embeddings
+    """
     head = True
     for path,dataset,labels,exclude in path_list:
         #labels = DuoBenchmark('data/datasets/'+dataset+'.csv').tags 
@@ -118,6 +125,16 @@ def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
     return table_dict,methods
 
 def get_rankings(table_dict,score,methods):
+    """
+    Obtain the rankings of each method within each dataset according
+    to it's performance on 'score'
+    
+    :param table_dict: a dictionary of results for methods & datasets 
+        provided by get_table_dict
+    :param score: one of {'ch','ss','db','di'} -- the score you wish to
+        obtain the ranking over 
+    :param methods: methods for which you wish to obtain the ranking over
+    """
     res_dict = dict()
     for key in table_dict.keys():
         res_dict[key] = list()
@@ -128,7 +145,7 @@ def get_rankings(table_dict,score,methods):
         c = 1
 
         for i,entry in enumerate(sorted(table_dict[key][score],key = lambda x: order*x[0])):
-            if entry[2] not in seen:
+            if (entry[2] not in seen) and (entry[2] in methods):
                 seen.append(entry[2])
                 entry.append(c)
                 c += 1
@@ -141,8 +158,14 @@ def get_rankings(table_dict,score,methods):
     return res_dict
 
 def plot_optimal_heatmap(metric, results_file, methods):
+    """
+    
+    :param metric: one of {'ch','ss','db','di'}
+    :param results_file: file of cleaned csv output from print_all.py
+    :param methods: methods which should be plotted
+    """
 
-    table_dict = get_table_dict(results_file)
+    table_dict,_ = get_table_dict(results_file)
 
     # produce a dictionary of rankings from the table
     # but only for the metric of intrest
@@ -161,6 +184,14 @@ def plot_optimal_heatmap(metric, results_file, methods):
     sns.heatmap(data,xticklabels=xlabs,yticklabels=ylabs,annot=annot,fmt="s")
     plt.tight_layout()
     plt.savefig(os.path.join('results/plots',metric))
+
+def plot_embedding(pickled_file,xd=0,yd=1):
+    """
+    Do not use... this should probably be removed
+    """
+    x = pickle.load(open(pickled_file,'rb'))
+    plt.scatter(x=x[:,xd],y=x[:,yd],s=0.5)
+    plt.show()
 
 if __name__ == '__main__':
     pass

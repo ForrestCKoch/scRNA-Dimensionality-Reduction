@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env python3
+##################################################
+# train_sdae.py
+##################################################
+
 import sys
 import os
 from datetime import datetime

@@ -1,4 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+##################################################
+# generate_sequences.py
+##################################################
 # This script is intended to be used to generate sequences
 # indicating the size of each hidden layer to be trained in the SDAE
 
@@ -29,5 +32,3 @@ if __name__ == '__main__':
             trial.append(str(t))
             seqs.append(trial)
         print(','.join([key]+['"'+" ".join([x for x in s])+'"' for s in seqs]))
-        
-    
