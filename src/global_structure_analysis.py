@@ -41,13 +41,13 @@ n_meth = len(methods) - 1
 n_data = len(ss_res.keys())
 count = 1
 
-plt.rcParams["figure.figsize"] = (8,11)
+plt.rcParams["figure.figsize"] = (11,8)
 first_row=True
 for dataset in ss_res.keys():
     print(dataset)
-    #ds = DuoBenchmark('data/datasets/'+dataset+'.csv',split_head=False)
-    #raw_data = ds.data
-    #pw_raw = pairwise_distances(raw_data)
+    ds = DuoBenchmark('data/datasets/'+dataset+'.csv',split_head=False)
+    raw_data = ds.data
+    pw_raw = pairwise_distances(raw_data)
     first_col=True
     colour = 1
     for i,entry in enumerate(sorted(ss_res[dataset],key = lambda x:x[2])):
@@ -61,21 +61,22 @@ for dataset in ss_res.keys():
             emb_file = 'data/embeddings/'+dataset+'/'+method+'/'+dims+'-log-False.pickle'
         with open(emb_file,'rb') as fh:
             emb_data = pickle.load(fh)
-#        pw_emb = pairwise_distances(emb_data).flatten()
+        pw_emb = pairwise_distances(emb_data)
         
         plt.subplot(n_data,n_meth+1,count)
         count += 1
         r = np.random.randn(100,100).flatten()
-        hist = plt.hist(trim_data(r),bins='scott',color=color_dict[i])
+#        hist = plt.hist(trim_data(r),bins='scott',color=color_dict[i])
+#        hist = plt.hist(reject_outliers(pw_emb),bins='scott')
+        hist = plt.hist(trim_data(pw_emb.flatten()),bins='scott',color=color_dict[i])
+        # remove our ticks and labels
+        # add the dataset to the first column
+        p = hist[0]
         yl,yh = plt.ylim()
         plt.ylim((yl,yh*1.1))
         xl,xh = plt.xlim()
-#        hist = plt.hist(reject_outliers(pw_emb),bins='scott')
-#        hist = plt.hist(trim_data(pw_emb),bins='scott')
-        # remove our ticks and labels
+
         plt.xticks(ticks=[],labels=[])
-        # add the dataset to the first column
-        p = hist[0]
         if first_col:
             plt.yticks(ticks=[np.max(p)/2],labels=[dataset])
             first_col=False
@@ -86,8 +87,8 @@ for dataset in ss_res.keys():
             plt.title(method)
 
     
-#        scor = np.mean([spearmanr(pw_emb[i],pw_raw[i]).correlation for i in range(0,len(pw_emb))])
-        scor = 3.143452345
+        scor = np.mean([spearmanr(pw_emb[j],pw_raw[j]).correlation for j in range(0,len(pw_emb))])
+#        scor = 3.143452345
         plt.text(xl,.95*yh,' r = {:.2f}'.format(scor),fontsize=8)
         #print('\t'+method+' : '+str(scor))
         print('\t'+method)
@@ -96,7 +97,7 @@ for dataset in ss_res.keys():
     plt.subplot(n_data,n_meth+1,count)
     count += 1
     r = np.random.randn(100,100).flatten()
-    hist = plt.hist(trim_data(r),bins='scott',color=[0,1,0])
+    hist = plt.hist(trim_data(pw_raw.flatten()),bins='scott',color=[0,1,0])
     plt.xticks(ticks=[],labels=[])
     plt.yticks(ticks=[],labels=[])
     if first_row:
