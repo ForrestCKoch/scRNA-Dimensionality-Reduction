@@ -11,10 +11,7 @@ import itertools
 import numpy as np
 
 from sklearn.cluster import DBSCAN
-from sklearn.metrics import silhouette_score
-from sklearn.metrics import calinski_harabaz_score
-from sklearn.metrics import adjusted_rand_score
-from sklearn.metrics import normalized_mutual_info_score
+from sklearn.metrics import *
 
 from sklearn.preprocessing import LabelEncoder
 
@@ -28,7 +25,7 @@ def warn(*args, **kwargs):
     """
     pass
 
-def dbscan_trial(data,true_labels,eps,min_samp):
+def dbscan_trial(data,true_labels,eps,min_samp,metric='euclidean'):
     """
     Perfoms DBSCAN with the given parameters and returns:
         - number of clusters
@@ -45,16 +42,15 @@ def dbscan_trial(data,true_labels,eps,min_samp):
     :return: dictionary in form:
         {'clusters','epsilon','min_samples','vrc','ss','db','ari','nmi'}
     """
-
-    labels = DBSCAN(eps=eps,min_samples=min_samp).fit(data).labels_
+    labels = DBSCAN(eps=eps,min_samples=min_samp,metric=metric).fit(data).labels_
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
         try:
-            vrc = calinski_harabaz_score(emb,labels)
-            ss = silhouette_score(emb,labels)
-            db = davies_bouldin_score(emb,labels)
-            di = dunn_index(emb,labels)
+            vrc = calinski_harabaz_score(data,labels)
+            ss = silhouette_score(data,labels)
+            db = davies_bouldin_score(data,labels)
+            di = dunn_index(data,labels)
             ari = adjusted_rand_score(true_labels,labels)
             nmi = normalized_mutual_info_score(true_labels,labels)
         except:
@@ -99,8 +95,9 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                        'di':False,
                        'ari':False,
                        'nmi':False}
+    pw_dist = pairwise_distances(data)
     for eps,ms in itertools.product(eps_choices,ms_choices):
-        outcome = dbscan_trial(data,true_labels,eps,ms)
+        outcome = dbscan_trial(pw_dist,true_labels,eps,ms,metric='precomputed')
         if outcome['clusters'] < 2:
             continue
         for metric in optimal_results.keys():
@@ -141,8 +138,8 @@ if __name__ == '__main__':
     # - true labels
     # - pickle file to load 
     first = True
-    eps_choices = list(np.arange(0.025,0.5,0.025))
-    ms_choices = list(range(2,15))
+    eps_choices = list(np.arange(0.025,25,0.025))
+    ms_choices = list(range(2,25))
     for emb_file in os.listdir('data/embeddings/'+dset+'/'+method):
         full_path = 'data/embeddings/'+dset+'/'+method+'/'+emb_file
         emb = pickle.load(open(full_path,'rb'))
