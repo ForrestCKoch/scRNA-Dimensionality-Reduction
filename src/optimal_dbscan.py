@@ -46,15 +46,12 @@ def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
-        try:
-            vrc = calinski_harabaz_score(data,labels)
-            ss = silhouette_score(pairwise,labels,metric='precomputed')
-            db = davies_bouldin_score(data,labels)
-            di = dunn_index(data,labels,metric)
-            ari = adjusted_rand_score(true_labels,labels)
-            nmi = normalized_mutual_info_score(true_labels,labels)
-        except:
-            vrc,ss,db,di,ari,nmi = [np.nan]*6
+        vrc = calinski_harabaz_score(data,labels)
+        ss = silhouette_score(pairwise,labels,metric='precomputed')
+        db = davies_bouldin_score(data,labels)
+        di = dunn_index(data,labels,metric)
+        ari = adjusted_rand_score(true_labels,labels)
+        nmi = normalized_mutual_info_score(true_labels,labels)
     else:
         vrc,ss,db,di,ari,nmi = [np.nan]*6
     return {'clusters':n_clusters,
@@ -115,10 +112,14 @@ def print_optimal_dbscans(ds,m,f,d,header=False):
     :param f: name of pickle file
     :param d: results dictionary
     """
+    if not d['vrc']:
+        return
     if header:
         print('dataset,method,file,opt_res,'+','.join(d['vrc'].keys()))
      
     for key in d.keys():
+        if not d[key]:
+            continue
         print(','.join([ds,m,f,key]+[str(d[key][x]) for x in d[key].keys()]))
 
 if __name__ == '__main__':
@@ -159,5 +160,3 @@ if __name__ == '__main__':
         result = dbscan_optimization(emb,true_labels,eps_choices,ms_choices)
         print_optimal_dbscans(dset,method,emb_file,result,header=first)
         first = False
-
-
