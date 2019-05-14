@@ -75,8 +75,8 @@ def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
     To work around this format the dimension like '22k' 
 
     :param results_file: path to results file. Should be a csv in the format
-    dataset,method,dimensions,log,vrc,db,di,ss
-    however, do not include both log = True/False for the same entry
+        dataset,method,dimensions,log,vrc,db,di,ss
+        however, do not include both log = True/False for the same entry
     :param lwr_bnd_dims: exclude entries with dimensionality below this
     :param upr_bnd_dims: exclude entries with dimensionality above this
     :return: table_dict, method    
@@ -133,9 +133,9 @@ def get_rankings(table_dict,score,methods):
     to it's performance on 'score'
 
     :param table_dict: a dictionary of results for methods & datasets 
-    provided by get_table_dict
+        provided by get_table_dict
     :param score: one of \{'ch','ss','db','di'\}. the score you wish to
-    obtain the ranking over 
+        obtain the ranking over 
     :param methods: methods for which you wish to obtain the ranking over
     """
     res_dict = dict()
@@ -162,7 +162,6 @@ def get_rankings(table_dict,score,methods):
 
 def plot_optimal_heatmap(metric, results_file, methods):
     """
-    
     :param metric: one of {'ch','ss','db','di'}
     :param results_file: file of cleaned csv output from print_all.py
     :param methods: methods which should be plotted
@@ -204,10 +203,10 @@ def get_concordance(table_dict,methods,score):
     a chi-square with n-1 d.o.f where n is the number of methods.
     
     :param table_dict: a dictionary of results for methods & datasets 
-    provided by get_table_dict
+        provided by get_table_dict
     :param methods: methods for which you wish to obtain the ranking over
-    :param score: one of \{'ch','ss','db','di'\}. the score you wish to
-    obtain the ranking over 
+    :param score: one of \{'ch','ss','db','di'\}. the score you wish to 
+        obtain the ranking over 
     :return: a tuple of (p.value,W)
     """
     n = len(methods)
@@ -227,7 +226,7 @@ def get_concordance(table_dict,methods,score):
     S = np.sum((rank_sums-(k*(n+1)/2))**2)
     W = (12*S)/(k**2*n*(n**2-1))
     Q = W*(n-1)*k
-    return chi2.cdf(Q,df=n-1),W
+    return (1-chi2.cdf(Q,df=n-1)),W
 
 if __name__ == '__main__':
     pass
