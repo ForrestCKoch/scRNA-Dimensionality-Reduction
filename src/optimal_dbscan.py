@@ -42,12 +42,14 @@ def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     :return: dictionary in form:
         {'clusters','epsilon','min_samples','vrc','ss','db','ari','nmi'}
     """
-    labels = DBSCAN(eps=eps,min_samples=min_samp,metric='precomputed').fit(pairwise).labels_
+    #labels = DBSCAN(eps=eps,min_samples=min_samp,metric='precomputed').fit(pairwise).labels_
+    labels = DBSCAN(eps=eps,min_samples=min_samp).fit(data).labels_
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
         vrc = calinski_harabaz_score(data,labels)
-        ss = silhouette_score(pairwise,labels,metric='precomputed')
+        #ss = silhouette_score(pairwise,labels,metric='precomputed')
+        ss = silhouette_score(data,labels)
         db = davies_bouldin_score(data,labels)
         di = dunn_index(data,labels,metric)
         ari = adjusted_rand_score(true_labels,labels)
@@ -92,7 +94,8 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                        'di':False,
                        'ari':False,
                        'nmi':False}
-    pairwise = pairwise_distances(data)
+    #pairwise = pairwise_distances(data)
+    pairwise = None
     for eps,ms in itertools.product(eps_choices,ms_choices):
         print((eps,ms))
         outcome = dbscan_trial(data,pairwise,true_labels,eps,ms)
