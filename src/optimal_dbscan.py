@@ -151,7 +151,7 @@ if __name__ == '__main__':
     ms_choices = list()
     e = 50
     while e > 1:
-        eps_choices.append(e)
+        ms_choices.append(e)
         e = int(e*0.9)
 
     for emb_file in os.listdir('data/embeddings/'+dset+'/'+method):
