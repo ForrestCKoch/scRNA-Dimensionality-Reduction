@@ -25,7 +25,7 @@ def warn(*args, **kwargs):
     """
     pass
 
-def dbscan_trial(data,true_labels,eps,min_samp,metric='euclidean'):
+def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     """
     Perfoms DBSCAN with the given parameters and returns:
         - number of clusters
@@ -42,15 +42,15 @@ def dbscan_trial(data,true_labels,eps,min_samp,metric='euclidean'):
     :return: dictionary in form:
         {'clusters','epsilon','min_samples','vrc','ss','db','ari','nmi'}
     """
-    labels = DBSCAN(eps=eps,min_samples=min_samp,metric=metric).fit(data).labels_
+    labels = DBSCAN(eps=eps,min_samples=min_samp,metric='precomputed').fit(pairwise).labels_
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
         try:
             vrc = calinski_harabaz_score(data,labels)
-            ss = silhouette_score(data,labels)
+            ss = silhouette_score(pairwise,labels,metric='precomputed')
             db = davies_bouldin_score(data,labels)
-            di = dunn_index(data,labels)
+            di = dunn_index(data,labels,metric)
             ari = adjusted_rand_score(true_labels,labels)
             nmi = normalized_mutual_info_score(true_labels,labels)
         except:
@@ -95,9 +95,9 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                        'di':False,
                        'ari':False,
                        'nmi':False}
-    pw_dist = pairwise_distances(data)
+    pairwise = pairwise_distances(data)
     for eps,ms in itertools.product(eps_choices,ms_choices):
-        outcome = dbscan_trial(pw_dist,true_labels,eps,ms,metric='precomputed')
+        outcome = dbscan_trial(data,pairwise,true_labels,eps,ms)
         if outcome['clusters'] < 2:
             continue
         for metric in optimal_results.keys():
