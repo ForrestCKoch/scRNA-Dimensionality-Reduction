@@ -97,6 +97,7 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                        'nmi':False}
     pairwise = pairwise_distances(data)
     for eps,ms in itertools.product(eps_choices,ms_choices):
+        print((eps,ms))
         outcome = dbscan_trial(data,pairwise,true_labels,eps,ms)
         if outcome['clusters'] < 2:
             continue
@@ -138,8 +139,20 @@ if __name__ == '__main__':
     # - true labels
     # - pickle file to load 
     first = True
-    eps_choices = list(np.arange(0.025,25,0.025))
-    ms_choices = list(range(2,25))
+    #eps_choices = list(np.arange(0.025,25,0.025))
+    eps_choices = list()
+    e = 50
+    while e > 0.001:
+        eps_choices.append(e)
+        e *= 0.9
+
+    #ms_choices = list(range(2,50))
+    ms_choices = list()
+    e = 50
+    while e > 1:
+        eps_choices.append(e)
+        e = int(e*0.9)
+
     for emb_file in os.listdir('data/embeddings/'+dset+'/'+method):
         full_path = 'data/embeddings/'+dset+'/'+method+'/'+emb_file
         emb = pickle.load(open(full_path,'rb'))
