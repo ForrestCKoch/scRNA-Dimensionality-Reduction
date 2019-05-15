@@ -15,3 +15,8 @@ svr2019.sumarize
 -----------------
 .. automodule:: svr2019.sumarize
     :members:
+
+svr2019.clustering
+-----------------
+.. automodule:: svr2019.clustering
+    :members:
