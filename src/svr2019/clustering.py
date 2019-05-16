@@ -22,7 +22,7 @@ from svr2019.datasets import *
 from svr2019.metrics import davies_bouldin_score
 from svr2019.metrics import dunn_index
 
-def dbscan_trial(data,true_labels,eps,min_samp):
+def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     """
     Perfoms DBSCAN with the given parameters and returns:
         - number of clusters
@@ -39,20 +39,18 @@ def dbscan_trial(data,true_labels,eps,min_samp):
     :return: dictionary in form:
         {'clusters','epsilon','min_samples','vrc','ss','db','ari','nmi'}
     """
-
+    #labels = DBSCAN(eps=eps,min_samples=min_samp,metric='precomputed').fit(pairwise).labels_
     labels = DBSCAN(eps=eps,min_samples=min_samp).fit(data).labels_
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
-        try:
-            vrc = calinski_harabaz_score(emb,labels)
-            ss = silhouette_score(emb,labels)
-            db = davies_bouldin_score(emb,labels)
-            di = dunn_index(emb,labels)
-            ari = adjusted_rand_score(true_labels,labels)
-            nmi = normalized_mutual_info_score(true_labels,labels)
-        except:
-            vrc,ss,db,di,ari,nmi = [np.nan]*6
+        vrc = calinski_harabaz_score(data,labels)
+        #ss = silhouette_score(pairwise,labels,metric='precomputed')
+        ss = silhouette_score(data,labels)
+        db = davies_bouldin_score(data,labels)
+        di = dunn_index(data,labels,metric)
+        ari = adjusted_rand_score(true_labels,labels)
+        nmi = normalized_mutual_info_score(true_labels,labels)
     else:
         vrc,ss,db,di,ari,nmi = [np.nan]*6
     return {'clusters':n_clusters,
@@ -93,8 +91,11 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
                        'di':False,
                        'ari':False,
                        'nmi':False}
+    #pairwise = pairwise_distances(data)
+    pairwise = None
     for eps,ms in itertools.product(eps_choices,ms_choices):
-        outcome = dbscan_trial(data,true_labels,eps,ms)
+        print((eps,ms))
+        outcome = dbscan_trial(data,pairwise,true_labels,eps,ms)
         if outcome['clusters'] < 2:
             continue
         for metric in optimal_results.keys():
@@ -111,8 +112,12 @@ def print_optimal_dbscans(ds,m,f,d,header=False):
     :param f: name of pickle file
     :param d: results dictionary
     """
+    if not d['vrc']:
+        return
     if header:
         print('dataset,method,file,opt_res,'+','.join(d['vrc'].keys()))
      
     for key in d.keys():
+        if not d[key]:
+            continue
         print(','.join([ds,m,f,key]+[str(d[key][x]) for x in d[key].keys()]))
