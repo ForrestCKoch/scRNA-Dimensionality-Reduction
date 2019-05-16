@@ -84,4 +84,4 @@ html_theme_options = {
 }
 
 #autodoc_mock_imports = ["torch","argparse","itertools","matplotlib","mpl","plt","matplotlib.pyplot","numpy","np","os","pandas","pd","pickle","ptsdae","ptsdae.model","seaborn","sns","sys","torch","torch.optim","torch.utils.data","umap",'h5py','sharedmem','sm','tqdm','sklearn.decomposition','PCA']
-autodoc_mock_imports = ["torch",'ptsdae','ptsdae.model']
+autodoc_mock_imports = ["torch",'ptsdae','ptsdae.model','sharedmem','sm']
