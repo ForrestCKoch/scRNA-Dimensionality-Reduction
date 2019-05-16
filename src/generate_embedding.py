@@ -38,11 +38,23 @@ class ZIFA_Wrapper():
         return embedding
 
 def get_embedding(model,data):
+    """
+    Wrapper function around the `fit_transform` function
+    
+    :param model: the model object to be used for dimension reduciton
+    :param data: the data which the model should be fit to
+    :return: The data is returned as a matrix of 32 bit floats
+    """
     print('Generating Embedding ...')
     embedding = model.fit_transform(data)
     return embedding.astype(np.float32)
 
 def get_parser():
+    """
+    Build `ArgumentParser` for commandline argument interpretation
+
+    :return: `ArgumentParser` object
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--method",
@@ -102,6 +114,13 @@ def get_parser():
     return parser
 
 def get_model(args):
+    """
+    Get the base model class for the dimension reduction
+    requested in the arguments
+
+    :param args: output of ArgumentParser().parse_args()
+    :return: model to be used for dimension reduction
+    """
     if args.method == 'umap':
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
@@ -136,6 +155,13 @@ def get_model(args):
     return model
 
 def write_results(model,embedded,args):
+    """
+    Write the embedding and model to a pickled file
+
+    :param model: the model used to generate `embedded`
+    :param embedded: the low dimensional embedding of the data
+    :param args: the output of `ArgumentParser.parse_args` from `get_parser`
+    """
     # make our directories if we have to
     embed_dir = os.path.join('data','embeddings',args.dataset,args.method)
     model_dir = os.path.join('data','model',args.dataset,args.method)
@@ -155,6 +181,11 @@ def write_results(model,embedded,args):
         pickle.dump(model,fh,protocol=4)
 
 def get_data(args):
+    """
+    Get the dataset requested by the commandline arguments
+
+    :param args: the result of `parse_args` from the `ArgumentParser` returned by `get_parser`
+    """
     if args.npoints == -1:
         selection = None
     else:   
