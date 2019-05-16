@@ -43,14 +43,17 @@ def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     labels = DBSCAN(eps=eps,min_samples=min_samp).fit(data).labels_
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
-        # TODO: add Davies Bouldin and Dunn Index
-        vrc = calinski_harabaz_score(data,labels)
-        #ss = silhouette_score(pairwise,labels,metric='precomputed')
-        ss = silhouette_score(data,labels)
-        db = davies_bouldin_score(data,labels)
-        di = dunn_index(data,labels,metric)
-        ari = adjusted_rand_score(true_labels,labels)
-        nmi = normalized_mutual_info_score(true_labels,labels)
+        try:
+            vrc = calinski_harabaz_score(data,labels)
+            #ss = silhouette_score(pairwise,labels,metric='precomputed')
+            ss = silhouette_score(data,labels)
+            db = davies_bouldin_score(data,labels)
+            di = dunn_index(data,labels,metric)
+            ari = adjusted_rand_score(true_labels,labels)
+            nmi = normalized_mutual_info_score(true_labels,labels)
+        except Exception as exc:
+            print(exc,file=sys.stderr)
+            vrc,ss,db,di,ari,nmi = [np.nan]*6
     else:
         vrc,ss,db,di,ari,nmi = [np.nan]*6
     return {'clusters':n_clusters,
@@ -80,7 +83,7 @@ def dbscan_optimization(data,true_labels,eps_choices,ms_choices):
     def isBetter(x,y,m):
         if not y[m]:
             return True
-        if m == 'di': # special case for dunn index
+        if m == 'db': # special case for davies bouldin
             return x[m]<y[m][m]
         else:
             return x[m]>y[m][m]
