@@ -5,7 +5,6 @@ sklearn
 scipy
 tqdm
 seaborn
-torch
 pandas
 sphinx
 sphinx_rtd_theme
