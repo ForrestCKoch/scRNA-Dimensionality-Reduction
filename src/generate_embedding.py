@@ -19,6 +19,7 @@ from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding,\
                              SpectralEmbedding, MDS
 from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
                                   LatentDirichletAllocation, NMF
+from sklearn.preprocessing import scale
 
 import umap
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
@@ -37,6 +38,17 @@ class ZIFA_Wrapper():
         self.model = model
         return embedding
 
+class ScaledPCA():
+
+    def __init__(self,k):
+        self.k = k
+
+    def fit_transform(self,data):
+        model = PCA(n_components=args.dims)
+        self.model = model
+        embedding = self.model.fit_transform(scale(data))
+        return embedding
+
 def get_embedding(model,data):
     print('Generating Embedding ...')
     embedding = model.fit_transform(data)
@@ -46,12 +58,12 @@ def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--method",
-        choices = ["umap","pca","tsne",
+        choices = ["umap","pca","pca-scaled","tsne",
                    "mctsne", "isomap", "lle",
                    "nmf","lda","zifa",
                    "spectral", "mds",
                    "fa","fica"],
-        default = 'pca',
+        default = 'pca-scaled',
         help="method for dimension reduction"
     )
 
@@ -106,6 +118,8 @@ def get_model(args):
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
+    elif args.method == 'pca-scaled':
+        model = ScaledPCA(n_components=args.dims)
     elif args.method == 'rpca':
         model = RandomizedPCA(n_components=args.dims)
     elif args.method == 'tsne':
