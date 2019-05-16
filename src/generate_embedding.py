@@ -138,7 +138,7 @@ def get_model(args):
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
     elif args.method == 'pca-scaled':
-        model = ScaledPCA(n_components=args.dims)
+        model = ScaledPCA(args.dims)
     elif args.method == 'rpca':
         model = RandomizedPCA(n_components=args.dims)
     elif args.method == 'tsne':
