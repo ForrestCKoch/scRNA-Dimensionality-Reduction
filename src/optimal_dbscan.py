@@ -47,13 +47,17 @@ def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     if n_clusters > 1:
         # TODO: add Davies Bouldin and Dunn Index
-        vrc = calinski_harabaz_score(data,labels)
-        #ss = silhouette_score(pairwise,labels,metric='precomputed')
-        ss = silhouette_score(data,labels)
-        db = davies_bouldin_score(data,labels)
-        di = dunn_index(data,labels,metric)
-        ari = adjusted_rand_score(true_labels,labels)
-        nmi = normalized_mutual_info_score(true_labels,labels)
+        try:
+            vrc = calinski_harabaz_score(data,labels)
+            #ss = silhouette_score(pairwise,labels,metric='precomputed')
+            ss = silhouette_score(data,labels)
+            db = davies_bouldin_score(data,labels)
+            di = dunn_index(data,labels)
+            ari = adjusted_rand_score(true_labels,labels)
+            nmi = normalized_mutual_info_score(true_labels,labels)
+        except Exception as exc:
+            print(exc,file=sys.stderr)
+            vrc,ss,db,di,ari,nmi = [np.nan]*6
     else:
         vrc,ss,db,di,ari,nmi = [np.nan]*6
     return {'clusters':n_clusters,
