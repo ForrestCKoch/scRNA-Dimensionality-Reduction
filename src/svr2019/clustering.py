@@ -48,7 +48,7 @@ def dbscan_trial(data,pairwise,true_labels,eps,min_samp):
             #ss = silhouette_score(pairwise,labels,metric='precomputed')
             ss = silhouette_score(data,labels)
             db = davies_bouldin_score(data,labels)
-            di = dunn_index(data,labels,metric)
+            di = dunn_index(data,labels)
             ari = adjusted_rand_score(true_labels,labels)
             nmi = normalized_mutual_info_score(true_labels,labels)
         except Exception as exc:
