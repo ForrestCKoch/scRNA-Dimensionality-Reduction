@@ -1,0 +1,11 @@
+matplotlib
+umap-learn
+numpy
+sklearn
+scipy
+tqdm
+seaborn
+pandas
+sphinx
+sphinx_rtd_theme
+h5py

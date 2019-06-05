@@ -36,14 +36,12 @@ def davies_bouldin_score(X, labels):
 
     return np.mean(scores)
 
-def dunn_index(X, labels, metric = 'euclidean'):
+def dunn_index(X, labels):
     """
     Calculate the Dunn Index for the provided clustering
 
     :param points: a numpy array of data points
     :param labels: a numpy array of labels for each point
-    :param metric: metric to be used for distance measures
-        valid values are from scipy.spatial.distance
     """
 
     n_labels = max(labels)+1

@@ -76,9 +76,13 @@ html_theme_options = {
     'vcs_pageview_mode': 'blob', 
     'style_nav_header_background': 'white',
     # Toc options
-    'collapse_navigation': True,
+    'collapse_navigation': False,
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False
 }
+
+#autodoc_mock_imports = ["torch","argparse","itertools","matplotlib","mpl","plt","matplotlib.pyplot","numpy","np","os","pandas","pd","pickle","ptsdae","ptsdae.model","seaborn","sns","sys","torch","torch.optim","torch.utils.data","umap",'h5py','sharedmem','sm','tqdm','sklearn.decomposition','PCA']
+autodoc_mock_imports = ["torch",'ptsdae','ptsdae.model','sharedmem','sm']
+master_doc = 'index'

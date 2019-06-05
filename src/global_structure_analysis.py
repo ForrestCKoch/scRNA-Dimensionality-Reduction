@@ -107,9 +107,7 @@ if __name__ == '__main__':
             if first_row:
                 plt.title(method)
 
-        
-    #        scor = np.mean([spearmanr(pw_emb[i],pw_raw[i]).correlation for i in range(0,len(pw_emb))])
-            scor = 3.143452345
+            scor = np.mean([spearmanr(pw_emb[j],pw_raw[j]).correlation for j in range(0,len(pw_emb))])
             plt.text(xl,.95*yh,' r = {:.2f}'.format(scor),fontsize=8)
             #print('\t'+method+' : '+str(scor))
             print('\t'+method)
@@ -118,14 +116,12 @@ if __name__ == '__main__':
         plt.subplot(n_data,n_meth+1,count)
         count += 1
         r = np.random.randn(100,100).flatten()
-        hist = plt.hist(trim_data(r),bins='scott',color=[0,1,0])
+        hist = plt.hist(trim_data(pw_raw.flatten()),bins='scott',color=[0,1,0])
         plt.xticks(ticks=[],labels=[])
         plt.yticks(ticks=[],labels=[])
         if first_row:
             plt.title('Original')
-
-
         first_row = False
             
-    #plt.savefig('test.pdf') 
-    plt.show(block=True)
+    plt.savefig('test.pdf') 
+    #plt.show(block=True)

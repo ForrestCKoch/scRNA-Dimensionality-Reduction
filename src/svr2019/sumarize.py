@@ -11,6 +11,8 @@ from svr2019.datasets import *
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from scipy.stats import chi2
+
 def internal_summary(points, labels):
     """
     Generate a summary of internal validation measures.
@@ -69,14 +71,15 @@ def print_summaries(path_list):
 
 def get_table_dict(results_file,lwr_bnd_dims=2,upr_bnd_dims=90):
     """
-    :param results_file: path to results file. Should be a csv in the format
-    dataset,method,dimensions,log,vrc,db,di,ss
-    however, do not include both log = True/False for the same entry
-    : param lwr_bnd_dims: exclude entries with dimensionality below this
-    : param upr_bnd_dims: exclude entries with dimensionality above this
-    
     Note that due to upr/lwr bounds, 'full' datasets will likely be excluded.
     To work around this format the dimension like '22k' 
+
+    :param results_file: path to results file. Should be a csv in the format
+        dataset,method,dimensions,log,vrc,db,di,ss
+        however, do not include both log = True/False for the same entry
+    :param lwr_bnd_dims: exclude entries with dimensionality below this
+    :param upr_bnd_dims: exclude entries with dimensionality above this
+    :return: table_dict, method    
     """
     table_dict = dict()
     # organize results into a dictionary
@@ -130,9 +133,9 @@ def get_rankings(table_dict,score,methods):
     to it's performance on 'score'
 
     :param table_dict: a dictionary of results for methods & datasets 
-    provided by get_table_dict
+        provided by get_table_dict
     :param score: one of \{'ch','ss','db','di'\}. the score you wish to
-    obtain the ranking over 
+        obtain the ranking over 
     :param methods: methods for which you wish to obtain the ranking over
     """
     res_dict = dict()
@@ -159,7 +162,6 @@ def get_rankings(table_dict,score,methods):
 
 def plot_optimal_heatmap(metric, results_file, methods):
     """
-    
     :param metric: one of {'ch','ss','db','di'}
     :param results_file: file of cleaned csv output from print_all.py
     :param methods: methods which should be plotted
@@ -192,6 +194,39 @@ def plot_embedding(pickled_file,xd=0,yd=1):
     x = pickle.load(open(pickled_file,'rb'))
     plt.scatter(x=x[:,xd],y=x[:,yd],s=0.5)
     plt.show()
+
+def get_concordance(table_dict,methods,score):
+    """
+    Calculates the concordance of ranking by 'score' across
+    each of the datasets in 'table_dict'.  The statistic
+    calculated is Kendall's W which asymptotically follows
+    a chi-square with n-1 d.o.f where n is the number of methods.
+    
+    :param table_dict: a dictionary of results for methods & datasets 
+        provided by get_table_dict
+    :param methods: methods for which you wish to obtain the ranking over
+    :param score: one of \{'ch','ss','db','di'\}. the score you wish to 
+        obtain the ranking over 
+    :return: a tuple of (p.value,W)
+    """
+    n = len(methods)
+    ranks = get_rankings(table_dict,score,methods)
+    k = len(ranks.keys())
+
+    rank_sums = list()
+    for m in methods:
+        s = 0
+        for d in table_dict.keys():
+            idx = [ranks[d][x][2] == m for x in range(0,n)].index(True)
+            s += ranks[d][idx][-1]
+        rank_sums.append(s)
+    
+    rank_sums = np.array(rank_sums)
+    
+    S = np.sum((rank_sums-(k*(n+1)/2))**2)
+    W = (12*S)/(k**2*n*(n**2-1))
+    Q = W*(n-1)*k
+    return (1-chi2.cdf(Q,df=n-1)),W
 
 if __name__ == '__main__':
     pass
