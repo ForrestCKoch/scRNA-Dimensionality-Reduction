@@ -64,6 +64,7 @@ class ScaledPCA():
         embedding = self.model.fit_transform(scale(data))
         return embedding
 
+<<<<<<< HEAD
 class ScScope():
     """
     Wrapper class for the scscope package
@@ -92,6 +93,9 @@ class ScScope():
         return embedding
 
 def get_embedding(model,data):
+=======
+def get_embedding(model,data,to_scale=False):
+>>>>>>> 2ea6b5124027e2a8bd832783fd5df09fa847739a
     """
     Wrapper function around the `fit_transform` function
     
@@ -100,7 +104,11 @@ def get_embedding(model,data):
     :return: The data is returned as a matrix of 32 bit floats
     """
     print('Generating Embedding ...')
-    embedding = model.fit_transform(data)
+    if to_scale:
+        embedding = model.fit_transform(scale(data))
+    else:
+        embedding = model.fit_transform(data)
+
     return embedding.astype(np.float32)
 
 def get_parser():
@@ -163,6 +171,12 @@ def get_parser():
         "--log",
         action='store_true',
         help="whether to apply log transform"
+    )
+
+    parser.add_argument(
+        "--scale",
+        action='store_true',
+        help="whether to scale data"
     )
     
     return parser
@@ -230,7 +244,8 @@ def write_results(model,embedded,args):
 
     print('saving embedding')
     log_flag = str(args.log1p or args.log)
-    filename  = str(args.dims)+'-log-'+log_flag+'.pickle'
+    scale_flag = str(args.scale)
+    filename  = str(args.dims)+'-scale-'+scale_flag+'-log-'+log_flag+'.pickle'
 
     with open(os.path.join(embed_dir,filename),'wb') as fh:
         pickle.dump(embedded,fh,protocol=4)
@@ -275,5 +290,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data = get_data(args)
     model = get_model(args)
-    embedded = get_embedding(model,data)
+    embedded = get_embedding(model,data,to_scale=args.scale)
     write_results(model,embedded,args)
