@@ -64,7 +64,6 @@ class ScaledPCA():
         embedding = self.model.fit_transform(scale(data))
         return embedding
 
-<<<<<<< HEAD
 class ScScope():
     """
     Wrapper class for the scscope package
@@ -92,10 +91,7 @@ class ScScope():
         embedding,_,_ = scscope.predict(data,self.model,batch_effect=[])
         return embedding
 
-def get_embedding(model,data):
-=======
 def get_embedding(model,data,to_scale=False):
->>>>>>> 2ea6b5124027e2a8bd832783fd5df09fa847739a
     """
     Wrapper function around the `fit_transform` function
     
