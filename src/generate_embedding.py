@@ -21,10 +21,27 @@ from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
                                   LatentDirichletAllocation, NMF
 from sklearn.preprocessing import scale
 
-import umap
+import time
+
+try:
+    import umap
+    UMAP_AVAILABLE=True
+except ImportError:
+    UMAP_AVAILABLE=False
+    
 from MulticoreTSNE import MulticoreTSNE as MCTSNE
 
-#from ZIFA import ZIFA
+try:
+    import scscope
+    SCSCOPE_AVAILABLE=True
+except ImportError:
+    SCSCOPE_AVAILABLE=False
+
+try:
+    from ZIFA import ZIFA
+    ZIFA_AVAILABLE=True
+except ImportError:
+    ZIFA_AVAILABLE=False
 
 import argparse
 
@@ -49,7 +66,34 @@ class ScaledPCA():
         embedding = self.model.fit_transform(scale(data))
         return embedding
 
-def get_embedding(model,data):
+class ScScope():
+    """
+    Wrapper class for the scscope package
+    """
+
+    def __init__(self,k):
+        self.k = k
+
+    def fit_transform(self,data):
+        self.model = scscope.train(
+                        data,
+                        self.k,
+                        use_mask=True,
+                        batch_size=64,
+                        max_epoch=200,
+                        epoch_per_check=10,
+                        T=2,
+                        exp_batch_idx_input=[],
+                        encoder_layers=[1000,500,200,500],
+                        decoder_layers=[200,500,1000],
+                        learning_rate=0.0001,
+                        beta1=0.05,
+                        num_gpus=1)
+
+        embedding,_,_ = scscope.predict(data,self.model,batch_effect=[])
+        return embedding
+
+def get_embedding(model,data,to_scale=False):
     """
     Wrapper function around the `fit_transform` function
     
@@ -58,7 +102,11 @@ def get_embedding(model,data):
     :return: The data is returned as a matrix of 32 bit floats
     """
     print('Generating Embedding ...')
-    embedding = model.fit_transform(data)
+    if to_scale:
+        embedding = model.fit_transform(scale(data))
+    else:
+        embedding = model.fit_transform(data)
+
     return embedding.astype(np.float32)
 
 def get_parser():
@@ -74,7 +122,7 @@ def get_parser():
                    "mctsne", "isomap", "lle",
                    "nmf","lda","zifa",
                    "spectral", "mds",
-                   "fa","fica"],
+                   "fa","fica","scscope"],
         default = 'pca-scaled',
         help="method for dimension reduction"
     )
@@ -122,6 +170,12 @@ def get_parser():
         action='store_true',
         help="whether to apply log transform"
     )
+
+    parser.add_argument(
+        "--scale",
+        action='store_true',
+        help="whether to scale data"
+    )
     
     return parser
 
@@ -133,7 +187,7 @@ def get_model(args):
     :param args: output of ArgumentParser().parse_args()
     :return: model to be used for dimension reduction
     """
-    if args.method == 'umap':
+    if args.method == 'umap' and UMAP_AVAILABLE:
         model = umap.UMAP(n_components=args.dims)
     elif args.method == 'pca':
         model = PCA(n_components=args.dims)
@@ -157,12 +211,14 @@ def get_model(args):
         model = FactorAnalysis(n_components=args.dims)
     elif args.method == 'fica':
         model = FastICA(n_components=args.dims)
-    elif args.method == 'zifa':
+    elif args.method == 'zifa' and ZIFA_AVAILABLE:
         model = ZIFA_Wrapper(args.dims)
     elif args.method == 'lda':
         model = LatentDirichletAllocation(args.dims)
     elif args.method == 'nmf':
         model = NMF(args.dims)
+    elif args.method == 'scscope' and SCSCOPE_AVAILABLE:
+        model = ScScope(args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
         exit()
@@ -186,13 +242,11 @@ def write_results(model,embedded,args):
 
     print('saving embedding')
     log_flag = str(args.log1p or args.log)
-    filename  = str(args.dims)+'-log-'+log_flag+'.pickle'
+    scale_flag = str(args.scale)
+    filename  = str(args.dims)+'-scale-'+scale_flag+'-log-'+log_flag+'.pickle'
 
     with open(os.path.join(embed_dir,filename),'wb') as fh:
         pickle.dump(embedded,fh,protocol=4)
-
-    with open(os.path.join(model_dir,filename),'wb') as fh:
-        pickle.dump(model,fh,protocol=4)
 
 def get_data(args):
     """
@@ -234,5 +288,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data = get_data(args)
     model = get_model(args)
-    embedded = get_embedding(model,data)
+    start = time.time()
+    embedded = get_embedding(model,data,to_scale=args.scale)
+    end = time.time()
+    print("Completed empedding in {} seconds".format(end-start))
     write_results(model,embedded,args)

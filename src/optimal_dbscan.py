@@ -60,6 +60,8 @@ if __name__ == '__main__':
     for emb_file in os.listdir('data/embeddings/'+dset+'/'+method):
         full_path = 'data/embeddings/'+dset+'/'+method+'/'+emb_file
         emb = pickle.load(open(full_path,'rb'))
+        if len(emb[0]) > 100:
+            continue
         result = dbscan_optimization(emb,true_labels,eps_choices,ms_choices)
         print_optimal_dbscans(dset,method,emb_file,result,header=first)
         first = False
