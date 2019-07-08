@@ -1,0 +1,7 @@
+dataset,fa,fica,isomap,lda,lle,mctsne,nmf,pca,pca-scaled,sdae,umap
+baron-human,15,50,8,2,2,8,1000,2,NA,3,300
+campbell,8,5,2,2,3,5,5,2,NA,2,15
+chen,3,10,2,3,2,10,3,2,NA,NA,NA
+macosko,4,NA,NA,2,NA,100,NA,NA,NA,2,NA
+marques,25,25,NA,2,NA,80,NA,2,2,25,3
+shekhar,5,15,NA,2,NA,100,NA,2,2,3,70
