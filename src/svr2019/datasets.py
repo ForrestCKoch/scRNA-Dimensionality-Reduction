@@ -203,6 +203,7 @@ class E18MouseData(Dataset):
         if not silent: print("\t"+str(end-start)+"s ...")
 
         hdf5.close()
+        del ds
 
         ###########################
         # Create empty cell vectors
