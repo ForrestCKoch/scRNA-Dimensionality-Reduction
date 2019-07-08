@@ -21,6 +21,8 @@ from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
                                   LatentDirichletAllocation, NMF
 from sklearn.preprocessing import scale
 
+import time
+
 try:
     import umap
     UMAP_AVAILABLE=True
@@ -286,5 +288,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data = get_data(args)
     model = get_model(args)
+    start = time.time()
     embedded = get_embedding(model,data,to_scale=args.scale)
+    end = time.time()
+    print("Completed empedding in {} seconds".format(end-start))
     write_results(model,embedded,args)
