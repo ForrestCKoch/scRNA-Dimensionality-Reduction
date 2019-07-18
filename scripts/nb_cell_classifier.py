@@ -47,6 +47,19 @@ def get_gene_indicies(h5file,targets):
     for i in range(0,len(gene_names)):
         if gene_names[i] in targets:
             index_list.append(i)
+
+def get_cell_expr(n,h5file,index_set,thr):
+    start_idx = h5['mm10']['indptr'][n]
+    end_idx = h5['mm10']['indptr'][n+1] - 1 if n+1 < len(h5['mm10']['indptr']) \
+            else len(h5['mm10']['indptr'])
+
+    expr_genes = list()
+    for i in range(start_idx,end_idx+1):
+        idx = h5['mm10']['indices'][i]
+        if idx in index_set:
+            if h5['mm10']['data'][i] > thr:
+                expr_genes.append(h5['mm10']['gene_names'][i].decode().lower()) 
+    return expr_genes
     
 
 if __name__ == '__main__':
