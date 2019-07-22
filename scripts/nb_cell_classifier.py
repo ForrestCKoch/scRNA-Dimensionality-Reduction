@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+import h5py
 import sys
+from tqdm import tqdm
 
 def get_marker_matrix(filename):
     """
@@ -37,18 +39,61 @@ def get_marker_matrix(filename):
     return pd.DataFrame(marker_matrix,index=cell_set,columns=gene_set)
 
 def get_conditionals(df,marker_weight):
+    """
+    return the class conditional probabilities of each gene
+    :param df: pandas.DataFrame object with genes in columns and classes in rows
+    :param marker_weight: multiplicative weighting factor for observed markers.
+    each entry in the table will have 1 added to it to avoid 0 probability 
+    conditionals.
+    """
     adj_df = (df*marker_weight)+1
     row_sums = adj_df.apply(np.sum,axis=1)
-    return adj_df.apply(lambda x:np.divide(x,row_sums),axis=0)
+    return adj_df.apply(lambda x:np.divide(x,row_sums),axis=0).astype(np.float128)
 
-def get_gene_indicies(h5file,targets):
+def get_likelihood(cell_expr,class_conditionals):
+    pos = class_conditionals[cell_expr]
+    neg = class_conditionals.drop(columns=cell_expr)
+    """
+    print(pos.apply(np.prod,axis=1))
+    print(neg.apply(np.prod,axis=1))
+    likelihood = pos.apply(np.prod,axis=1)*((1-neg).apply(np.prod,axis=1))
+    """
+    pos = pos.apply(np.log,axis=0).apply(np.sum,axis=1)
+    neg = (1-neg).apply(np.log,axis=0).apply(np.sum,axis=1)
+    tot = (pos+neg).astype(np.float128)
+
+    denom = np.log(np.sum(tot.apply(np.exp))).astype(np.float128)
+    #print(tot)
+    #print(tot-denom)
+    likelihood = (tot-denom).apply(np.exp)
+    #print(np.sum(likelihood))
+    #print(likelihood)
+     
+    return likelihood
+    
+
+def get_gene_indicies(h5file,target_set):
+    """
+    return the gene indices corresponding to the requested set of genes
+    :param h5file: h5py.File object containing the E18 Mouse data
+    :param target_set: set of genes which we are interested in
+    """
     gene_names = list(h5file['mm10']['gene_names'])
     index_list = list()
     for i in range(0,len(gene_names)):
-        if gene_names[i] in targets:
-            index_list.append(i)
+        gene = gene_names[i].decode().lower()
+        if gene in target_set:
+            index_list.append((i,gene))
+    return index_list
 
 def get_cell_expr(n,h5file,index_set,thr):
+    """
+    return a set of expressed genes in the n^th sample
+    :param n: cell id we are interested in
+    :param h5file: h5py.File object containing the E18 Mouse data
+    :param index_set: set of gene indices we are interested in
+    :param thr: threshold above which we will consider gene expression
+    """
     start_idx = h5['mm10']['indptr'][n]
     end_idx = h5['mm10']['indptr'][n+1] - 1 if n+1 < len(h5['mm10']['indptr']) \
             else len(h5['mm10']['indptr'])
@@ -58,9 +103,44 @@ def get_cell_expr(n,h5file,index_set,thr):
         idx = h5['mm10']['indices'][i]
         if idx in index_set:
             if h5['mm10']['data'][i] > thr:
-                expr_genes.append(h5['mm10']['gene_names'][i].decode().lower()) 
+                expr_genes.append(h5['mm10']['gene_names'][idx].decode().lower()) 
     return expr_genes
     
 
 if __name__ == '__main__':
-    filename =  sys.argv[1]
+    # get our h5file
+    h5file =  sys.argv[1]
+    marker_file = sys.argv[2]
+    h5 = h5py.File(h5file,'r')
+
+    # load the full marker csv into a matrix
+    markers = get_marker_matrix(marker_file)
+    # our targets are the columns of markers
+    target_set = set(markers.keys())
+    # obtain a list of idx,name pairs in the h5py file
+    # that match what we have in the target set
+    gene_idx = get_gene_indicies(h5,target_set)
+
+    # obtain a list of genes available to be used as a marker
+    available_genes = [x[1] for x in gene_idx]
+    gene_set = set(available_genes)
+    index_set = set([x[0] for x in gene_idx])
+    # reduce the marker matrix to only contain available genes
+    available_markers = markers[available_genes]
+
+    # sanity checking
+    """
+    print(len(gene_idx))
+    print(len(target_set))
+    print(len(available_markers.keys()))
+    """
+    
+    # generate the class conditionals for our marker genes
+    class_conditionals = get_conditionals(available_markers,8)
+    with open(sys.argv[3],'w') as fh:
+        for i in tqdm(range(0,len(h5['mm10']['indptr']))):
+            expr = get_cell_expr(i,h5,index_set,2)
+            likelihood = get_likelihood(expr,class_conditionals)
+            cell_guess = likelihood.idxmax()
+            print('{0:36} : {1}'.format(cell_guess,likelihood[cell_guess]),file=fh)
+    
