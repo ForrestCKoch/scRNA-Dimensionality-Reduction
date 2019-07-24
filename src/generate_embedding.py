@@ -77,15 +77,15 @@ class ScScope():
                         data,
                         self.k,
                         use_mask=True,
-                        batch_size=64,
-                        max_epoch=200,
+                        batch_size=128,
+                        max_epoch=500,
                         epoch_per_check=10,
                         T=2,
                         exp_batch_idx_input=[],
                         encoder_layers=[1000,500,200,500],
                         decoder_layers=[200,500,1000],
-                        learning_rate=0.0001,
-                        beta1=0.05,
+                        learning_rate=0.001,
+                        beta1=0.5,
                         num_gpus=1)
 
         embedding,_,_ = scscope.predict(data,self.model,batch_effect=[])
