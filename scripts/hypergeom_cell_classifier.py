@@ -32,14 +32,19 @@ if __name__ == '__main__':
             )
             
             M = n_genes
-            n = len(cell_type_genes)
-            N = len(cell_expr)
+            M = ngenes 
+            n = len(cell_type_genes)+1
+            N = len(cell_expr)+1
             k = len(set.intersection(cell_type_genes,cell_expr))
 
-            p_value = hypergeom.cdf(k,M,n,N)
+            p_value = 1-hypergeom.cdf(k,M,n,N)
 
             if p_value < min_p_value:
                 min_p_value = p_value
                 min_cell_type = cell_type
+                min_n = n
+                min_N = N
+                min_k = k
         print('{},{},{}'.format(str(i),min_cell_type,str(min_p_value)))
+        print('{},{},{}'.format(min_n,min_N,min_k))
 
