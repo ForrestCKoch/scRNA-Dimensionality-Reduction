@@ -48,21 +48,28 @@ def get_conditionals(df,marker_weight):
     """
     adj_df = (df*marker_weight)+1
     row_sums = adj_df.apply(np.sum,axis=1)
-    return adj_df.apply(lambda x:np.divide(x,row_sums),axis=0).astype(np.float128)
+    return adj_df.apply(lambda x:np.divide(x,row_sums),axis=0).astype(np.longdouble)
 
 def get_likelihood(cell_expr,class_conditionals):
-    pos = class_conditionals[cell_expr]
-    neg = class_conditionals.drop(columns=cell_expr)
+    pos = class_conditionals[cell_expr].astype(np.longdouble)
+    neg = (1 - class_conditionals.drop(columns=cell_expr)).astype(np.longdouble)
     """
     print(pos.apply(np.prod,axis=1))
     print(neg.apply(np.prod,axis=1))
     likelihood = pos.apply(np.prod,axis=1)*((1-neg).apply(np.prod,axis=1))
     """
-    pos = pos.apply(np.log,axis=0).apply(np.sum,axis=1)
-    neg = (1-neg).apply(np.log,axis=0).apply(np.sum,axis=1)
-    tot = (pos+neg).astype(np.float128)
+    log_pos = pos.apply(np.log,axis=0).astype(np.longdouble)
+    sum_log_pos = log_pos.apply(np.sum,axis=1).astype(np.longdouble)
+    
+    log_neg = neg.apply(np.log,axis=0).astype(np.longdouble)
+    sum_log_neg =log_neg.apply(np.sum,axis=1).astype(np.longdouble)
 
-    denom = np.log(np.sum(tot.apply(np.exp))).astype(np.float128)
+    tot = (sum_log_pos+sum_log_neg).astype(np.longdouble)
+
+    exp_tot = tot.apply(np.exp).astype(np.longdouble)
+    sum_tot = np.sum(exp_tot).astype(np.longdouble)
+    log_tot = np.log(sum_tot).astype(np.longdouble)
+    denom = log_tot
     #print(tot)
     #print(tot-denom)
     likelihood = (tot-denom).apply(np.exp)
@@ -86,11 +93,11 @@ def get_gene_indicies(h5file,target_set):
             index_list.append((i,gene))
     return index_list
 
-def get_cell_expr(n,h5file,index_set,thr):
+def get_cell_expr(n,h5,index_set,thr):
     """
     return a set of expressed genes in the n^th sample
     :param n: cell id we are interested in
-    :param h5file: h5py.File object containing the E18 Mouse data
+    :param h5: h5py.File object containing the E18 Mouse data
     :param index_set: set of gene indices we are interested in
     :param thr: threshold above which we will consider gene expression
     """
@@ -140,7 +147,10 @@ if __name__ == '__main__':
     with open(sys.argv[3],'w') as fh:
         for i in tqdm(range(0,len(h5['mm10']['indptr']))):
             expr = get_cell_expr(i,h5,index_set,2)
-            likelihood = get_likelihood(expr,class_conditionals)
-            cell_guess = likelihood.idxmax()
-            print('{0:36} : {1}'.format(cell_guess,likelihood[cell_guess]),file=fh)
+            if len(expr) > 0:
+                likelihood = get_likelihood(expr,class_conditionals)
+                cell_guess = likelihood.idxmax()
+                print('{0:36} : {1}'.format(cell_guess,likelihood[cell_guess]),file=fh)
+            else:
+                print('No Expression!',file=fh)
     
