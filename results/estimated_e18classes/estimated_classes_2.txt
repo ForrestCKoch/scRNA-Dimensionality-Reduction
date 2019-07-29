@@ -1,0 +1,634 @@
+neuron                               : 0.8288086999454664
+neuroblast                           : 0.4359095321081214
+type ii spiral ganglion neuron       : 0.5838539368663157
+type ii spiral ganglion neuron       : 0.8518459399250715
+neuron                               : 0.970112088836766
+neuron                               : 0.9999210766969999
+neuron                               : 0.43564831368534657
+neuron                               : 0.9824016673957353
+neuron                               : 0.8857688006783961
+neuron                               : 0.717164617044882
+neuron                               : 0.9996366065846968
+type ii spiral ganglion neuron       : 0.2293700525712094
+neuron                               : 0.7626402293209086
+late activated neural stem cell      : 0.7991512063222577
+neuron                               : 0.4411267313486424
+neuron                               : 0.9997518366768737
+neuron                               : 0.761973609426881
+neuron                               : 0.9727264473392585
+neuron                               : 0.9995709255140268
+neuron                               : 0.45042698982583673
+neuron                               : 0.9861970037775405
+neuron                               : 0.9995470029422859
+neuron                               : 0.9943137350401302
+neuron                               : 0.847699854390968
+neuron                               : 0.9566279943249569
+neuron                               : 0.8738149757009496
+neuron                               : 0.4279056914877055
+neuron                               : 0.5775996222997055
+neuroblast                           : 0.5719594337735394
+neuron                               : 0.998301706208057
+neuron                               : 0.7384477935547462
+neuron                               : 0.2569829132954516
+neuron                               : 0.9999981308655468
+neuron                               : 0.9613863059070594
+neuron                               : 0.8910428219602178
+neuron                               : 0.4508353635655286
+quiescent neural stem cell           : 0.37923118578492443
+neuron                               : 0.9441534127632801
+neuron                               : 0.725972911733805
+neuron                               : 0.8910272115012923
+neuron                               : 0.49773195488633426
+neuron                               : 0.7793981154416142
+endothelial cell                     : 0.9999999999999998
+neuron                               : 0.6839700152008831
+neuron                               : 0.9560097958627087
+olfactory ensheathing glia           : 0.1166354160209329
+neuron                               : 0.6739961449385167
+neuron                               : 0.9628014468612032
+neuroblast                           : 0.28587953265972155
+neuron                               : 0.37982347334366123
+neuron                               : 0.9441673193118727
+type ii spiral ganglion neuron       : 0.6402610644914364
+neuron                               : 0.9998726986056332
+neuron                               : 0.8693844307105916
+neuron                               : 0.7302823083590742
+neuroblast                           : 0.9571961682862803
+neuron                               : 0.3921386505507514
+neuron                               : 0.5210851092038273
+neuron                               : 0.4324895975634314
+neural stem cell                     : 0.25340934971368767
+neuroblast                           : 0.6240031605328816
+neuron                               : 0.9994990218454465
+neuroblast                           : 0.7175440093221346
+neuron                               : 0.49543066106727784
+neuron                               : 0.9906415628605437
+type ii spiral ganglion neuron       : 0.36977493685374135
+neuron                               : 0.3829244387079967
+neuron                               : 0.9155644931421628
+neuron                               : 0.994435779665544
+neuron                               : 0.17408051585178605
+neuron                               : 0.43040110438805734
+late activated neural stem cell      : 0.4173877510453148
+type ii spiral ganglion neuron       : 0.8063865964207811
+late activated neural stem cell      : 0.8931449113756691
+neuron                               : 0.5881759402244168
+endothelial cell                     : 0.4362986871646965
+neuron                               : 0.7382010515073074
+neuron                               : 0.9978996777364288
+neuron                               : 0.9990311894994044
+neuron                               : 0.9812140559227824
+neuron                               : 0.9434461679728641
+oligodendrocyte precursor cell       : 0.9005717308855612
+neuron                               : 0.35343791268478086
+neuron                               : 0.5941066547862442
+smooth muscle cell                   : 0.5151929525366861
+oligodendrocyte precursor cell       : 0.9456845803373858
+neuron                               : 0.514452848112956
+neuron                               : 0.9847526188606864
+neuron                               : 0.9946799597677543
+neuron                               : 0.2559059543287074
+neuron                               : 0.956063362039046
+neuron                               : 0.9734971290418227
+neuron                               : 0.22198741313258288
+type ii spiral ganglion neuron       : 0.8307600032581458
+neuron                               : 0.43603010891324867
+neuron                               : 0.8583270071038995
+neuron                               : 0.9712121319351943
+neuron                               : 0.8027453001944995
+neuron                               : 0.5470974041662728
+neuron                               : 0.9146723073390657
+neuron                               : 0.32538740511063435
+neuron                               : 0.9870079601370892
+neuron                               : 0.9977267962594353
+neuron                               : 0.25398539512628276
+type ii spiral ganglion neuron       : 0.9975492514159019
+neuron                               : 0.9928574040236675
+astrocyte                            : 0.2890596294767104
+neuron                               : 0.9379755327561649
+neuron                               : 0.5265393078021504
+neuron                               : 0.6791798512916766
+mural cell                           : 0.9985075133306083
+neuron                               : 0.9562089599804996
+neuron                               : 0.7383378803169715
+late activated neural stem cell      : 0.5067758097636563
+neuron                               : 0.9988404022945765
+neuron                               : 0.5665681847980155
+neuron                               : 0.9877655955603545
+type ii spiral ganglion neuron       : 0.22716497601022567
+type ii spiral ganglion neuron       : 0.05332200567609414
+neuron                               : 0.9945268209469369
+neuron                               : 0.5046355140625991
+neuron                               : 0.7481192347973076
+neuron                               : 0.5797322266334654
+type ii spiral ganglion neuron       : 0.35378792935235504
+neuron                               : 0.9980125022952635
+neuroblast                           : 0.6684029826481704
+late activated neural stem cell      : 0.43942891462156375
+oligodendrocyte precursor cell       : 0.7158081240740963
+neuron                               : 0.7778306265777662
+neuron                               : 0.45737558163398123
+neuron                               : 0.6664561961140019
+neuroblast                           : 0.27137003702468115
+neuron                               : 0.9872419968667402
+neuron                               : 0.7236610598899441
+neuron                               : 0.7076018006749002
+neuron                               : 0.6978354181518822
+neuron                               : 0.9782888316487397
+neuron                               : 0.32878822037197586
+neuron                               : 0.9500540893915977
+neuron                               : 0.23544183103125021
+neuron                               : 0.9992317397817856
+oligodendrocyte precursor cell       : 0.1582935782457633
+neuron                               : 0.612207716914535
+neuron                               : 0.931818699607702
+neuron                               : 0.77052328564869
+neuron                               : 0.39751730459998424
+neuron                               : 0.8098549539692997
+neuron                               : 0.9571410624318187
+neuron                               : 0.9985822629870075
+neuroblast                           : 0.6419965377305765
+neuron                               : 0.2188485711913551
+neuron                               : 0.9833387385365899
+neuron                               : 0.9999993128232338
+neuron                               : 0.8350982470813781
+neuron                               : 0.9982125349269694
+neuron                               : 0.7241936344625285
+astrocyte                            : 0.13190191533863085
+neuron                               : 0.6928280710410919
+neuroblast                           : 0.243757910074579
+type ii spiral ganglion neuron       : 0.7242098234277085
+neuroblast                           : 0.6362636577774137
+neuron                               : 0.8779794028457587
+neuron                               : 0.9964562975784668
+microglial cell                      : 0.9999999969005374
+neuron                               : 0.4584016349240655
+neuron                               : 0.9984088998831029
+neuron                               : 0.9975824694807301
+neuron                               : 0.3817424771115259
+neuron                               : 0.8702085910239065
+late activated neural stem cell      : 0.5672511851016622
+neuron                               : 0.8989819525101774
+neuron                               : 0.9999512313003815
+type ii spiral ganglion neuron       : 0.22281749462706327
+neuron                               : 0.9999938100130592
+neuron                               : 0.9997817442279439
+neuron                               : 0.926333179696281
+neuron                               : 0.9596072013531713
+neuron                               : 0.9999828470140788
+neuron                               : 0.9964734865297393
+type ii spiral ganglion neuron       : 0.49479087856756865
+neuron                               : 0.4728503419648096
+bergmann glial cell                  : 0.23528818801556975
+type ii spiral ganglion neuron       : 0.16181142077072666
+type ii spiral ganglion neuron       : 0.5642194725148281
+neuron                               : 0.4392129758323482
+neuron                               : 0.8476630289018353
+late activated neural stem cell      : 0.19688041378410895
+neuron                               : 0.8336177995996452
+neuron                               : 0.8784108686374192
+neuron                               : 0.9111549571273714
+neuron                               : 0.9999968625134227
+neuron                               : 0.4720315363001856
+neuron                               : 0.6901337348649637
+neuron                               : 0.8849590331033363
+neuron                               : 0.894778010399147
+neuron                               : 0.9629106568242866
+neuron                               : 0.9966952823269889
+neuron                               : 0.9988663706850868
+neuron                               : 0.9717382189264354
+neuron                               : 0.9879086041168404
+type ii spiral ganglion neuron       : 0.44527344311349565
+neuron                               : 0.9577732408984526
+neuron                               : 0.7466489637149212
+neuron                               : 0.9990691717842669
+type ii spiral ganglion neuron       : 0.6773928267279727
+neuron                               : 0.718319779017722
+late activated neural stem cell      : 0.28801913040505084
+neuron                               : 0.9673451898478899
+neuron                               : 0.3263909999947417
+neuron                               : 0.9916431601603152
+neuron                               : 0.996895753791955
+neuron                               : 0.991457579047933
+neuron                               : 0.9008005884364522
+neuron                               : 0.9440710792050095
+neuron                               : 0.9910254799137392
+type ii spiral ganglion neuron       : 0.9951574159505638
+neuron                               : 0.8349383434421198
+late activated neural stem cell      : 0.7087974389813453
+neuron                               : 0.9997351116549443
+neuron                               : 0.38580114310186325
+astrocyte                            : 0.2734622985886088
+neuroblast                           : 0.478393549262187
+neuron                               : 0.9301099607452533
+neuron                               : 0.9998032347820592
+neuron                               : 0.8863512323925664
+late activated neural stem cell      : 0.8281274114307429
+neuron                               : 0.5284869409260368
+type ii spiral ganglion neuron       : 0.6968380947794617
+neuron                               : 0.9346976458210339
+neuron                               : 0.9933916203804867
+neuron                               : 0.999985625466044
+neuron                               : 0.9956268912856115
+neuron                               : 0.906459952295734
+neuron                               : 0.9621154137038016
+neuron                               : 0.9969164654730169
+neuron                               : 0.9726476593334905
+oligodendrocyte precursor cell       : 0.4710735613131726
+neuron                               : 0.9950647475589894
+neuron                               : 0.993838327012596
+neuron                               : 0.978100102938249
+neuron                               : 0.9084481428014434
+neuron                               : 0.2509897099674603
+neuron                               : 0.9995946616062311
+type ii spiral ganglion neuron       : 0.27551423077275516
+neuron                               : 0.9954819172303315
+neuron                               : 0.9977326465620525
+neuron                               : 0.43029594410965166
+neuron                               : 0.8907055685728212
+neuron                               : 0.4486488962555014
+neuron                               : 0.9968812369285057
+neuron                               : 0.9991064296696847
+neuron                               : 0.6856997812431929
+microglial cell                      : 0.9999749569926546
+neuroblast                           : 0.1526404492111428
+neuron                               : 0.4329714329894447
+neuron                               : 0.9982206856466399
+type ii spiral ganglion neuron       : 0.6867683658378061
+neuron                               : 0.9973599351195741
+neuron                               : 0.7251172300985679
+neuroblast                           : 0.59503291378364
+neuroblast                           : 0.42062500355895155
+neuron                               : 0.820830214186701
+neuron                               : 0.9991425374816554
+neuron                               : 0.8896711358411257
+neuron                               : 0.8886699437155747
+neuron                               : 0.7020170131583297
+neuron                               : 0.732977699635126
+neuron                               : 0.7073219850108048
+neuroblast                           : 0.672354114984921
+neuron                               : 0.9968242004948544
+type ii spiral ganglion neuron       : 0.9226058852776597
+neuron                               : 0.9957647032660147
+neuroblast                           : 0.5836152534433203
+oligodendrocyte precursor cell       : 0.6854445039805166
+neuron                               : 0.729042453340368
+neuron                               : 0.34601167958248674
+type ii spiral ganglion neuron       : 0.3399391870196962
+neuron                               : 0.89575605288401
+neuron                               : 0.7084538868397864
+type ii spiral ganglion neuron       : 0.981028075972128
+neuron                               : 0.5657675701562814
+neuron                               : 0.3804555006522517
+neuron                               : 0.9987938393554947
+neuron                               : 0.4273125272801853
+neuron                               : 0.999993793732358
+neuron                               : 0.8828334514177761
+neuron                               : 0.992996129808181
+neuron                               : 0.33168207024591906
+late activated neural stem cell      : 0.5444879706821582
+bergmann glial cell                  : 0.6844307857893208
+neuron                               : 0.9999984386825774
+neuron                               : 0.9644963870659065
+type ii spiral ganglion neuron       : 0.4898510841342089
+neuroblast                           : 0.5830836696839181
+endothelial cell                     : 0.9999999913296597
+neuron                               : 0.7965889142209834
+neuron                               : 0.9950705451191902
+neuron                               : 0.774599183787465
+neuron                               : 0.7229806260968703
+neuron                               : 0.2539265953616576
+neuron                               : 0.5773799321926247
+cajal-retzius cell                   : 0.7222076342181362
+type ii spiral ganglion neuron       : 0.9354115740058342
+type ii spiral ganglion neuron       : 0.05332200567609414
+neuron                               : 0.9999971517992748
+neuron                               : 0.9441551851143247
+neuron                               : 0.4572129249579921
+type ii spiral ganglion neuron       : 0.41558214698553964
+neuron                               : 0.763215610218926
+neuron                               : 0.9791408503000083
+neuron                               : 0.8697037715956901
+microglial cell                      : 0.9999999998576999
+neuron                               : 0.681380600961537
+type ii spiral ganglion neuron       : 0.8610440995192642
+neuron                               : 0.9990363239632596
+neuron                               : 0.7198654870433259
+neuron                               : 0.9875137228365468
+type ii spiral ganglion neuron       : 0.23046371994138706
+neuron                               : 0.6777542031967596
+neuron                               : 0.8742639771316971
+neuron                               : 0.6913492851855488
+neuron                               : 0.6957670707865267
+neuron                               : 0.9982731446630314
+neuron                               : 0.9350161948158631
+late activated neural stem cell      : 0.6191245792590268
+neuron                               : 0.999536670773635
+type ii spiral ganglion neuron       : 0.8574300396550388
+mural cell                           : 0.9865531118325003
+neuron                               : 0.9945899546943626
+neuron                               : 0.9578228560260887
+late activated neural stem cell      : 0.5472969432343735
+late activated neural stem cell      : 0.8519164371581538
+neuron                               : 0.9951020862831358
+neuroblast                           : 0.5446689854469388
+type ii spiral ganglion neuron       : 0.7437978046450128
+neuron                               : 0.9924216634464672
+neuron                               : 0.2239288325047781
+endothelial cell                     : 0.9997688017257026
+neuron                               : 0.9982424876719979
+endothelial cell                     : 0.9999999974087914
+neuron                               : 0.5194718763258774
+neuron                               : 0.21746744817333946
+neuron                               : 0.32824550468249813
+neuron                               : 0.9929962077712066
+bergmann glial cell                  : 0.7948930994358826
+neuron                               : 0.7598742506300233
+neuron                               : 0.9998420707018488
+neuron                               : 0.8652356428227248
+neuron                               : 0.5582457604378154
+type ii spiral ganglion neuron       : 0.8605724683718834
+neuron                               : 0.489082861481602
+type ii spiral ganglion neuron       : 0.48581173592165167
+type ii spiral ganglion neuron       : 0.5165767400257179
+neuron                               : 0.998476295308393
+late activated neural stem cell      : 0.4076219223096911
+neuron                               : 0.2515371638194506
+neuron                               : 0.4918769388835839
+neuron                               : 0.9998725052300006
+neuron                               : 0.988443994419806
+late activated neural stem cell      : 0.9143345340256304
+neuron                               : 0.9818718025587447
+neuron                               : 0.9981560767082677
+mural cell                           : 0.8937927462474551
+neuron                               : 0.9457460293760916
+late activated neural stem cell      : 0.8299302371918432
+neuron                               : 0.990419488270828
+neuron                               : 0.974381401754863
+neuron                               : 0.6611137091316752
+neuron                               : 0.8331896504168315
+neuron                               : 0.9742276098232353
+neuron                               : 0.9914749679744047
+neuron                               : 0.9810637714145594
+neuron                               : 0.42405819596069955
+type ii spiral ganglion neuron       : 0.38498167183274584
+neuroblast                           : 0.6318889565902258
+neuron                               : 0.9997362406400273
+neuroblast                           : 0.48117787935397716
+endothelial cell                     : 0.9999999875836519
+type ii spiral ganglion neuron       : 0.39454649986817225
+neuron                               : 0.9768624831258722
+neuron                               : 0.9872877965647515
+neuron                               : 0.9751473379776932
+neuron                               : 0.6399180949667461
+neuron                               : 0.5279174093798216
+type ii spiral ganglion neuron       : 0.4379925483377123
+neuron                               : 0.9341748321840802
+neuron                               : 0.9879993842225786
+type ii spiral ganglion neuron       : 0.24001870146426316
+bergmann glial cell                  : 0.8487839952170753
+neuron                               : 0.998483829685303
+neuron                               : 0.6725138127068728
+type ii spiral ganglion neuron       : 0.5754270766424479
+neuron                               : 0.48433249317294563
+neuron                               : 0.4508075094930148
+endothelial cell                     : 0.9999999999999856
+type ii spiral ganglion neuron       : 0.8341597803860439
+mural cell                           : 0.8942319113170426
+neuron                               : 0.919691410150732
+astrocyte                            : 0.6271281823132945
+neuron                               : 0.41600686576047485
+neuron                               : 0.9963282906156573
+neuron                               : 0.9069011007350631
+neuron                               : 0.7427939969500951
+oligodendrocyte precursor cell       : 0.9895535858937935
+neuron                               : 0.9975140970317874
+neuron                               : 0.9991377302985263
+neuron                               : 0.48777242654981584
+type ii spiral ganglion neuron       : 0.6929969583523758
+neuron                               : 0.656370711776274
+neuron                               : 0.25151292224209193
+neuron                               : 0.896203235964498
+type ii spiral ganglion neuron       : 0.9988733965812844
+neuron                               : 0.8609844246729536
+neuroblast                           : 0.40087661972642163
+neuron                               : 0.9949045255271851
+neuron                               : 0.8381094072522228
+neuron                               : 0.8995174863580528
+neuroblast                           : 0.30402998896325584
+neuron                               : 0.8925216236774126
+neuron                               : 0.9806093521844121
+neuron                               : 0.49231096476096087
+late activated neural stem cell      : 0.5451116753500348
+neuron                               : 0.9733960962721512
+neuron                               : 0.9595738170135681
+neuron                               : 0.9885454254712324
+neuron                               : 0.9920801840967652
+neuroblast                           : 0.14710272422355516
+type ii spiral ganglion neuron       : 0.8305693207284558
+neuron                               : 0.87907193794812
+type ii spiral ganglion neuron       : 0.5002520791294275
+neuron                               : 0.9993183328593148
+neuron                               : 0.2654730527189039
+late activated neural stem cell      : 0.9187181378048976
+type ii spiral ganglion neuron       : 0.20622852290518298
+neuron                               : 0.9850907676151894
+neuron                               : 0.9992042519944712
+neuron                               : 0.6376619545212118
+neuron                               : 0.8212310749387141
+neuron                               : 0.9998625531598626
+long-projecting gabaergic cell       : 0.2146741698896821
+neuron                               : 0.9799249194117042
+mural cell                           : 0.9984056782973566
+neuron                               : 0.999939506634016
+microglial cell                      : 0.9999976142556446
+neuron                               : 0.9989245835401869
+neuron                               : 0.9957585535340912
+neuron                               : 0.4834160459140148
+type ii spiral ganglion neuron       : 0.40151531297441084
+bergmann glial cell                  : 0.21575285759194585
+neuroblast                           : 0.3955055799933335
+neuron                               : 0.8616685429038259
+neuron                               : 0.9143096604034984
+astrocyte                            : 0.13239952633069565
+neuron                               : 0.7416587777728892
+neuron                               : 0.9268528272672053
+neuron                               : 0.5436740482538565
+mural cell                           : 0.9619877789402254
+quiescent neural stem cell           : 0.19538714584688333
+neuron                               : 0.48490245559176326
+type ii spiral ganglion neuron       : 0.8890107409562714
+quiescent neural stem cell           : 0.31465297252636887
+type ii spiral ganglion neuron       : 0.5703698411070424
+neuron                               : 0.5618761621767732
+neuron                               : 0.9934710823975508
+neuron                               : 0.9137419950698216
+neuron                               : 0.9965782988723368
+neuron                               : 0.860687227789115
+late activated neural stem cell      : 0.17348747969269207
+neuron                               : 0.8892878070693733
+neuron                               : 0.9330690011241225
+neuron                               : 0.36805586064223306
+neuroblast                           : 0.8118156772442555
+neuron                               : 0.7332659294012065
+neuron                               : 0.9936161359836913
+neuron                               : 0.9753807360485074
+neuron                               : 0.9092635689024281
+type ii spiral ganglion neuron       : 0.37256831033521914
+neuroblast                           : 0.3197228379415239
+type ii spiral ganglion neuron       : 0.1653246567486435
+neuron                               : 0.4054272298528299
+neuron                               : 0.9998136799056061
+neuron                               : 0.9506744095269734
+neuron                               : 0.5852884509693937
+olfactory ensheathing glia           : 0.2087582196368736
+neuron                               : 0.9982920149037576
+type ii spiral ganglion neuron       : 0.5033190432778875
+bergmann glial cell                  : 0.10333170449241486
+neuron                               : 0.9016414462599324
+neuron                               : 0.8214850877694778
+neuron                               : 0.9369643621498834
+neuron                               : 0.6816548269380851
+neuron                               : 0.9982596409205492
+neural stem cell                     : 0.14014928081875344
+neuron                               : 0.48681609284899713
+type ii spiral ganglion neuron       : 0.8980707863730124
+neuroblast                           : 0.6139711945216035
+neuron                               : 0.930700684686841
+neuron                               : 0.9795024416230231
+neuroblast                           : 0.634855103591814
+late activated neural stem cell      : 0.32641635782114065
+neuron                               : 0.5734259351437202
+neuron                               : 0.7459789896913065
+neuron                               : 0.9553401613788421
+neuroblast                           : 0.9309448563989826
+neuron                               : 0.8360690292415313
+neuron                               : 0.41005820775065316
+neuron                               : 0.9636476901005228
+type ii spiral ganglion neuron       : 0.35454436610636936
+type ii spiral ganglion neuron       : 0.5759858231905917
+quiescent neural stem cell           : 0.33323512248232234
+neuron                               : 0.9988824117575118
+neuron                               : 0.6385740513737665
+neuron                               : 0.9092962822599748
+neuron                               : 0.9830710469030508
+neuron                               : 0.9131094427428494
+type ii spiral ganglion neuron       : 0.48943197800258453
+neuron                               : 0.9983450175604921
+neuron                               : 0.7137281670103403
+neuron                               : 0.9841098967396409
+endothelial cell                     : 0.9999999999999934
+type ii spiral ganglion neuron       : 0.930313709334378
+neuron                               : 0.3003072213603816
+neuron                               : 0.9424566726672196
+type ii spiral ganglion neuron       : 0.5549010667846402
+type ii spiral ganglion neuron       : 0.919489295480634
+neuron                               : 0.9645011135802138
+neuron                               : 0.7367967498025807
+type ii spiral ganglion neuron       : 0.4196032783642422
+neuron                               : 0.9995050035035855
+neural stem cell                     : 0.23578833055209555
+endothelial cell                     : 0.7696221895484012
+neuron                               : 0.8849800763253103
+neuron                               : 0.9999937315941415
+neuron                               : 0.8839539342644743
+neuron                               : 0.7940806071925312
+neuron                               : 0.9777589090282836
+type ii spiral ganglion neuron       : 0.07910345061283393
+neuroblast                           : 0.390570090429112
+neuron                               : 0.9572340044339825
+neuron                               : 0.9915192157169409
+type ii spiral ganglion neuron       : 0.39378322361960316
+neuron                               : 0.9991660291037502
+neuron                               : 0.9999943934366115
+neuron                               : 0.9946403987710185
+neuron                               : 0.993776988788103
+neuron                               : 0.9504564619645604
+type ii spiral ganglion neuron       : 0.23704389729538572
+neuron                               : 0.999123292749716
+bergmann glial cell                  : 0.38859150406405046
+neuron                               : 0.8077791187435364
+neuron                               : 0.9960819944745726
+microglial cell                      : 0.9999240281382162
+neuron                               : 0.9923593157101285
+neuroblast                           : 0.42264286224384356
+neuron                               : 0.6928747551319687
+neuron                               : 0.5517756601772351
+neuron                               : 0.999803103935514
+type ii spiral ganglion neuron       : 0.998899592127415
+type ii spiral ganglion neuron       : 0.21295247823103527
+neuron                               : 0.7652482146656865
+neuron                               : 0.9382296644958042
+neuron                               : 0.9599706184597013
+neuron                               : 0.9998435007887434
+neuron                               : 0.9106059884048305
+neuron                               : 0.9977203254562838
+neuron                               : 0.5525602982011104
+neuron                               : 0.8611825171407624
+neuron                               : 0.8583064235972827
+neuron                               : 0.6918974805972303
+neuroblast                           : 0.5942276663712796
+neuron                               : 0.7502145164096112
+type ii spiral ganglion neuron       : 0.2952068110220026
+type ii spiral ganglion neuron       : 0.5552673911261745
+neuroblast                           : 0.16972055571228742
+type ii spiral ganglion neuron       : 0.4680526006304649
+neuron                               : 0.6553854301645028
+neuron                               : 0.9992530748880665
+type ii spiral ganglion neuron       : 0.5805243273335827
+neuroblast                           : 0.3425529070334128
+neuron                               : 0.9400780776087639
+neuron                               : 0.843905846393646
+neuron                               : 0.852723961846974
+neuron                               : 0.7615587925368826
+type ii spiral ganglion neuron       : 0.2548707989815903
+neuron                               : 0.923277537022886
+neuron                               : 0.9710588546540577
+neuron                               : 0.9991767506977536
+late activated neural stem cell      : 0.6235107860913653
+neuron                               : 0.8117023189199573
+neuron                               : 0.5832287414149175
+type ii spiral ganglion neuron       : 0.8476080525289519
+neural stem cell                     : 0.1868129640327471
+neuron                               : 0.9993729745863669
+type ii spiral ganglion neuron       : 0.6453740908022573
+neuron                               : 0.5155006757403618
+early intermediate precursor cell    : 0.0753626817023431
+neuron                               : 0.9999160691499624
+type ia spiral ganglion neuron       : 0.05944448058267794
+neuron                               : 0.9656264884218319
+neuron                               : 0.8588944826942355
+neuron                               : 0.29023322310295646
+neuron                               : 0.998966454410242
+neuron                               : 0.999752544348579
+type ii spiral ganglion neuron       : 0.21762534244012527
+neuron                               : 0.9928332261012245
+type ii spiral ganglion neuron       : 0.9295246378671425
+neuron                               : 0.5555903246967406
+neuron                               : 0.4984624879811263
+oligodendrocyte precursor cell       : 0.24409137085542065
+type ii spiral ganglion neuron       : 0.7914433543385632
+neuron                               : 0.6646881454823451
+type ii spiral ganglion neuron       : 0.5647495705095033
+astrocyte                            : 0.28911914667466193
+neuron                               : 0.9953788578684479
+neuron                               : 0.5560932578334498
+neuron                               : 0.9938485283945442
+neuroblast                           : 0.31811354288296734
+neuron                               : 0.4452967206590534
+endothelial cell                     : 0.999998587833452
+neuron                               : 0.9693940094466047
+neuron                               : 0.8173076240379533
+neuron                               : 0.9989328248970051
+microglial cell                      : 0.9999980366533255
+late activated neural stem cell      : 0.6867478780980197
+neuron                               : 0.9676500237242331
+neuron                               : 0.9656444695950795
+neuron                               : 0.830770015155738
+neuron                               : 0.9773235480134698
+neuron                               : 0.7578577087670095
+neuron                               : 0.9997276057521339
+neuron                               : 0.9998635435902574
+olfactory ensheathing glia           : 0.40393766464681813
+astrocyte                            : 0.5087138152921976
+neural stem cell                     : 0.4581807744022125
