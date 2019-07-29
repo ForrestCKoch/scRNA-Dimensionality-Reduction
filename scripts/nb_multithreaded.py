@@ -13,7 +13,7 @@ def get_marker_matrix(filename):
     whether the gene serves as a marker for the given cell type.
     :param filename: file to spreadsheet containing cell types and markers
     """
-    df = pd.read_csv(filename)
+    df = pd.read_csv(filename,engine='python')
     cell_types = df['cell type']
     gene_list = df['cell marker']
     gene_set = list()
@@ -169,5 +169,8 @@ def classify_cell(i):
             print('{},NA,NA,0'.format(i),file=fh)
 
 if __name__ == '__main__':
-    p = mp.Pool(4,initialize_worker,[sys.argv[1],sys.argv[2],8])
-    p.map(classify_cell,range(0,1000))
+    h5 = h5py.File(sys.argv[1],'r')
+    ncells = len(h5['mm10']['indptr'])
+    del h5
+    p = mp.Pool(32,initialize_worker,[sys.argv[1],sys.argv[2],2])
+    p.map(classify_cell,range(0,ncells))
