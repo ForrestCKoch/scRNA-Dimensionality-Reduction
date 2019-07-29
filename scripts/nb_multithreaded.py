@@ -95,11 +95,11 @@ def get_gene_indicies(h5file,target_set):
             index_list.append((i,gene))
     return index_list
 
-def get_cell_expr(n,h5file,index_set,thr):
+def get_cell_expr(n,h5,index_set,thr):
     """
     return a set of expressed genes in the n^th sample
     :param n: cell id we are interested in
-    :param h5file: h5py.File object containing the E18 Mouse data
+    :param h5: h5py.File object containing the E18 Mouse data
     :param index_set: set of gene indices we are interested in
     :param thr: threshold above which we will consider gene expression
     """
