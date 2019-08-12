@@ -292,4 +292,4 @@ if __name__ == '__main__':
     embedded = get_embedding(model,data,to_scale=args.scale)
     end = time.time()
     print("Completed empedding in {} seconds".format(end-start))
-    write_results(model,embedded,args)
+    #write_results(model,embedded,args)
