@@ -1,4 +1,6 @@
 install.packages("BiocManager")
+install.packages("RSQLite")
 BiocManager::install("SummarizedExperiment")
 BiocManager::install("SingleCellExperiment")
 BiocManager::install("scater")
+BiocManager::install("biomaRt")
