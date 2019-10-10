@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from svr2019.sumarize import *
+from sc_dm.sumarize import *
 
 if __name__ == '__main__':
     methods = ['fa','fica','isomap','lda','lle','mctsne','nmf','pca','sdae','umap']

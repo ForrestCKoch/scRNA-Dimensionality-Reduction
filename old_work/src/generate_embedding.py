@@ -5,7 +5,7 @@
 # Create a low dimensional embedding of a dataset
 # with a specific DR method
 #################################################
-from svr2019.datasets import *
+from sc_dm.datasets import *
 
 import pickle
 import sys

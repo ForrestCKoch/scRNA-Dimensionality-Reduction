@@ -7,7 +7,7 @@
 #   variance of concordance.
 ##############################################################
 
-from svr2019.sumarize import *
+from sc_dm.sumarize import *
 import sys
 
 for metric in ['ss','ch','db','di']:

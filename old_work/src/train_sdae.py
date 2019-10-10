@@ -13,7 +13,7 @@ import torch.optim
 
 import numpy as np
 
-from svr2019.datasets import *
+from sc_dm.datasets import *
 
 import ptsdae
 from ptsdae.sdae import StackedDenoisingAutoEncoder as SDAE

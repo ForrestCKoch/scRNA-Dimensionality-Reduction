@@ -15,9 +15,9 @@ from sklearn.metrics import *
 
 from sklearn.preprocessing import LabelEncoder
 
-from svr2019.datasets import *
-from svr2019.metrics import *
-from svr2019.clustering import *
+from sc_dm.datasets import *
+from sc_dm.metrics import *
+from sc_dm.clustering import *
 
 def warn(*args, **kwargs):
     """

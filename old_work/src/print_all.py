@@ -10,8 +10,8 @@
 #       dataset,method,log,vrc,db,di,ss
 ###############################################################
 
-from svr2019.datasets import *
-from svr2019.sumarize import *
+from sc_dm.datasets import *
+from sc_dm.sumarize import *
 from sklearn.preprocessing import LabelEncoder
 import os
 

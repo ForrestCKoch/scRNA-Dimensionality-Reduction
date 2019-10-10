@@ -15,7 +15,7 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from umap import UMAP
 
-from svr2019.sumarize import *
+from sc_dm.sumarize import *
 
 
 if __name__ == '__main__':

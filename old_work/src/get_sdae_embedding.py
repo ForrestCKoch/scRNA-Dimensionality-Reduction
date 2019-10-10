@@ -14,7 +14,7 @@ from matplotlib import cm
 
 import numpy as np
 
-from svr2019.datasets import *
+from sc_dm.datasets import *
 
 import torch
 

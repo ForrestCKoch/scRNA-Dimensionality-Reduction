@@ -18,8 +18,8 @@ from scipy.stats import spearmanr
 
 from sklearn.metrics import pairwise_distances
 
-from svr2019.datasets import *
-from svr2019.sumarize import *
+from sc_dm.datasets import *
+from sc_dm.sumarize import *
 
 def reject_outliers(data, m=5):
     """

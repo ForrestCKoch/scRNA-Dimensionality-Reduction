@@ -16,7 +16,7 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.manifold import TSNE
 
-from svr2019.datasets import *
+from sc_dm.datasets import *
 
 import torch
 
