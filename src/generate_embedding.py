@@ -5,7 +5,7 @@
 # Create a low dimensional embedding of a dataset
 # with a specific DR method
 #################################################
-from sc_dm.datasets import *
+from sc_dr.datasets import *
 
 import pickle
 import sys
@@ -18,6 +18,8 @@ from sklearn.decomposition import PCA, FactorAnalysis, FastICA,\
 from sklearn.preprocessing import scale
 
 import time
+
+import pandas as pd
 
 try:
     import umap
@@ -240,7 +242,7 @@ def get_model(args):
         exit()
     return model
 
-def write_results(embedded,args):
+def write_results(embedded,labels,args):
     """
     Write the embedding and model to a pickled file
 
@@ -253,12 +255,16 @@ def write_results(embedded,args):
         os.makedirs(embed_dir)
 
     print('saving embedding')
-    log_flag = str(args.log1p or args.log)
-    scale_flag = str(args.scale)
-    filename  = args.trial_name = '.pickle'
+    filename  = args.trial_name + '.pkl'
 
+    """
     with open(os.path.join(embed_dir,filename),'wb') as fh:
         pickle.dump(embedded,fh,protocol=4)
+    """
+
+    pd_df = pd.DataFrame(embedded)
+    pd_df.insert(0,'cell_type',labels)
+    pd_df.to_pickle(os.path.join(embed_dir,filename))
 
 def get_data(args):
     """
@@ -284,4 +290,4 @@ if __name__ == '__main__':
     embedded = get_embedding(model,data,to_scale=args.scale)
     end = time.time()
     print("Completed empedding in {} seconds".format(end-start))
-    write_results(model,embedded,args)
+    write_results(embedded,data.labels,args)
