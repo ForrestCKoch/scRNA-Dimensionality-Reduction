@@ -49,10 +49,10 @@ if( 'counts' %in% names(assays(sce))){
     log_counts <- log1p(norm_counts)
 
     gz <- gzfile(paste('data/datasets/csvs/','normcounts_',args[1],'.csv.gz',sep=''))
-    write.csv(t(as.matrix(cpm)),gz)
+    write.csv(t(as.matrix(norm_counts)),gz)
     gz <- gzfile(paste('data/datasets/csvs/','lognormcounts_',args[1],'.csv.gz',sep=''))
     write.csv(t(as.matrix(log_counts)),gz)
 
 }else{
-    stop(paste('Unknown assay types:',names(asssays(sce))))
+    stop(paste('Unknown assay types:',names(assays(sce))))
 }
