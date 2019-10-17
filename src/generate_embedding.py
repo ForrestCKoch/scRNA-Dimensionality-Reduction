@@ -41,6 +41,12 @@ try:
 except ImportError:
     ZIFA_AVAILABLE=False
 
+try:
+    from phate import PHATE
+    PHATE_AVAILABLE=True
+except ImportError:
+    PHATE_AVAILABLE=False
+
 import argparse
 
 class ZIFA_Wrapper():
@@ -119,7 +125,7 @@ def get_parser():
         choices = ["umap","pca","pca-scaled","tsne",
                    "mctsne", "isomap", "lle",
                    "nmf","lda","zifa",
-                   "spectral", "mds",
+                   "spectral", "mds","phate",
                    "fa","fica","scscope","rpca"],
         default = 'pca',
         help="method for dimension reduction"
@@ -237,6 +243,8 @@ def get_model(args):
         model = NMF(args.dims)
     elif args.method == 'scscope' and SCSCOPE_AVAILABLE:
         model = ScScope(args.dims)
+    elif args.method == 'phate' and PHATE_AVAILABLE:
+        model = PHATE(args.dims)
     else:
         print("ERROR: Invalid embedding option", file=sys.stderr)
         exit()
@@ -287,7 +295,7 @@ if __name__ == '__main__':
     data = get_data(args)
     model = get_model(args)
     start = time.time()
-    embedded = get_embedding(model,data,to_scale=args.scale)
+    embedded = get_embedding(model,data.data,to_scale=args.scale)
     end = time.time()
     print("Completed empedding in {} seconds".format(end-start))
     write_results(embedded,data.labels,args)

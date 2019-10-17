@@ -30,7 +30,9 @@ sce <- readRDS(paste(rds_fold,rds_file,sep='/'))
 if(! 'cell_type1' %in% names(colData(sce))){
     stop('No cell_type1 ...')
 }else{
-    colnames(sce) <- colData(sce)$cell_type1
+    cell_types <- colData(sce)$cell_type1
+    cell_types[is.na(cell_types)] <- 'NA'
+    colnames(sce)
 }
 
 # check if we are using counts or normcounts
