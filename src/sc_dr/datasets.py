@@ -135,7 +135,7 @@ class FromPickledPanda(Dataset):
     def __init__(self,path):
         with open(path,'rb') as fh:
             pd_df = pickle.load(fh)
-            self.labels = pd_df['cell_type']
+            self.labels = [str(x) for x in pd_df['cell_type']]
             pd_df = pd_df.drop('cell_type',axis=1)
             self.data = pd_df.values
             self.dims = len(self.data[0])

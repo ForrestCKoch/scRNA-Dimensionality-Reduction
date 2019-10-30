@@ -10,6 +10,7 @@
 ###############################################################################
 suppressMessages(library(SingleCellExperiment))
 suppressMessages(library(scater))
+suppressMessages(library(na.tools))
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -31,8 +32,7 @@ if(! 'cell_type1' %in% names(colData(sce))){
     stop('No cell_type1 ...')
 }else{
     cell_types <- colData(sce)$cell_type1
-    cell_types[is.na(cell_types)] <- 'NA'
-    colnames(sce)
+    colnames(sce) <- na.replace(cell_types,'NA')
 }
 
 # check if we are using counts or normcounts
