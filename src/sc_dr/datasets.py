@@ -13,8 +13,8 @@ from time import time
 
 import numpy as np
 
-import torch
-from torch.utils.data import Dataset
+#import torch
+#from torch.utils.data import Dataset
 
 from tqdm import tqdm
 import h5py
@@ -25,6 +25,9 @@ import pickle
 from sklearn.decomposition import PCA
 
 from sklearn.preprocessing import LabelEncoder
+
+class Dataset:
+    pass
 
 class DuoBenchmark(Dataset):
     def __init__(self,path,log_trans=False,log1p=False,split_head=True):
@@ -264,7 +267,8 @@ class E18MouseData(Dataset):
         del selected_cells
    
     def __getitem__(self, index):
-        return torch.Tensor(self.data[index])
+        #return torch.Tensor(self.data[index])
+        return np.array(self.data[index])
 
     def __len__(self):
         return self._len
