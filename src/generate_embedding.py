@@ -180,7 +180,7 @@ class VascWrapper():
         self.k
 
     def fit_transform(self,data):
-        return vasc(data,epoch=1000,latent=self.k)
+        return vasc(data,epoch=500,latent=self.k)
 
 class VpacWrapper():
     def __init__(self,k):
