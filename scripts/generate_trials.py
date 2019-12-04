@@ -28,8 +28,7 @@ if __name__ == '__main__':
         for i in range(len(cell_types)):
             if cell_types[i] in EXCLUDED_TYPES:
                 to_remove.append(i)
-        x = x.drop(index=to_remove)
-        cell_types = x.cell_type
+        x.drop(index=to_remove,inplace=True)
         X = x.drop('cell_type',axis=1).values
 
 
