@@ -22,6 +22,7 @@ def _sig_handle(*kwargs):
     global q
     global queue_file
     write_queue(queue_file,q)
+    exit()
 
 def load_queue(filename):
     with open(filename,'r') as fh:
