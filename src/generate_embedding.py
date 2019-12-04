@@ -158,7 +158,7 @@ class SaucieWrapper():
         while(not_converged):
             self.model.train(loadtrain,steps=int(np.floor(data.shape[0]/256)))
             losses.append(float(self.model.get_loss(loadtrain)))
-            if len(losses) < 10: # keep training
+            if len(losses) < 100: # keep training
                 continue
             if loadtrain.epoch >= max_epochs: # give up
                 not_converged = False
@@ -166,7 +166,7 @@ class SaucieWrapper():
             mloss = np.mean(losses[-10:-5])
             nloss = np.mean(losses[-5:])
             perc_change = np.abs((nloss-mloss)/mloss)
-            if perc_change < 0.001:
+            if perc_change < 0.0001:
                 not_converged = False
 
         if(loadtrain.epoch >= max_epochs):
@@ -177,7 +177,7 @@ class SaucieWrapper():
 
 class VascWrapper():
     def __init__(self,k):
-        self.k
+        self.k = k
 
     def fit_transform(self,data):
         return vasc(data,epoch=500,latent=self.k)
