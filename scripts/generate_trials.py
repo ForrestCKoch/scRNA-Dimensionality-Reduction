@@ -14,10 +14,10 @@ EXCLUDED_TYPES = ["alpha.contaminated", "beta.contaminated", "delta.contaminated
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
-        print("Usage: {} [path_to_embedding] [maxEps] [metric]".format(sys.argv[0]))
+        print("Usage: {} [path_to_embedding] [maxEps] [metric]".format(sys.argv[0]),file=sys.stderr)
         exit()
     elif sys.argv[3] not in ['euclidean','seuclidean','correlation','cosine']:
-        print("Error: metric must be one of ['euclidean','seuclidean','correlation','cosine']")
+        print("Error: metric must be one of ['euclidean','seuclidean','correlation','cosine']",file=sys.stderr)
         exit()
 
     # Load in our data
