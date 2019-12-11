@@ -36,7 +36,7 @@ if __name__ == '__main__':
         ss_euc = str(np.nan)
 
     try:
-        ss_seu = str(ss(X,labels,metric='seuclidean'))
+        ss_seu = str(ss(X,labels,metric='seuclidean',V=np.var(X,axis=0,ddof=1,dtype=np.double)))
     except Exception as e:
         print(e)
         ss_seu = str(np.nan)
