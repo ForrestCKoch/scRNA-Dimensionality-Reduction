@@ -12,6 +12,7 @@ import sys
 import os
 import argparse
 import time
+import tempfile
 
 
 import numpy as np
@@ -190,6 +191,16 @@ class VpacWrapper():
         self.model = VPAC(np.transpose(data),latent_dim=self.k,n_components=self.k)
         self.model.fit()
         return np.transpose(self.model.transform(np.transpose(data)))
+
+class IvisWrapper():
+    def __init__(self,dims):
+        self.k = dims
+
+    def fit_transform(self,data):
+        self.model = Ivis(embedding_dims=self.k, k=8)
+        x = self.model.fit_transform(data)
+        os.remove(self.model.annoy_index_path) # necessary cleanup
+        return x
     
 def _embedding_error(*args):
     print("ERROR: invalid emedding method",file=sys.stderr)
@@ -202,7 +213,7 @@ model_dict = {
     'grp':lambda args: GaussianRandomProjection(n_components=args.dims),
     'icm': lambda args: NimfaWrapper(nimfa.Icm,args.dims),
     'ipca':lambda args: IncrementalPCA(n_components=args.dims), 
-    'ivis':lambda args: Ivis(embedding_dims=args.dims, k=8),
+    'ivis':lambda args: IvisWrapper(args.dims),
     'isomap':lambda args: Isomap(n_components=args.dims,n_jobs=args.njobs),
     'kpca-pol':lambda args: KernelPCA(n_components=args.dims, kernel='poly', n_jobs=args.njobs),
     'kpca-rbf':lambda args: KernelPCA(n_components=args.dims, kernel='rbf', n_jobs=args.njobs),
