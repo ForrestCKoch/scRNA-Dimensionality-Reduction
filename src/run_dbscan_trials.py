@@ -145,4 +145,3 @@ if __name__ == '__main__':
 
     # if we finish, write an empty file
     write_queue(queue_file,q)
-
