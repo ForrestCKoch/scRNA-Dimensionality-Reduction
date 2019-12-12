@@ -56,7 +56,7 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         ari_score = np.nan
     try:
-        nmi_score = nmi(pred_labels, labels)
+        nmi_score = nmi(pred_labels, labels, average_method='arithmetic')
     except Exception as e:
         errors += str(e) + '; '
         nmi_score = np.nan
@@ -82,7 +82,7 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         nn_ari_score = np.nan
     try:
-        nn_nmi_score = nmi(nn_preds, nn_labels)
+        nn_nmi_score = nmi(nn_preds, nn_labels, average_method='arithmetic')
     except Exception as e:
         errors += str(e) + '; '
         nn_nmi_score = np.nan
@@ -136,12 +136,13 @@ if __name__ == '__main__':
     labels = LabelEncoder().fit_transform(x.cell_type)
 
     while len(q):
-        trial = q.pop()
+        trial = q[-1]
         metric = trial[0]
         minPts = int(trial[1])
         eps = np.float(trial[2])
         db_result = run_trial(X, labels, eps, minPts, metric)
         print(','.join([str(x) for x in db_result]))
+        q.pop()
 
     # if we finish, write an empty file
     write_queue(queue_file,q)
