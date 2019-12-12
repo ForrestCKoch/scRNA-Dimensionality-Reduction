@@ -30,14 +30,17 @@ if __name__ == '__main__':
 
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
+    sep_lines = []
     for i in range(1,len(ylabs)):
         if ylabs[i] == curr:
             ylabs[i] = None
         else:
             curr = ylabs[i]
+            sep_lines.append(i)
 
     xlabs = list(X.columns.levels[1])
 
-    sns.heatmap(X,cmap='viridis',xticklabels=xlabs,yticklabels=ylabs)
+    ax = sns.heatmap(X,cmap='viridis',xticklabels=xlabs,yticklabels=ylabs)
+    ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
     plt.show()
 
