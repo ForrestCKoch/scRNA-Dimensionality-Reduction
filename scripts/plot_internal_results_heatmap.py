@@ -16,10 +16,10 @@ if __name__ == '__main__':
     aggrd = grouped.agg(mdict)
 
     # Used to transform the "best" measures, so they can be sensibly scaled
-    fdict = {'ss_euc':lambda x : x,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x),'dbs':lambda x: 1/x}
+    fdict = {'ss_euc':lambda x : x,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x),'dbs':lambda x: 1/x if x > 0 else np.nan}
     trans = aggrd.transform(fdict) # apply transform
-    trans_mins = trans.groupby('dataset').agg('min') # calculate minimums by group
-    trans_maxs = trans.groupby('dataset').agg('max') # calculate maximums by group
+    trans_mins = trans.groupby('dataset').agg(np.nanmin) # calculate minimums by group
+    trans_maxs = trans.groupby('dataset').agg(np.nanmax) # calculate maximums by group
     scaled = (trans - trans_mins) / (trans_maxs - trans_mins) # apply the scaling
     
     # Reshape into the form needed for the heatmap
