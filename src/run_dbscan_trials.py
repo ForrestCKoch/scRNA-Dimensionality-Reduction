@@ -45,7 +45,10 @@ def run_trial(X, labels, eps, minPts, metric):
 
     # Run our dbscan
     start = time()
-    db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V})
+    if metric == 'seuclidean':
+        db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V})
+    else:
+        db = DBSCAN(eps,minPts,metric=metric)
     elapsed = start - time()
     pred_labels = db.fit_predict(X)
     perc_noise = np.sum(pred_labels==-1)/len(pred_labels)
@@ -68,7 +71,10 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         nmi_score = np.nan
     try:
-        ss_score = ss(X, pred_labels, metric=metric, V=V)
+        if metric == 'seuclidean':
+            ss_score = ss(X, pred_labels, metric=metric, V=V)
+        else:
+            ss_score = ss(X, pred_labels, metric=metric)
     except Exception as e:
         errors += str(e) + '; '
         ss_score = np.nan
@@ -94,7 +100,10 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         nn_nmi_score = np.nan
     try:
-        nn_ss_score = ss(nn_X, nn_preds, metric=metric, V=V)
+        if metric == 'seuclidean':
+            nn_ss_score = ss(nn_X, nn_preds, metric=metric, V=V)
+        else:
+            nn_ss_score = ss(nn_X, nn_preds, metric=metric)
     except Exception as e:
         errors += str(e) + '; '
         nn_ss_score = np.nan
