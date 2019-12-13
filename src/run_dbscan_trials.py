@@ -36,9 +36,16 @@ def write_queue(filename,q):
 
 def run_trial(X, labels, eps, minPts, metric):
     errors = '"'
+    
+    # In case of metric == 'seuclidean', need to precompute variance
+    if metric == 'seuclidean':
+        V = np.var(X,axis=0,ddof=1,dtype=np.double)
+    else:
+        V = None
+
     # Run our dbscan
     start = time()
-    db = DBSCAN(eps,minPts)
+    db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V})
     elapsed = start - time()
     pred_labels = db.fit_predict(X)
     perc_noise = np.sum(pred_labels==-1)/len(pred_labels)
@@ -61,7 +68,7 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         nmi_score = np.nan
     try:
-        ss_score = ss(X, pred_labels, metric=metric)
+        ss_score = ss(X, pred_labels, metric=metric, V=V)
     except Exception as e:
         errors += str(e) + '; '
         ss_score = np.nan
@@ -87,7 +94,7 @@ def run_trial(X, labels, eps, minPts, metric):
         errors += str(e) + '; '
         nn_nmi_score = np.nan
     try:
-        nn_ss_score = ss(nn_X, nn_preds, metric=metric)
+        nn_ss_score = ss(nn_X, nn_preds, metric=metric, V=V)
     except Exception as e:
         errors += str(e) + '; '
         nn_ss_score = np.nan
