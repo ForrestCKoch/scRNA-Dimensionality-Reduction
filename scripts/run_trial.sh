@@ -11,5 +11,5 @@ pkl="data/embeddings/$dataset/$count/$method/${dims}.pkl"
 logdir=data/results/dbscan/${dataset}/$count/$method/$metric
 mkdir -p $logdir
 
-echo $queuefile
-python3 src/run_dbscan_trials.py $pkl $queuefile > $logdir/${dims}.csv
+#echo $queuefile
+python3 src/run_dbscan_trials.py $pkl $queuefile >> $logdir/${dims}.csv
