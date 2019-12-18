@@ -18,11 +18,13 @@ from sklearn.metrics import davies_bouldin_score as dbs
 
 EXCLUDED_TYPES = ["alpha.contaminated", "beta.contaminated", "delta.contaminated", "Excluded", "gamma.contaminated", "miss", "NA", "not applicable", "unclassified", "unknown", "Unknown", "zothers"]
 
+"""
 def _sig_handle(*kwargs):
     global q
     global queue_file
     write_queue(queue_file,q)
     exit()
+"""
 
 def load_queue(filename):
     with open(filename,'r') as fh:
@@ -31,8 +33,10 @@ def load_queue(filename):
 
 def write_queue(filename,q):
     with open(filename,'w') as fh:
-        for line in q:
-            print(','.join(line),file=fh)
+        #for line in q:
+        #    print(','.join(line),file=fh)
+        fh.writelines([','.join(line) for line in q])
+
 
 def run_trial(X, labels, eps, minPts, metric):
     errors = '"'
@@ -49,8 +53,8 @@ def run_trial(X, labels, eps, minPts, metric):
         db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V})
     else:
         db = DBSCAN(eps,minPts,metric=metric)
-    elapsed = start - time()
     pred_labels = db.fit_predict(X)
+    elapsed = time() - start
     perc_noise = np.sum(pred_labels==-1)/len(pred_labels)
     n_clust = pred_labels.max()
 
@@ -130,15 +134,18 @@ if __name__ == '__main__':
     if (len(sys.argv) != 3):
         print("Usage: {} [data-file] [queue-file]".format(sys.argv[0]))
 
-    signal(SIGINT,_sig_handle)
-    signal(SIGTERM,_sig_handle)
+    # If we just re-write our queue after every iteration,
+    # Then we don't need to bother with catching interrupts
+    #signal(SIGINT,_sig_handle)
+    #signal(SIGTERM,_sig_handle)
 
-    global q
-    global queue_file
+    #global q
+    #global queue_file
     queue_file = sys.argv[2]
     q = load_queue(queue_file)
 
     with open(sys.argv[1],'rb') as fh:    
+        #print('x')
         x = pickle.load(fh)    
         cell_types = x.cell_type              
         to_remove = []                                  
@@ -151,7 +158,9 @@ if __name__ == '__main__':
     q = load_queue(sys.argv[2])    
     labels = LabelEncoder().fit_transform(x.cell_type)
 
+    t1 = time()
     while len(q):
+        #print('x')
         trial = q[-1]
         metric = trial[0]
         minPts = int(trial[1])
@@ -159,6 +168,10 @@ if __name__ == '__main__':
         db_result = run_trial(X, labels, eps, minPts, metric)
         print(','.join([str(x) for x in db_result]))
         q.pop()
+        write_queue(queue_file,q) # just rewrite the file after each iteration ...
+        #t2 = time()
+        #print(t2-t1)
+        #t1=t2
 
     # if we finish, write an empty file
     write_queue(queue_file,q)
