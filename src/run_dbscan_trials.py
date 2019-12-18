@@ -40,14 +40,8 @@ def write_queue(filename,q):
         fh.write(text)
 
 
-def run_trial(X, labels, eps, minPts, metric):
+def run_trial(X, labels, eps, minPts, metric, V):
     errors = '"'
-    
-    # In case of metric == 'seuclidean', need to precompute variance
-    if metric == 'seuclidean':
-        V = np.var(X,axis=0,ddof=1,dtype=np.double)
-    else:
-        V = None
 
     # Run our dbscan
     start = time()
@@ -160,6 +154,12 @@ if __name__ == '__main__':
     q = load_queue(sys.argv[2])    
     labels = LabelEncoder().fit_transform(x.cell_type)
 
+    # In case of metric == 'seuclidean', need to precompute variance
+    if metric == 'seuclidean':
+        V = np.var(X,axis=0,ddof=1,dtype=np.double)
+    else:
+        V = None
+
     t1 = time()
     while len(q):
         #print('x')
@@ -167,7 +167,7 @@ if __name__ == '__main__':
         metric = trial[0]
         minPts = int(trial[1])
         eps = np.float(trial[2])
-        db_result = run_trial(X, labels, eps, minPts, metric)
+        db_result = run_trial(X, labels, eps, minPts, metric, V)
         print(','.join([str(x) for x in db_result]))
         q.pop()
         write_queue(queue_file,q) # just rewrite the file after each iteration ...
