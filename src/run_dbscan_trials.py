@@ -128,7 +128,7 @@ def run_trial(X, labels, eps, minPts, metric):
 
 if __name__ == '__main__':
     if (len(sys.argv) != 3):
-        print("Usage: {} [data-file] [queue-file]".format(sys.argv[1]))
+        print("Usage: {} [data-file] [queue-file]".format(sys.argv[0]))
 
     signal(SIGINT,_sig_handle)
     signal(SIGTERM,_sig_handle)
