@@ -32,10 +32,12 @@ def load_queue(filename):
     return q
 
 def write_queue(filename,q):
+    lines = [','.join(line) for line in q]
+    text = '\n'.join(lines)
     with open(filename,'w') as fh:
         #for line in q:
         #    print(','.join(line),file=fh)
-        fh.writelines([','.join(line) for line in q])
+        fh.write(text)
 
 
 def run_trial(X, labels, eps, minPts, metric):
