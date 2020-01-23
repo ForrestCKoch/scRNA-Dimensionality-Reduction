@@ -154,19 +154,22 @@ if __name__ == '__main__':
     q = load_queue(sys.argv[2])    
     labels = LabelEncoder().fit_transform(x.cell_type)
 
-    # In case of metric == 'seuclidean', need to precompute variance
-    if metric == 'seuclidean':
-        V = np.var(X,axis=0,ddof=1,dtype=np.double)
-    else:
-        V = None
 
-    t1 = time()
+    #t1 = time()
+    V = None
     while len(q):
         #print('x')
+        # Get the specifics of each trial
         trial = q[-1]
         metric = trial[0]
         minPts = int(trial[1])
         eps = np.float(trial[2])
+
+        # Only compute the variance if necessary
+        if metric == 'seuclidean' and V is None:
+            V = np.var(X,axis=0,ddof=1,dtype=np.double)
+
+        # Calculate DBSCAN result and write
         db_result = run_trial(X, labels, eps, minPts, metric, V)
         print(','.join([str(x) for x in db_result]))
         q.pop()
