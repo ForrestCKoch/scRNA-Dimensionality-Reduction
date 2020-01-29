@@ -7,8 +7,8 @@ from scipy.stats import truncexpon as texp
 from sklearn.neighbors import NearestNeighbors as NN
 
 MAX_MINPTS_PROP = 0.15
-#N_TRIALS=2000
-N_TRIALS=1000
+N_TRIALS=2000
+#N_TRIALS=1000
 
 EXCLUDED_TYPES = ["alpha.contaminated", "beta.contaminated", "delta.contaminated", "Excluded", "gamma.contaminated", "miss", "NA", "not applicable", "unclassified", "unknown", "Unknown", "zothers"]
 
