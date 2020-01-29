@@ -5,10 +5,11 @@ sklearn
 scipy
 tqdm
 seaborn
-torch
 pandas
 sphinx
 sphinx_rtd_theme
 h5py
-scscope
-phenograph
+ivis
+nimfa
+MulticoreTSNE
+phate
