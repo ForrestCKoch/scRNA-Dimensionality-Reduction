@@ -4,6 +4,7 @@ import pickle
 
 import numpy as np
 import pandas as pd
+import scipy
 
 from sklearn.metrics import silhouette_score as ss
 from sklearn.metrics import calinski_harabasz_score as vrc
@@ -26,6 +27,8 @@ if __name__ == '__main__':
                 to_remove.append(i)
         x.drop(index=to_remove,inplace=True)
         X = x.drop('cell_type',axis=1).values
+        if scipy.sparse.issparse(X[0][0]):
+            X = np.array(np.concatenate([i[0].todense() for i in X]))
 
     labels = LabelEncoder().fit_transform(x.cell_type)
 
