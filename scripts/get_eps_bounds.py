@@ -3,6 +3,8 @@ from sklearn.metrics import pairwise_distances
 from heapq import heappush, heappop
 import numpy as np
 
+# Suggested Usage: find data/embeddings -type f -name '*.pkl' | xargs -n 1 -P 8 python3 scripts/get_eps_bounds.py > data/results/eps_upperbounds.csv
+
 def get_connecting_eps(X,metric='euclidean'):
     """
     Return the maximum jump requried for BFS to visit all nodes.
