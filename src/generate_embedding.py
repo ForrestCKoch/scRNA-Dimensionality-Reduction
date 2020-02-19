@@ -4,6 +4,25 @@
 #
 # Create a low dimensional embedding of a dataset
 # with a specific DR method
+# usage: generate_embedding.py [-h]
+#                              [--method {snmf,nmf,scscope,fica,ipca,bd,kpca-cos,pca,vasc,zifa,saucie,lda,kpca-pol,kpca-rbf,spca,mctsne,pmf,spectral,spca-batch,umap,phate,tsne,psmf,lle,lfnmf,srp,fa,tga,icm,sepnmf,nsnmf,grp,kpca-sig,lsnmf,tsvd,nmf2,ivis,isomap,mds,vpac}]
+#                              --dataset DATASET --outdir OUTDIR --trial-name
+#                              TRIAL_NAME [--dims DIMS] [--njobs NJOBS]
+#                              [--scale]
+# 
+# optional arguments:
+#   -h, --help            show this help message and exit
+#   --method {snmf,nmf,scscope,fica,ipca,bd,kpca-cos,pca,vasc,zifa,saucie,lda,kpca-pol,kpca-rbf,spca,mctsne,pmf,spectral,spca-batch,umap,phate,tsne,psmf,lle,lfnmf,srp,fa,tga,icm,sepnmf,nsnmf,grp,kpca-sig,lsnmf,tsvd,nmf2,ivis,isomap,mds,vpac}
+#                         method for dimension reduction
+#   --dataset DATASET     dataset to be used -- Should be stored in
+#                         data/datasets/pddf/. Do not include the .pkl extension
+#   --outdir OUTDIR       path to desired output directory. Will create if it
+#                         does not exist
+#   --trial-name TRIAL_NAME
+#                         Used to name the resulting embedding
+#   --dims DIMS           number of dimensions to reduce to
+#   --njobs NJOBS         number of jobs to run if applicable to DR algorithm
+#   --scale               whether to scale data (does not center)
 #################################################
 from sc_dr.datasets import *
 
@@ -27,7 +46,11 @@ from sklearn.preprocessing import scale
 from sklearn.random_projection import GaussianRandomProjection, SparseRandomProjection
 
 import nimfa
-from ivis import Ivis
+try:
+    from ivis import Ivis
+    IVIS_AVAILABLE=True
+except ImportError:
+    IVIS_AVAILABLE=False
 
 import pandas as pd
 
@@ -213,7 +236,7 @@ model_dict = {
     'grp':lambda args: GaussianRandomProjection(n_components=args.dims),
     'icm': lambda args: NimfaWrapper(nimfa.Icm,args.dims),
     'ipca':lambda args: IncrementalPCA(n_components=args.dims), 
-    'ivis':lambda args: IvisWrapper(args.dims),
+    'ivis':lambda args: IvisWrapper(args.dims) if IVIS_AVAILABLE else _embedding_error(),
     'isomap':lambda args: Isomap(n_components=args.dims,n_jobs=args.njobs),
     'kpca-pol':lambda args: KernelPCA(n_components=args.dims, kernel='poly', n_jobs=args.njobs),
     'kpca-rbf':lambda args: KernelPCA(n_components=args.dims, kernel='rbf', n_jobs=args.njobs),
