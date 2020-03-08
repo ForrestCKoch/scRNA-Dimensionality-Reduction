@@ -87,7 +87,7 @@ except ImportError:
     TGA_AVAILABLE=False
 
 try:
-    from vpac import VPAC
+    from vpac.vpac import VPAC
     VPAC_AVAILABLE=True
 except ImportError:
     VPAC_AVAILABLE=False
