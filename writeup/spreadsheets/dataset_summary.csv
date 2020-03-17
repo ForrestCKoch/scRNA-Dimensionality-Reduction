@@ -1,0 +1,64 @@
+dataset,protocol,species,tissue type,n_samples,n_genes,n_classes,max_class_perc,min_class_perc
+baron-human,inDrop,human,pancreas,8569,20125,14,0.2946668,0.0008168981
+baron-mouse,inDrop,mouse,pancreas,1886,14878,13,0.4740191,0.003181336
+biase,SMARTer,mouse,embryo,56,0,4,0.3571429,0.125
+camp1,SMARTer,human,liver,777,19020,7,0.2200772,0.09009009
+camp2,SMARTer,human,brain,734,18927,6,0.2956403,0.04223433
+campbell,Drop-seq,mouse,brain,21086,26774,35,0.3797306,0.001422745
+chen,Drop-seq,mouse,brain,14437,23284,47,0.2452726,0.0009004641
+darmanis,SMARTer,human,brain,466,22088,9,0.2811159,0.03433476
+deng-reads,Smart-Seq2,mouse,embryo,268,22431,6,0.4962687,0.04477612
+deng-rpkms,Smart-Seq2,mouse,embryo,268,22431,6,0.4962687,0.04477612
+fan,SUPeR-seq,mouse,embryo,66,26357,6,0.3333333,0.1060606
+goolam,Smart-Seq2,mouse,embryo,124,41480,5,0.516129,0.0483871
+grun,CEL-seq,mouse ,hematopoietic Stem Cells,1502,23536,2,0.804261,0.195739
+klein,inDrop,mouse,embryo stem cells,2717,24175,4,0.3433934,0.1115201
+lake,C1,human,brain,3042,25051,16,0.3477975,0.0147929
+li,SMARTer,human,colorectal tumor,561,55186,9,0.171123,0.04099822
+macosko,Drop-seq,mouse,retina,44808,23288,12,0.6561328,0.001205142
+manno_human,STRT-Seq UMI,human,brain,4029,20560,56,0.06999255,0.001241003
+manno_mouse,STRT-Seq UMI,mouse,brain,2150,24378,32,0.1809302,0.005581395
+marques,C1,mosue,brain,5053,23556,13,0.1824659,0.01504057
+muraro,CEL-Seq2,human,pancreas,2126,19127,10,0.3819379,0.001411101
+patel,Smart-Seq,human,glioblastoma,430,5948,5,0.2744186,0.1627907
+pollen,SMARTer,human,Neonatal-foreskin?,301,23730,11,0.179402,0.02325581
+romanov,C1,mouse,brain,2881,24341,7,0.3474488,0.01666088
+segerstolpe,Smart-Seq2,human ,pancreas,3514,25525,15,0.3713717,0.000569152
+shekhar,Drop-seq,mouse,retina,27499,13166,6,0.8543583,0.001745518
+TabulaMuris_Bladder_10X,chromium,mouse,bladder,2500,23433,5,0.4744,0
+TabulaMuris_Bladder_FACS,Smart-Seq2,mouse,bladder,1638,23433,4,0.4004884,0
+TabulaMuris_Brain_Microglia_FACS,Smart-Seq2,mouse,brain,4762,23433,3,0.9090718,0
+TabulaMuris_Brain_Neurons_FACS,Smart-Seq2,mouse,brain,5799,23433,11,0.204518,0
+TabulaMuris_Colon_FACS,Smart-Seq2,mouse,colon,4149,23433,6,0.4321523,0
+TabulaMuris_Fat_FACS,Smart-Seq2,mouse,fat,5862,23433,11,0.3282156,0
+TabulaMuris_Heart_10X,chromium,mouse,heart,654,23433,7,0.3394495,0
+TabulaMuris_Heart_FACS,Smart-Seq2,mouse,heart,7115,23433,11,0.293324,0
+TabulaMuris_Kidney_10X,chromium,mouse,kidney,2782,23433,9,0.6905104,0
+TabulaMuris_Kidney_FACS,Smart-Seq2,mouse,kidney,865,23433,7,0.3017341,0
+TabulaMuris_Liver_10X,chromium,mouse,liver,1924,23433,3,0.522869,0
+TabulaMuris_Liver_FACS,Smart-Seq2,mouse,liver,981,23433,6,0.4067278,0
+TabulaMuris_Lung_10X,chromium,mouse,lung,1476710,23433,16,0.001715977,0
+TabulaMuris_Lung_FACS,Smart-Seq2,mouse,lung,1923,23433,17,0.3837754,0
+TabulaMuris_Mammary_10X,chromium,mouse,mammary,4481,23433,7,0.3927695,0
+TabulaMuris_Mammary_FACS,Smart-Seq2,mouse,mammary,2663,23433,5,0.4787833,0
+TabulaMuris_Marrow_10X,chromium,mouse,marrow,4112,23433,9,0.3358463,0
+TabulaMuris_Marrow_FACS,Smart-Seq2,mouse,marrow,5355,23433,9,0.345098,0
+TabulaMuris_Muscle_10X,chromium,mouse,muscle,4543,23433,9,0.2839533,0
+TabulaMuris_Muscle_FACS,Smart-Seq2,mouse,muscle,2102,23433,8,0.2597526,0
+TabulaMuris_Pancreas_FACS,Smart-Seq2,mouse,pancreas,1961,23433,10,0.2095869,0
+TabulaMuris_Skin_FACS,Smart-Seq2,mouse,skin,2464,23433,5,0.5564123,0
+TabulaMuris_Spleen_10X,chromium,mouse,spleen,9573,23433,5,0.7026011,0
+TabulaMuris_Spleen_FACS,Smart-Seq2,mouse,spleen,1718,23433,4,0.7206054,0
+TabulaMuris_Thymus_10X,chromium,mouse,thymus,1431,23433,3,0.9203354,0
+TabulaMuris_Thymus_FACS,Smart-Seq2,mouse,thymus,1580,23433,3,0.7911392,0
+TabulaMuris_Tongue_10X,chromium,mouse,tongue,7538,23433,3,0.6745821,0
+TabulaMuris_Tongue_FACS,Smart-Seq2,mouse,tongue,1432,23433,3,0.7213687,0
+TabulaMuris_Trachea_10X,chromium,mouse,trachea,1474560,23433,8,0.005360243,0
+TabulaMuris_Trachea_FACS,Smart-Seq2,mouse,trachea,1391,23433,5,0.4090582,0
+tasic-reads,SMARTer,mouse,brain,1679,24150,18,0.163788,0.005360334
+tasic-rpkms,SMARTer,mouse,brain,1679,24057,18,0.163788,0.005360334
+treutlein,SMARTer,mouse,lung,80,23271,5,0.5125,0.0375
+usoskin,STRT-Seq,mouse,brain,622,25334,4,0.3745981,0.1302251
+xin,SMARTer,human,pancreas,1600,39851,8,0.55375,0.005
+yan,Tang,human,embryo,90,20214,6,0.3333333,0.06666667
+zeisel,STRT-Seq UMI,mouse,brain,3005,19972,9,0.3154742,0.008652246
