@@ -69,7 +69,7 @@ if __name__ == '__main__':
         os.makedirs(os.path.join('data/results/pairwise_distances/',metric))
     except FileExistsError:
         pass
-    with open(os.path.join('data/results/pairwise_distances/',metric,dataset+'_'+count+'.csv'),'a') as fh:
+    with open(os.path.join('data/results/pairwise_distances/',metric,dataset+'_'+count+'.csv'),'w') as fh:
         print('metric,dataset,count,method,dimensions,rho',file=fh)
         for method in os.listdir(os.path.join('data/embeddings',dataset,count)):
             for pkl in glob.glob(os.path.join('data/embeddings',dataset,count,method,'*.pkl')):
