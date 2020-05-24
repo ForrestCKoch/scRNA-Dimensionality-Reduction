@@ -1,4 +1,4 @@
-vrc.euclidean,vrc.seuclidean,vrc.cosine,vrc.correlation,ss.euclidean,ss.seuclidean,ss.cosine,ss.correlation,dbs.euclidean,dbs.seuclidean,dbs.cosine,dbs.correlation
+#,vrc.euclidean,vrc.seuclidean,vrc.cosine,vrc.correlation,ss.euclidean,ss.seuclidean,ss.cosine,ss.correlation,dbs.euclidean,dbs.seuclidean,dbs.cosine,dbs.correlation,
 vrc.euclidean,NA,0.04007166,0.04007166,0.002275692,1.164153e-10,0,0.002275692,6.542541e-08,7.005874e-07,3.309385e-05,0.006765493,0.0006593636,
 vrc.seuclidean,NA,,NA,0.006765493,0.0001620317,1.164153e-10,1.164153e-10,0.0006593636,6.542541e-08,7.005874e-07,3.309385e-05,0.01754102,0.002275692,
 vrc.cosine,NA,,NA,,NA,0.0001620317,7.005874e-07,7.005874e-07,0.006765493,3.958121e-09,6.542541e-08,3.309385e-05,0.01754102,3.309385e-05,
