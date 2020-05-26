@@ -11,12 +11,13 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     metric = sys.argv[1]
     acc = sys.argv[2]
+    opt = sys.argv[3]
     #x = pd.read_csv('data/results/'+sys.argv[1]+'_optimal_dbscan_trials_reduced.csv').dropna()
     x = pd.read_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_'+sys.argv[1]+'.csv').dropna()
     grouped = x.groupby(['dataset','method'])
 
     #d = {'dataset':[],'method':[],'ss':[],'vrc':[],'dbs':[]}#,acc:[]}
-    d = {'dataset':[],'method':[],'vrc':[]}#,acc:[]}
+    d = {'dataset':[],'method':[],opt:[]}#,acc:[]}
     for group in grouped.groups.keys():
         pass
         #print(group)
@@ -24,13 +25,17 @@ if __name__ == '__main__':
         d['dataset'].append(group[0])
         d['method'].append(group[1])
         #d['ss'].append(data[acc].iloc[np.argmax(data['ss'])])
-        d['vrc'].append(data[acc].iloc[np.argmax(data['vrc'])])
+        if opt == 'dbs':
+            d[opt].append(data[acc].iloc[np.argmin(data[opt])])
+        else:
+            d[opt].append(data[acc].iloc[np.argmax(data[opt])])
         #d['dbs'].append(data[acc].iloc[np.argmin(data['dbs'])])
         #ari = np.max(data[acc])
 
     #X = pd.DataFrame(d).set_index('method').pivot_table(index=['method'],columns=['dataset']).T
     X = pd.DataFrame(d).pivot_table(index=['method'],columns=['dataset']).T
     #X.droplevel(1)
+    #print(X.mean())
 
     """
     meds = X.median(1,numeric_only=True)
@@ -71,12 +76,15 @@ if __name__ == '__main__':
     ax1.boxplot(v.T,positions=np.array(range(55))+0.5)
     ax1.get_xaxis().set_ticklabels([])
     
-    # Heatmap
-    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=xlabs, ax=ax3,cbar=False)
-    #ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
-    #plt.rcParams.update({'axes.labelsize':'x-small'})
-    plt.tight_layout()
-    plt.show()
-    #plt.savefig('writeup/plots/dbscan_'+metric+'_'+acc+'.pdf')
-    #X.to_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_'+metric+'_'+acc+'.csv')
+    #print(','.join([str(i) for i in (np.concatenate(np.mean(v,0)[np.argsort(xlabs)],[np.mean(v)]))]))
+    print(','.join([opt,metric]+[str(i) for i in np.mean(v,0)[np.argsort(xlabs)]]+[str(np.mean(v))]))
+    #print(','.join(['measure,metric']+list(np.sort(xlabs))+['overall']))
 
+    # Heatmap
+    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=xlabs, ax=ax3,vmin=0,vmax=1,cbar=False)
+    plt.rcParams.update({'axes.labelsize':'x-small'})
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'.pdf')
+    X.to_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_'+metric+'_'+opt+'_'+acc+'.csv')
+    pass
