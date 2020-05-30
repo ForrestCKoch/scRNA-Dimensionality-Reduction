@@ -13,7 +13,7 @@ cos=$(echo $line|cut -d',' -f4)
 seu=$(echo $line|cut -d',' -f5)
 
 dims=$(echo $fn|rev|cut -d'/' -f1|rev|cut -d'.' -f1)
-queue_folder=$(echo $fn|rev|cut -d'/' -f2-|rev|sed 's/embeddings/queues/')
+queue_folder=$(echo $fn|rev|cut -d'/' -f2-|rev|sed 's/embeddings/psmf_queues/')
 
 echo $fn
 

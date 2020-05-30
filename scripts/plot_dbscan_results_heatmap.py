@@ -77,7 +77,11 @@ if __name__ == '__main__':
     ax1.get_xaxis().set_ticklabels([])
     
     #print(','.join([str(i) for i in (np.concatenate(np.mean(v,0)[np.argsort(xlabs)],[np.mean(v)]))]))
-    print(','.join([opt,metric]+[str(i) for i in np.mean(v,0)[np.argsort(xlabs)]]+[str(np.mean(v))]))
+    #print(v.shape) 
+    w = v[np.where(v.max(1)>0.5)[0],:]
+    #print(w.shape)
+    #print(','.join([opt,metric]+[str(i) for i in np.mean(v,0)[np.argsort(xlabs)]]+[str(np.mean(v))]))
+    print(','.join([opt,metric]+[str(i) for i in np.mean(w,0)[np.argsort(xlabs)]]+[str(np.mean(w))]))
     #print(','.join(['measure,metric']+list(np.sort(xlabs))+['overall']))
 
     # Heatmap

@@ -58,8 +58,9 @@ def process_data_method_tuple(targ):
         return None
 
     #print('{0:20} {1:20}'.format(dataset,method))
-    tokeep = [ all_optimal_rows.nlargest(1,i) for i in ['ari','nnari','nmi','nnnmi','ss','nnss','vrc','nnvrc']] 
-    tokeep += [ all_optimal_rows.nsmallest(1,i) for i in ['dbs','nndbs']]
+    #tokeep = [ all_optimal_rows.nlargest(1,i) for i in ['ari','nnari','nmi','nnnmi','ss','nnss','vrc','nnvrc']] 
+    tokeep = [ all_optimal_rows.nlargest(1,i) for i in ['ari','nnari','nmi','nnnmi','ss','nnss','vrc','nnvrc','dbs','nndbs']] 
+    #tokeep += [ all_optimal_rows.nsmallest(1,i) for i in ['dbs','nndbs']]
     optimal_rows = pd.concat(tokeep)
     # keep track of which criteria that row is optimal for
     optimal_rows['loss_criteria'] = ['ari','nnari','nmi','nnnmi','ss','nnss','vrc','nnvrc','dbs','nndbs']
@@ -85,6 +86,6 @@ if __name__ == '__main__':
         #method_optimal_rows.columns=method_optimal_rows.columns.str.strip()
         #method_optimal_rows.sort_values(by=['dataset','method','loss_criteria'],inplace=True)
 
-        method_optimal_rows.to_csv('data/results/optimal_dbscan_trials_'+metric+'.csv')            
+        method_optimal_rows.to_csv('data/results/optimal_dbscan_trials_'+metric+'_tmp.csv')            
     p.close()
     p.join()
