@@ -25,7 +25,6 @@ if __name__ == '__main__':
                 best_idx = np.argmin(data[ivm])
             else:
                 best_idx = np.argmax(data[ivm])
-
             d['r.euc'].append(data['rho.euclidean'].iloc[best_idx])
             d['r.seu'].append(data['rho.seuclidean'].iloc[best_idx])
             d['r.cor'].append(data['rho.correlation'].iloc[best_idx])

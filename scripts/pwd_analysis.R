@@ -31,18 +31,18 @@ pwt.pv <- cbind(pwt.pv[,1],data.frame(matrix(p.adjust(pwt.pv[,c(2,3,5)],method='
 #colnames(mean.cor)[1] <- 'method'
 #mean.cor <- data.frame(mean.cor)
 # true for the best correlation
-cor.best <- t(apply(mean.cor[,2:7],1,rank)==3)
+cor.best <- t(apply(mean.cor,1,rank)==6)
 # Get significant tests
-h.sig <- pwt.pv[,2:7] < 0.05
+h.sig <- pwt.pv[,2:4] < 0.05
 
-pairwise.wilcox.test(melt(mean.cor)$value,melt(mean.cor)$X2)$p.value < 0.05
+print(pairwise.wilcox.test(melt(mean.cor)$value,melt(mean.cor)$X2,paired=T)$p.value < 0.05)
 # test for differences between mean correlations when using each heuristic I go:
 #         dbs ss_cor ss_cos ss_euc ss_seu
-# ss_cor FALSE     NA     NA     NA     NA
-# ss_cos FALSE  FALSE     NA     NA     NA
+# ss_cor TRUE      NA     NA     NA     NA
+# ss_cos TRUE   FALSE     NA     NA     NA
 # ss_euc FALSE   TRUE   TRUE     NA     NA
 # ss_seu  TRUE   TRUE   TRUE   TRUE     NA
 # vrc    FALSE   TRUE   TRUE  FALSE   TRUE
 
-kendall.w(mean.cor[,c(1,5,6)])
+print(kendall.w(mean.cor[,c(1,5,6)]))
 # test concordance between 'top' heuristics 
