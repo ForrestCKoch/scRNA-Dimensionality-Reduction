@@ -35,6 +35,9 @@ if __name__ == '__main__':
     # Finally, our final dataframe!
     X = pd.DataFrame(stacked).pivot_table(index=['measure','dataset'],columns=['method'])
 
+    # write our dataframe
+    X.to_csv('data/results/internal_measures_standardized.csv')
+
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
     sep_lines = []

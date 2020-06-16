@@ -24,3 +24,8 @@ print(kw)
 # Kendall's W (corrected for ties): 0.8708
 # Spearman's ranked correlation: 0.845
 
+# To conduct a pairwise t test ...
+# Note that an assumption of independence is being broken here
+# may be worth considering validity ...
+pwt<-pairwise.t.test(as.vector(X),rep(measures,ea=6))
+#write.csv('data/results/ivm_pairwisetest.csv')

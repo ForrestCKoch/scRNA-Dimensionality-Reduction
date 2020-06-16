@@ -11,7 +11,7 @@ import numpy as np
 if __name__ == '__main__':
 
     #for metric in ['euclidean','seuclidean','correlation','cosine']:
-    for metric in ['seuclidean','correlation','cosine']:
+    for metric in ['cosine']:
 
         print("Starting "+metric+" ...")
         dbscan_results = 'data/results/dbscan'
