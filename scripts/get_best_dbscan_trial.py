@@ -76,6 +76,4 @@ if __name__ == '__main__':
 
         #all_optimal_rows.to_csv(os.path.join(workdir,''))
 # TODO:
-# work out how to combine results from each of the files to create a summary csv of the best performing trials for each embedding
-
-
+# work out how to combine results from each of the files to create a summary csv of the best performing trials for each embeddinmetriceuclideai

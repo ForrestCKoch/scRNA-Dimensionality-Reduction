@@ -1,0 +1,8 @@
+metric,dataset,count,method,dimensions,rho
+correlation,biase,lognormcounts,mctsne,96,-0.003020457483057334
+correlation,biase,lognormcounts,mctsne,48,0.0885788461007058
+correlation,biase,lognormcounts,mctsne,32,nan
+correlation,biase,lognormcounts,mctsne,2,0.0022263877586760584
+correlation,biase,lognormcounts,mctsne,4,0.01836361234564725
+correlation,biase,lognormcounts,mctsne,8,-0.009479933159020558
+correlation,biase,lognormcounts,mctsne,16,-0.018461103696255168

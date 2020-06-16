@@ -22,6 +22,6 @@ mkdir -p data/datasets/pddf/
 for sce in $(ls data/datasets/csvs|cut -d'.' -f1); do
     if [ ! "$(ls data/datasets/pddf|grep ^${sce}.pkl)" ]; then
         echo $sce ...
-        python3.6 scripts/convert_csv_to_pd.py $sce
+        python3 scripts/convert_csv_to_pd.py $sce
     fi
 done

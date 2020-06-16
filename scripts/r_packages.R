@@ -1,5 +1,6 @@
 install.packages("BiocManager")
 install.packages("RSQLite")
+install.packages('na.tools')
 BiocManager::install("SummarizedExperiment")
 BiocManager::install("SingleCellExperiment")
 BiocManager::install("scater")

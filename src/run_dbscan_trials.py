@@ -6,6 +6,7 @@ from time import time
 
 import numpy as np
 import pandas as pd
+import scipy
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cluster import DBSCAN
@@ -46,9 +47,9 @@ def run_trial(X, labels, eps, minPts, metric, V):
     # Run our dbscan
     start = time()
     if metric == 'seuclidean':
-        db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V})
+        db = DBSCAN(eps,minPts,metric=metric,metric_params={'V':V},n_jobs=6)
     else:
-        db = DBSCAN(eps,minPts,metric=metric)
+        db = DBSCAN(eps,minPts,metric=metric,n_jobs=6)
     pred_labels = db.fit_predict(X)
     elapsed = time() - start
     perc_noise = np.sum(pred_labels==-1)/len(pred_labels)
@@ -150,6 +151,8 @@ if __name__ == '__main__':
                 to_remove.append(i)    
         x.drop(index=to_remove,inplace=True)    
         X = x.drop('cell_type',axis=1).values
+    if scipy.sparse.issparse(X[0][0]):
+        X = np.array(np.concatenate([i[0].todense() for i in X]))
 
     q = load_queue(sys.argv[2])    
     labels = LabelEncoder().fit_transform(x.cell_type)

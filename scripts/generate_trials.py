@@ -3,6 +3,8 @@ import pickle
 
 import pandas as pd
 import numpy as np
+import scipy
+
 from scipy.stats import truncexpon as texp
 from sklearn.neighbors import NearestNeighbors as NN
 
@@ -30,6 +32,8 @@ if __name__ == '__main__':
                 to_remove.append(i)
         x.drop(index=to_remove,inplace=True)
         X = x.drop('cell_type',axis=1).values
+        if scipy.sparse.issparse(X[0][0]):
+            X = np.array(np.concatenate([i[0].todense() for i in X]))
 
 
     # And grab our metric should be one of 'euclidean', 'seuclidean', 'correlation', or 'cosine'

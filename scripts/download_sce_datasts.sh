@@ -24,23 +24,26 @@ cd downloads
 
 for dataset in $(ls $tmpdir/scRNA.seq.datasets/bash|cut -d'.' -f1); do
     # Don't download if it already exists 
+    mkdir -p $dataset
+    cd $dataset
     if [ ! "$(ls $rds_folder|grep $dataset)" ]; then
         echo "$dataset ..."
         logfile=$workdir/logs/download_datasets/${dataset}.log
-        bash ../bash/${dataset}.sh >> $logfile 2>&1
-        Rscript ../R/${dataset}.R >> $logfile 2>&1
+        bash ../../bash/${dataset}.sh >> $logfile 2>&1
+        Rscript ../../R/${dataset}.R >> $logfile 2>&1
         mv *.rds $rds_folder/
 
         # Cycle through and delete each file/folder but don't delete `downloads`
         # Probably inefficient but whatever ...
-        for f in $(ls $tmpdir/scRNA.seq.datasets/downloads/); do
-            if [ -d $f ]; then
-                rm -r $f
-            else
-                rm $f
-            fi
-        done
+        #for f in $(ls $tmpdir/scRNA.seq.datasets/downloads/); do
+        #    if [ -d $f ]; then
+        #        rm -r $f
+        #    else
+        #        rm $f
+        #    fi
+        #done
     fi
+    cd ../
 done
 
 cd $workdir

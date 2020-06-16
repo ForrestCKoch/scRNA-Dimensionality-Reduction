@@ -12,4 +12,4 @@ logdir=data/results/dbscan/${dataset}/$count/$method/$metric
 mkdir -p $logdir
 
 #echo $queuefile
-python3 src/run_dbscan_trials.py $pkl $queuefile >> $logdir/${dims}.csv
+python3 -u src/run_dbscan_trials.py $pkl $queuefile >> $logdir/${dims}.csv
