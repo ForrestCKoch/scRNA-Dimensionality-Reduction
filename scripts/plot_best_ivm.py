@@ -18,7 +18,7 @@ EXCLUDED_TYPES = ["alpha.contaminated", "beta.contaminated", "delta.contaminated
 
 opt='vrc'
 acc='ari'
-methods = ['lda','nmf','icm','ivis']
+methods = ['lda','nmf','snmf','ivis']
 #datsets = ['TabulaMuris_Mammary_10X', 'deng-rpkms','li','TabulaMuris_Heart_10X','chen']
 datsets = ['TabulaMuris_Mammary_10X','li','chen']
 
