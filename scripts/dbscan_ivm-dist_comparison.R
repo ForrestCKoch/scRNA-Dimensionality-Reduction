@@ -1,3 +1,4 @@
+# Used to calculate pairwise wilcox/sign tests in dbscan results
 cor <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_correlation_ari.csv')
 cos <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_cosine_ari.csv')
 euc <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_euclidean_ari.csv')
