@@ -7,26 +7,69 @@ options(width=140)
 options(digits=3)
 
 x <- subset(read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_seuclidean_ari.csv'),X=='vrc')
+x <- subset(x,select=-c(kpca.sig))
 x[is.na(x)]<-0
-med.rank <- 34-rank(apply(x[,3:35],2,median))
-mean.rank <- 34-rank(apply(x[,3:35],2,mean))
-rank.rank <- 34-rank(rowSums((apply(x[,3:35],1,rank))))
+med.rank <- 34-rank(apply(x[,3:34],2,median))
+med.rank <- med.rank[order(names(med.rank))]
+mean.rank <- 34-rank(apply(x[,3:34],2,mean))
+mean.rank <- mean.rank[order(names(mean.rank))]
+rank.rank <- 34-rank(rowSums((apply(x[,3:34],1,rank))))
+rank.rank <- rank.rank[order(names(rank.rank))]
 
 y <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_seuclidean.csv')
 y[is.na(y)]<-0
 x2 <- data.frame(pivot_wider(subset(y,loss_criteria=='vrc'),id_cols=c('dataset'),names_from=c('method'),values_from=c('ari')))
+x2 <- subset(x2,select=-c(kpca.sig))
 x2[is.na(x2)]<-0
-med.rank2 <- 34-rank(apply(x2[,2:34],2,median))
-mean.rank2 <- 34-rank(apply(x2[,2:34],2,mean))
-rank.rank2 <- 34-rank(rowSums((apply(x2[,2:34],1,rank))))
+med.rank2 <- 34-rank(apply(x2[,2:33],2,median))
+med.rank2 <- med.rank2[order(names(med.rank2))]
+mean.rank2 <- 34-rank(apply(x2[,2:33],2,mean))
+mean.rank2 <- mean.rank2[order(names(mean.rank2))]
+rank.rank2 <- 34-rank(rowSums((apply(x2[,2:33],1,rank))))
+rank.rank2 <- rank.rank2[order(names(rank.rank2))]
 
 #z <- subset(read.csv('data/results/internal_validation_measures/internal_measures_optimal.csv'),method=='ss_seu')
 z <- subset(read.csv('data/results/internal_validation_measures/internal_measures_optimal.csv'),method=='vrc')
 z[is.na(z)] <- 0
-med.rank3 <- 34-rank(apply(z[,3:35],2,median))
-mean.rank3 <- 34-rank(apply(z[,3:35],2,mean))
-rank.rank3 <- 34-rank(rowSums((apply(z[,3:35],1,rank))))
+z <- subset(z,select=-c(psmf))
+med.rank3 <- 34-rank(apply(z[,3:34],2,median))
+med.rank3 <- med.rank3[order(names(med.rank3))]
+mean.rank3 <- 34-rank(apply(z[,3:34],2,mean))
+mean.rank3 <- mean.rank3[order(names(mean.rank3))]
+rank.rank3 <- 34-rank(rowSums((apply(z[,3:34],1,rank))))
+rank.rank3 <- rank.rank3[order(names(rank.rank3))]
 
-print(cor(med.rank2,med.rank3))
-print(cor(mean.rank2,mean.rank3))
-print(cor(rank.rank2,med.rank3))
+#print(cor(med.rank2,med.rank3,method='spearman'))
+#print(cor(mean.rank2,mean.rank3,method='spearman'))
+#print(cor(rank.rank2,med.rank3,method='spearman'))
+
+k <- subset(read.csv('data/results/optimal_kmeans_trials_summarized_ari.csv'),X=='vrc')
+k[is.na(k)] <- 0
+
+# Final solution to go with ...
+ivm.med.rank <- apply(apply(z[,3:34],1,rank),1,median)
+ivm.med.rank<-ivm.med.rank[order(names(ivm.med.rank))]
+dbs.med.rank <- apply(apply(x2[,2:33],1,rank),1,median)
+dbs.med.rank<-dbs.med.rank[order(names(dbs.med.rank))]
+kmean.med.rank <- apply(apply(k[,3:34],1,rank),1,median)
+kmean.med.rank<-kmean.med.rank[order(names(kmean.med.rank))]
+print(cor.test(ivm.med.rank,dbs.med.rank,method='spearman'))
+print(cor.test(ivm.med.rank,kmean.med.rank,method='spearman'))
+print(cor.test(kmean.med.rank,dbs.med.rank,method='spearman'))
+
+# excluding 'bd', 'icm', 'vpac' ...
+a1 <- ivm.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
+a2 <- dbs.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
+a3 <- kmean.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
+
+print(cor.test(a1,a2,method='spearman'))
+print(cor.test(a1,a3,method='spearman'))
+print(cor.test(a3,a2,method='spearman'))
+
+y2 <- read.csv('data/results/optimal_dbscan_trials_seuclidean_tmp.csv')
+y2[is.na(y2)]<-0
+x3 <- data.frame(pivot_wider(subset(y2,loss_criteria=='vrc'),id_cols=c('dataset'),names_from=c('method'),values_from=c('ari')))
+x3 <- subset(x3,select=-c(kpca.sig,psmf,tga))
+x3[is.na(x3)]<-0
+dbs2.med.rank <- apply(apply(x3[,2:33],1,rank),1,median)
+dbs2.med.rank<-dbs2.med.rank[order(names(dbs2.med.rank))]
