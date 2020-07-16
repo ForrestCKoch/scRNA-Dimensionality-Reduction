@@ -5,6 +5,7 @@ import numpy as np
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size':6})
 
 
 if __name__ == '__main__':
@@ -19,9 +20,9 @@ if __name__ == '__main__':
         data = pd.DataFrame(grouped.get_group(group))
         d['dataset'].append(group[0])
         d['method'].append(group[1])
-        d['ss'].append(data[acc].iloc[np.argmax(data['ss'])])
-        d['vrc'].append(data[acc].iloc[np.argmax(data['vrc'])])
-        d['dbs'].append(data[acc].iloc[np.argmin(data['dbs'])])
+        d['ss'].append(data[acc].iloc[np.argmax(np.array(data['ss']))])
+        d['vrc'].append(data[acc].iloc[np.argmax(np.array(data['vrc']))])
+        d['dbs'].append(data[acc].iloc[np.argmin(np.array(data['dbs']))])
         #ari = np.max(data[acc])
 
     X = pd.DataFrame(d).set_index('method').pivot_table(index=['method'],columns=['dataset']).T
@@ -38,9 +39,15 @@ if __name__ == '__main__':
 
     xlabs = list(X.columns.values)
 
-    ax = sns.heatmap(X,cmap='viridis',xticklabels=xlabs,yticklabels=ylabs)
+    print(X.columns)
+    X[np.isnan(X)] = 0
+    X_col_med = np.median(X,axis=0)
+    col_order = np.flip(np.argsort(X_col_med))
+
+    ax = sns.heatmap(X.values[:,col_order],cmap='viridis',xticklabels=[xlabs[i] for i in col_order],yticklabels=ylabs)
     ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
     #plt.show()
+    plt.tight_layout()
     plt.savefig('writeup/plots/kmeans_'+acc+'.pdf')
     X.to_csv('data/results/optimal_kmeans_trials_summarized_'+acc+'.csv')
 

@@ -1,4 +1,5 @@
 library(ggplot2)
+library(reshape)
 
 data <- read.csv('data/results/pw_correlations/pw_correlations_by_best_ivm.csv')
 
@@ -13,3 +14,8 @@ ggsave('writeup/plots/pw_correlations/pw_correlations_boxplot_dbs_polar.pdf',p)
 p <- ggplot(data,aes(reorder(method,vrc,FUN=median,na.rm=T),vrc)) + geom_boxplot(outlier.shape=19) + theme(axis.text.x = element_text(angle = 90))+ ylab('Pairwise Distance Correlation') + ggtitle("'Best' embedding chosen by Variance Ratio Criterion") + xlab('Dimensionality Reduction Method') + coord_polar()
 
 ggsave('writeup/plots/pw_correlations/pw_correlations_boxplot_vrc_polar.pdf',p)
+
+data2 <- melt(subset(data,select=-c(X)))
+p <- ggplot(data2, aes(reorder(method,value,FUN=median,na.rm=T),value,fill=variable))+geom_boxplot()+ylab('Pairwise Distance Correlation') + ggtitle("") + xlab('Dimensionality Reduction Method')
+
+ggsave('writeup/plots/pw_correlations/pw_correlations_all_boxplot.pdf')

@@ -5,10 +5,12 @@ import numpy as np
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 6})
 
 
 if __name__ == '__main__':
-    x = pd.read_csv(sys.argv[1]).dropna()
+    filename='data/results/internal_validation_measures/internal_measures_reduced.csv'
+    x = pd.read_csv(filename).dropna()
     #x = x[x['method'] != 'saucie']
     #y = pd.read_csv('data/results/dataset_info.csv')
     # alter the following line to change the dataset ordering
@@ -53,11 +55,14 @@ if __name__ == '__main__':
     xlabs = list(X.columns.levels[1])
 
     ylabs = [i.upper() if i is not None else None for i in ylabs]
-    xlabs = [i.upper() if i is not None else None for i in xlabs]
+    xlabs = [i.upper() for i in xlabs]
+    X[np.isnan(X)] = 0
+    X_col_med = np.median(X,axis=0)
+    col_order = np.flip(np.argsort(X_col_med))
 
-    ax = sns.heatmap(X,0,1,cmap='viridis',xticklabels=xlabs,yticklabels=ylabs)
+    ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
-
+    #plt.show()
     plt.tight_layout()
-    plt.show()
+    plt.savefig('writeup/plots/internal_measures_new.pdf', transparent=True)
 

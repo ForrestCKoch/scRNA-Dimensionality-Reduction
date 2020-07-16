@@ -54,8 +54,11 @@ dbs.med.rank<-dbs.med.rank[order(names(dbs.med.rank))]
 kmean.med.rank <- apply(apply(k[,3:34],1,rank),1,median)
 kmean.med.rank<-kmean.med.rank[order(names(kmean.med.rank))]
 print(cor.test(ivm.med.rank,dbs.med.rank,method='spearman'))
+print(cor.test(ivm.med.rank,dbs.med.rank))
 print(cor.test(ivm.med.rank,kmean.med.rank,method='spearman'))
+print(cor.test(ivm.med.rank,kmean.med.rank))
 print(cor.test(kmean.med.rank,dbs.med.rank,method='spearman'))
+print(cor.test(kmean.med.rank,dbs.med.rank))
 
 # excluding 'bd', 'icm', 'vpac' ...
 a1 <- ivm.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
@@ -63,8 +66,11 @@ a2 <- dbs.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
 a3 <- kmean.med.rank[!names(ivm.med.rank)%in%c('bd','icm','vpac')]
 
 print(cor.test(a1,a2,method='spearman'))
+print(cor.test(a1,a2))
 print(cor.test(a1,a3,method='spearman'))
+print(cor.test(a1,a3))
 print(cor.test(a3,a2,method='spearman'))
+print(cor.test(a3,a2))
 
 y2 <- read.csv('data/results/optimal_dbscan_trials_seuclidean_tmp.csv')
 y2[is.na(y2)]<-0
@@ -73,3 +79,20 @@ x3 <- subset(x3,select=-c(kpca.sig,psmf,tga))
 x3[is.na(x3)]<-0
 dbs2.med.rank <- apply(apply(x3[,2:33],1,rank),1,median)
 dbs2.med.rank<-dbs2.med.rank[order(names(dbs2.med.rank))]
+
+pdf('writeup/plots/dbscan_vs_ivm/dbscan_vs_ivm_ranks.pdf')
+plot(dbs.med.rank,ivm.med.rank,cex=0.01)
+abline(0,1,lty=2)
+text(dbs.med.rank,ivm.med.rank,names(dbs.med.rank),cex=0.5)
+dev.off()
+pdf('writeup/plots/dbscan_vs_ivm/kmeans_vs_ivm_ranks.pdf')
+plot(kmean.med.rank,ivm.med.rank,cex=0.01)
+abline(0,1,lty=2)
+#text(kmean.med.rank+2*(runif(32)-0.5),ivm.med.rank+2*(runif(32)-0.5),names(dbs.med.rank),cex=0.5)
+text(kmean.med.rank,ivm.med.rank,names(dbs.med.rank),cex=0.5)
+dev.off()
+pdf('writeup/plots/dbscan_vs_ivm/dbscan_vs_kmeans_ranks.pdf')
+plot(dbs.med.rank,kmean.med.rank,cex=0.01)
+abline(0,1,lty=2)
+text(dbs.med.rank,kmean.med.rank,names(dbs.med.rank),cex=0.5)
+dev.off()
