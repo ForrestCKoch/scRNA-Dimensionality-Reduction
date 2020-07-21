@@ -1,4 +1,5 @@
 import sys
+import re
 
 import pandas as pd
 import numpy as np
@@ -44,18 +45,37 @@ if __name__ == '__main__':
 
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
+    ylabs[0] = re.sub('_',' ',ylabs[0])
     sep_lines = []
     for i in range(1,len(ylabs)):
         if ylabs[i] == curr:
             ylabs[i] = None
         else:
             curr = ylabs[i]
+            if curr == 'dbs':
+                ylabs[i] = 'dbi'
+            elif curr == 'ss_seu':
+                ylabs[i] = 'ss seu'
+            elif curr == 'ss_euc':
+                ylabs[i] = 'ss euc'
+            elif curr == 'ss_cor':
+                ylabs[i] = 'ss cor'
+            elif curr == 'ss_cos':
+                ylabs[i] = 'ss cos'
+            else:
+                ylabs[i] = 'vrc'
             sep_lines.append(i)
+
 
     xlabs = list(X.columns.levels[1])
 
     ylabs = [i.upper() if i is not None else None for i in ylabs]
     xlabs = [i.upper() for i in xlabs]
+
+    #Make some adjustments to names
+    to_replace = {'MCTSNE':'TSNE','NMF2':'NMF-LEE','NMF':'NMF-NNSVD'}
+    xlabs = [i if i not in to_replace else to_replace[i] for i in xlabs]
+
     X[np.isnan(X)] = 0
     X_col_med = np.median(X,axis=0)
     col_order = np.flip(np.argsort(X_col_med))
@@ -63,6 +83,8 @@ if __name__ == '__main__':
     ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
     #plt.show()
+    plt.tick_params(axis='y',which='both',left=False)
     plt.tight_layout()
     plt.savefig('writeup/plots/internal_measures_new.pdf', transparent=True)
+    #plt.show()
 

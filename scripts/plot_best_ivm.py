@@ -18,7 +18,7 @@ EXCLUDED_TYPES = ["alpha.contaminated", "beta.contaminated", "delta.contaminated
 
 opt='vrc'
 acc='ari'
-methods = ['lda','nmf','snmf','ivis']
+methods = ['lda','nmf','vpac','icm']
 #datsets = ['TabulaMuris_Mammary_10X', 'deng-rpkms','li','TabulaMuris_Heart_10X','chen']
 datsets = ['TabulaMuris_Mammary_10X','li','chen']
 
@@ -57,4 +57,4 @@ for d in datsets:
 
 plt.tight_layout()
 #plt.show()
-plt.savefig('writeup/plots/scatterplots_from_best_ivm.pdf')
+plt.savefig('writeup/plots/scatterplots_from_best_ivm(2).pdf')

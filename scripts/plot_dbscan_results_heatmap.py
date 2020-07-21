@@ -85,10 +85,9 @@ if __name__ == '__main__':
     #print(','.join(['measure,metric']+list(np.sort(xlabs))+['overall']))
 
     # Heatmap
-    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=xlabs, ax=ax3,vmin=0,vmax=1,cbar=False)
+    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=[i.upper() for i in xlabs], ax=ax3,vmin=0,vmax=1,cbar=False)
     plt.rcParams.update({'axes.labelsize':'x-small'})
     plt.tight_layout()
     #plt.show()
-    plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'.pdf')
-    X.to_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_'+metric+'_'+opt+'_'+acc+'.csv')
-    pass
+    plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'_transparent.pdf',transparent=True)
+    #X.to_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_'+metric+'_'+opt+'_'+acc+'.csv')
