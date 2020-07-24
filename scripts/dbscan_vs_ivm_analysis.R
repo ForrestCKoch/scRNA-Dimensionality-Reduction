@@ -96,3 +96,7 @@ plot(dbs.med.rank,kmean.med.rank,cex=0.01)
 abline(0,1,lty=2)
 text(dbs.med.rank,kmean.med.rank,names(dbs.med.rank),cex=0.5)
 dev.off()
+
+# Results discussed in manuscript ...
+cor(ivm.med.rank,dbs.med.rank) # r = 0.51, p = 0.003
+kendall.w(cbind(ivm.med.rank,dbs.med.rank),nrands=1000000) # W = 0.68, p = 0.02

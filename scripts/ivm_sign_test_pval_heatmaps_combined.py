@@ -9,7 +9,7 @@ import numpy as np
 plt.rcParams.update({'font.size': 6})
 
 def get_ranks():
-    return pd.read_csv('writeup/spreadsheets/ivm_ranks.csv')
+    return pd.read_csv('writeup/spreadsheets/ivm_median_ranks.csv')
 
 def get_pvals(measure):
     return pd.read_csv('writeup/spreadsheets/ivm_sign_tests/ivm_sign_test_'+measure+'.csv').set_index('Unnamed: 0')
@@ -19,6 +19,9 @@ def fill_matrix(x):
 
 def sort_by_ranks(ranks,pv_matrix,measure):
     #print(ranks[ranks['measure'] == measure].values)
+    print(ranks)
+    print(pv_matrix)
+    print(measure)
     idx = np.argsort(ranks[ranks['measure'] == measure].values[0][1:])
     mlist = ranks.columns[1:][idx].tolist()
     return pd.DataFrame(pv_matrix[idx][:,idx],index=mlist,columns=mlist)

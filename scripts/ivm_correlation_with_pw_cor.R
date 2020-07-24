@@ -1,7 +1,7 @@
 full.dat <- read.csv('data/results/pw_correlations/best_ivm_combined_pw_cor.csv')
 
 cor.types <- c('r.euc','r.seu','r.cos','r.cor')
-for(m in unique(x$opt.type)){
+for(m in unique(full.dat$opt.type)){
     ivm.dat <- subset(full.dat,opt.type==m)
 
     # creates a matrix of correlations with cor.types as columns and
