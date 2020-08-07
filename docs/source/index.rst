@@ -11,7 +11,7 @@ Welcome to Dimensionality Reduction in scRNA's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   code/svr2019 
+   code/sc_dr
 
 
 Indices and tables
