@@ -11,9 +11,9 @@ sc_dr.metrics
 .. automodule:: sc_dr.metrics
     :members:
 
-sc_dr.sumarize
+sc_dr.summarize
 -----------------
-.. automodule:: sc_dr.sumarize
+.. automodule:: sc_dr.summmarize
     :members:
 
 sc_dr.clustering
