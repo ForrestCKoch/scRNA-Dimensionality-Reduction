@@ -13,7 +13,7 @@ sc_dr.metrics
 
 sc_dr.summarize
 -----------------
-.. automodule:: sc_dr.summmarize
+.. automodule:: sc_dr.summarize
     :members:
 
 sc_dr.clustering
