@@ -18,6 +18,7 @@ ggsave('writeup/plots/pw_correlations/pw_correlations_boxplot_vrc_polar.pdf',p)
 data2 <- melt(subset(data,select=-c(X)))
 data2 <- subset(data2,variable!='ss_seu')
 data2 <- subset(data2,variable!='ss_cos')
+data2 <- subset(data2,variable!='ss_cor')
 p <- ggplot(data2, aes(reorder(method,value,FUN=median,na.rm=T),value,fill=variable))+geom_boxplot()+ylab('Pairwise Distance Correlation') + ggtitle("") + xlab('Dimensionality Reduction Method') + theme(axis.text.x = element_text(angle = 90))
 
 ggsave('writeup/plots/pw_correlations/pw_correlations_all_boxplot.pdf',width=16,height=9)
