@@ -1,13 +1,14 @@
 #!/bin/sh
 ###############################################################################
-# generate_all_embeddings.sh
+# Usage: "bash generate_all_embeddings.sh"
 #
-# Submission script for generating each of the embeddings
+# Submission (SGE) script for generating each of the embeddings
 ###############################################################################
 
 #for m in pca umap mctsne lda lle isomap fa fica nmf spectral zifa; do  # methods
-for m in ivis; do  # methods
+#for m in ivis; do  # methods
 #for m in zifa; do 
+for m in bd fa fica grp icm ipca isomap ivis kpca-cos kpca-pol
 for d in $(ls data/datasets/pddf|cut -d'.' -f1|egrep -v '(Lin|macosko)'); do # datasets
 for e in 2 4 8 16 32 48 96; do # dimensions
     ds=$(echo $d|cut -d'_' -f2-) # extract dataset name from file
