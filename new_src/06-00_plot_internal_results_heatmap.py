@@ -38,14 +38,17 @@ if __name__ == '__main__':
     stacked.index.rename(['dataset','method','measure'],inplace=True)
     # Finally, our final dataframe!
     X = pd.DataFrame(stacked).pivot_table(index=['measure','dataset'],columns=['method'])
-    X.to_csv('test.csv')
-
     # write our dataframe
     X.to_csv('data/results/internal_measures_standardized.csv')
 
+    # remove non-euclidean options ...
+    X.drop(index='ss_cos',inplace=True)
+    X.drop(index='ss_cor',inplace=True)
+    X.drop(index='ss_seu',inplace=True)
+
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
-    ylabs[0] = re.sub('_',' ',ylabs[0])
+    ylabs[0] = re.sub('_euc','',ylabs[0])
     sep_lines = []
     for i in range(1,len(ylabs)):
         if ylabs[i] == curr:
@@ -57,7 +60,7 @@ if __name__ == '__main__':
             elif curr == 'ss_seu':
                 ylabs[i] = 'ss seu'
             elif curr == 'ss_euc':
-                ylabs[i] = 'ss euc'
+                ylabs[i] = 'ss'
             elif curr == 'ss_cor':
                 ylabs[i] = 'ss cor'
             elif curr == 'ss_cos':
@@ -70,10 +73,11 @@ if __name__ == '__main__':
     xlabs = list(X.columns.levels[1])
 
     ylabs = [i.upper() if i is not None else None for i in ylabs]
-    xlabs = [i.upper() for i in xlabs]
+    # no uppercase methods ...
+    #xlabs = [i.upper() for i in xlabs]
 
     #Make some adjustments to names
-    to_replace = {'MCTSNE':'TSNE','NMF2':'NMF-LEE','NMF':'NMF-NNSVD'}
+    to_replace = {'mctsne':'tsne','nmf2':'nmf-lee','nmf':'nmf-nnsvd'}
     xlabs = [i if i not in to_replace else to_replace[i] for i in xlabs]
 
     X[np.isnan(X)] = 0
@@ -85,6 +89,6 @@ if __name__ == '__main__':
     #plt.show()
     plt.tick_params(axis='y',which='both',left=False)
     plt.tight_layout()
-    plt.savefig('writeup/plots/internal_measures_new.pdf', transparent=True)
+    plt.savefig('writeup/plots/internal_measures_main.pdf', transparent=True)
     #plt.show()
 
