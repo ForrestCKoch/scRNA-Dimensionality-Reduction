@@ -28,15 +28,18 @@ def sort_by_ranks(ranks,pv_matrix,measure):
 
 if __name__ == '__main__':
 
-    fig, axes = plt.subplots(3,2,figsize=(6,9))#,sharex='col',sharey='row')
+    #fig, axes = plt.subplots(3,2,figsize=(6,9))#,sharex='col',sharey='row')
+    fig, axes = plt.subplots(3,1,figsize=(6,9))#,sharex='col',sharey='row')
     ranks = get_ranks()
-    for measure, ax in zip(['vrc','dbs','ss-euc','ss-seu','ss-cor','ss-cos'],axes.flatten()):
+    to_replace = {'mctsne':'tsne','nmf2':'nmf-lee','nmf':'nmf-nnsvd'}
+    for measure, ax in zip(['vrc','dbs','ss-euc'],axes.flatten()):
         pvals = get_pvals(measure)
         #pval_mat = fill_matrix(pvals)
         ordered = sort_by_ranks(ranks,pvals.values,measure)
-        sns.heatmap(ordered,cmap='viridis',xticklabels=ordered.index.tolist(),yticklabels=ordered.index.tolist(),cbar=False,ax=ax,vmin=0,vmax=0.5)
+        xlabs = [i if i not in to_replace else to_replace[i] for i in ordered.index.tolist()]
+        sns.heatmap(ordered,cmap='viridis',xticklabels=xlabs,yticklabels=xlabs,cbar=False,ax=ax,vmin=0,vmax=0.5)
         ax.set_title(measure)
     plt.tight_layout()
-    plt.savefig('writeup/plots/ivm_pvals/ivm_sign_test_all.pdf')
-    #plt.show()
+    #plt.savefig('writeup/plots/ivm_pvals/ivm_sign_test_all.pdf')
+    plt.show()
         
