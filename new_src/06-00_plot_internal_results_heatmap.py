@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 6})
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+if True:
     filename='data/results/internal_validation_measures/internal_measures_reduced.csv'
     x = pd.read_csv(filename).dropna()
     #x = x[x['method'] != 'saucie']
@@ -25,12 +26,14 @@ if __name__ == '__main__':
 
     # Used to transform the "best" measures, so they can be sensibly scaled
     fdict = {'ss_euc':lambda x : x,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x),'dbs':lambda x: 1/x if x > 0 else np.nan}
+    #fdict = {'ss_euc':lambda x : (x+1)/2,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x)/10,'dbs':lambda x: 1/(1.5*x) if x > 0 else np.nan}
     trans = aggrd.transform(fdict) # apply transform
 
     # NOTE: the minimum is calculated as the 2nd worst performer in order to improve contrast
     trans_mins = trans.groupby('dataset').agg(lambda z: np.partition(z,2,axis=None)[1]) # calculate minimums by group
     trans_maxs = trans.groupby('dataset').agg(np.nanmax) # calculate maximums by group
     scaled = (trans - trans_mins) / (trans_maxs - trans_mins) # apply the scaling
+    #scaled = trans
     #scaled = aggrd
     
     # Reshape into the form needed for the heatmap
@@ -45,6 +48,23 @@ if __name__ == '__main__':
     X.drop(index='ss_cos',inplace=True)
     X.drop(index='ss_cor',inplace=True)
     X.drop(index='ss_seu',inplace=True)
+
+    t = pd.read_csv('writeup/spreadsheets/dataset_complexity2.csv')
+    u = pd.read_csv('tmp/datasets_used_GJS.csv')
+    t = t.merge(u,on='dataset')
+    #t['complexity'] =  t['complexity'] + (t['read.type'] == 'Reads')
+    #t['f1'] =  t['f1'] + (t['read.type'] == 'Reads')
+    #print(t)
+    tdict = dict(zip(t['dataset'],t['full_ss']))
+    #tdict = dict(zip(t['dataset'],t['f1']))
+    tdict['vrc'] = 2
+    tdict['dbs'] = 0
+    tdict['ss_euc'] = 1
+    #print(tdict.keys())
+
+    #print(X.sort_index(key=lambda x: [tdict[i] for i in x.values],inplace=True))
+    X.sort_index(key=lambda x: [tdict[i] for i in x.values],inplace=True)
+    #print(X.sort_index(inplace=True))
 
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
@@ -84,11 +104,12 @@ if __name__ == '__main__':
     X_col_med = np.median(X,axis=0)
     col_order = np.flip(np.argsort(X_col_med))
 
+    #ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
     #plt.show()
     plt.tick_params(axis='y',which='both',left=False)
     plt.tight_layout()
-    plt.savefig('writeup/plots/internal_measures_main.pdf', transparent=True)
-    #plt.show()
+    #plt.savefig('writeup/plots/internal_measures_ordered_by_complexity.pdf', transparent=True)
+    plt.show()
 
