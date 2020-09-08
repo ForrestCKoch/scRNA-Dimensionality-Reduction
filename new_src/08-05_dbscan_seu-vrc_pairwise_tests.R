@@ -1,11 +1,13 @@
 # Calculate pairwise tests of method performance and output csv of pvalues
 library(reshape)
 
-seu <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_seuclidean_ari.csv')
-seu.vrc <- subset(seu,X=='vrc')
+#seu <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_seuclidean_ari.csv')
+#seu.vrc <- subset(seu,X=='vrc')
+seu.vrc <- read.csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_seuclidean_vrc_ari.csv')
 seu.vrc[is.na(seu.vrc)] <- 0
-good.datsets <- apply(seu.vrc[,3:35],1,max)>0.5
-seu.vrc <- seu.vrc[good.datsets,]
+# uncomment the following lines to "filter" out poor performing datasets
+#good.datsets <- apply(seu.vrc[,3:35],1,max)>0.5
+#seu.vrc <- seu.vrc[good.datsets,]
 
 seu.vrc.flat <- melt(seu.vrc) 
 
@@ -27,8 +29,8 @@ rownames(wilcox.pvalues) <- ordered.method.names
 colnames(wilcox.pvalues) <- ordered.method.names
 
 #print(wilcox.pvalues)
-write.csv(wilcox.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_wilcox-test-by-methods_filtered.csv')
-#write.csv(wilcox.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_wilcox-test-by-methods.csv')
+#write.csv(wilcox.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_wilcox-test-by-methods_filtered.csv')
+write.csv(wilcox.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_wilcox-test-by-methods.csv')
 
 sign.pvalues <- matrix(0,33,33)
 rownames(sign.pvalues) <- ordered.method.names
@@ -51,5 +53,5 @@ for(i in c(1:33)){
     }
 }
 
-write.csv(sign.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_sign-test-by-methods_filtered.csv')
-#write.csv(sign.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_sign-test-by-methods.csv')
+#write.csv(sign.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_sign-test-by-methods_filtered.csv')
+write.csv(sign.pvalues,'writeup/spreadsheets/dbscan_vrc-seu_sign-test-by-methods.csv')
