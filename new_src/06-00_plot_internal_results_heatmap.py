@@ -6,6 +6,7 @@ import numpy as np
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler as scaler
 plt.rcParams.update({'font.size': 6})
 
 
@@ -25,16 +26,20 @@ if True:
     aggrd = grouped.agg(mdict)
 
     # Used to transform the "best" measures, so they can be sensibly scaled
-    fdict = {'ss_euc':lambda x : x,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x),'dbs':lambda x: 1/x if x > 0 else np.nan}
+    fdict = {'ss_euc':lambda x : x,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x),'dbs':lambda x: 1/x if x > 0 else 0}
     #fdict = {'ss_euc':lambda x : (x+1)/2,'ss_seu':lambda x : x,'ss_cor':lambda x : x,'ss_cos':lambda x : x,'vrc':lambda x: np.log(x)/10,'dbs':lambda x: 1/(1.5*x) if x > 0 else np.nan}
     trans = aggrd.transform(fdict) # apply transform
 
     # NOTE: the minimum is calculated as the 2nd worst performer in order to improve contrast
     trans_mins = trans.groupby('dataset').agg(lambda z: np.partition(z,2,axis=None)[1]) # calculate minimums by group
     trans_maxs = trans.groupby('dataset').agg(np.nanmax) # calculate maximums by group
+    #trans_mins = trans.agg(lambda z: np.partition(z,2,axis=None)[1]) # calculate minimums by group
+    #trans_maxs = trans.agg(lambda z: np.partition(z,-2,axis=None)[-2]) # calculate maximums by group
     scaled = (trans - trans_mins) / (trans_maxs - trans_mins) # apply the scaling
     #scaled = trans
     #scaled = aggrd
+    #scaled = trans
+    #scaled[:] = scaler().fit_transform(scaled)
     
     # Reshape into the form needed for the heatmap
     stacked = scaled.stack() 
@@ -70,6 +75,7 @@ if True:
     curr = ylabs[0]
     ylabs[0] = re.sub('_euc','',ylabs[0])
     sep_lines = []
+    ylabs_copy = ylabs.copy()
     for i in range(1,len(ylabs)):
         if ylabs[i] == curr:
             ylabs[i] = None
@@ -104,12 +110,24 @@ if True:
     X_col_med = np.median(X,axis=0)
     col_order = np.flip(np.argsort(X_col_med))
 
+    fig, axes = plt.subplots(3,1,sharex='col')
+    #print(ylabs_copy)
+    x = X.iloc[np.array(ylabs_copy) == 'dbs',:]
+    sns.heatmap(x.values[:,col_order],0,1,cmap='viridis',yticklabels=['dbs'],xticklabels=[],ax=axes.flatten()[0])
+    x = X.iloc[np.array(ylabs_copy) == 'vrc',:]
+    sns.heatmap(x.values[:,col_order],0,1,cmap='viridis',yticklabels=['vrc'],xticklabels=[],ax=axes.flatten()[1])
+    x = X.iloc[np.array(ylabs_copy) == 'ss_euc',:]
+    sns.heatmap(x.values[:,col_order],0,1,cmap='viridis',yticklabels=['ss'],xticklabels=[xlabs[i] for i in col_order],ax=axes.flatten()[2])
+    """
     #ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax = sns.heatmap(X.values[:,col_order],0,1,cmap='viridis',yticklabels=ylabs,xticklabels=[xlabs[i] for i in col_order])
     ax.hlines(sep_lines, colors='r', linestyles='dotted', *ax.get_xlim())
+    """
     #plt.show()
-    plt.tick_params(axis='y',which='both',left=False)
+    for i in axes.flatten():
+        i.tick_params(axis='y',which='both',left=False)
+        i.tick_params(axis='x',which='both',bottom=False)
     plt.tight_layout()
-    #plt.savefig('writeup/plots/internal_measures_ordered_by_complexity.pdf', transparent=True)
-    plt.show()
+    plt.savefig('writeup/plots/internal_measures_final.pdf', transparent=True)
+    #plt.show()
 
