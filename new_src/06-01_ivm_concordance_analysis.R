@@ -1,6 +1,6 @@
 library('synchrony')
 library('reshape')
-x <- read.csv('data/results/internal_measures_standardized.csv')
+x <- read.csv('data/results/internal_validation_measures/internal_measures_standardized.csv')
 measures <- unique(x$measure)
 
 x[is.na(x)] <- 0
@@ -9,12 +9,13 @@ cat('##########################################\n')
 cat('Concordance between IVM:\n')
 cat('##########################################\n')
 # Get the average by column
-X <- apply(subset(x,measure=='ss_euc')[,-c(1,2)],2,median,na.rm=T)
+X <- apply(apply(subset(x,measure=='ss_euc')[,-c(1,2)],1,rank,na.last=F),2,median,na.rm=T)
 print(X)
 #for(i in measures[-c(1)]){
 for(i in c('vrc','dbs')){
-    X<-rbind(X,apply(subset(x,measure==i)[,-c(1,2)],2,median,na.rm=T))
+    X<-rbind(X,apply(apply(subset(x,measure==i)[,-c(1,2)],1,rank,na.last=F),2,median,na.rm=T))
 }
+print(X)
 # to regenerate data/results/internal_measures_standardized_grouped_means.csv
 # uncomment the following lines
 # and calculate the total mean for the last column
@@ -33,7 +34,7 @@ cat('Concordance between metrics for silhouette score:\n')
 cat('##########################################\n')
 # Get the average by column
 X <- apply(subset(x,measure=='ss_cor')[,-c(1,2)],2,median,na.rm=T)
-for(i in c('ss_cos','ss_euc','ss_seu','vrc')){
+for(i in c('ss_cos','ss_euc','ss_seu')){
     X<-rbind(X,apply(subset(x,measure==i)[,-c(1,2)],2,median,na.rm=T))
 }
 # to regenerate data/results/internal_measures_standardized_grouped_means.csv
@@ -54,7 +55,7 @@ cat('Concordance between datasets:\n')
 cat('##########################################\n')
 for(i in measures){
     cat(paste(i,':\n'))
-    kw<-kendall.w(t(subset(x,measure==i)),nrands=100,quiet=T)
+    kw<-kendall.w(t(subset(x,measure==i)),nrands=1000,quiet=T)
     print(kw)
     cat('\n')
     cat('\n')
