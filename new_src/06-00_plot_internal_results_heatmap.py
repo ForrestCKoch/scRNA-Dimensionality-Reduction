@@ -43,6 +43,25 @@ if True:
     X.drop(index='ss_seu',inplace=True)
 
     # Set up our y labels so dataset names don't get printed out
+    #t = pd.read_csv('writeup/spreadsheets/dataset_complexity2.csv')
+    t = pd.read_csv('tmp/datasets_used_GJS.csv')
+    #t = t.merge(u,on='dataset')
+    #t['complexity'] =  t['complexity'] + (t['read.type'] == 'Reads')
+    #t['f1'] =  t['f1'] + (t['read.type'] == 'Reads')
+    #print(t)
+    #print(t)
+    #tdict = dict(zip(t['dataset'],t['full_ss']))
+    #tdict = dict(zip(t['dataset'],t['f1']))
+    tdict = {}
+    tdict['vrc'] = 2
+    tdict['dbs'] = 0
+    tdict['ss_euc'] = 1
+    #print(tdict.keys())
+
+    #print(X.sort_index(key=lambda x: [tdict[i] for i in x.values],inplace=True))
+    #X.sort_index(key=lambda x: [tdict[i] for i in x.values],inplace=True)
+    #print(X.sort_index(inplace=True))
+
     ylabs = list(X.index.levels[0][X.index.codes[0]])
     curr = ylabs[0]
     ylabs[0] = re.sub('_euc','',ylabs[0])
@@ -78,7 +97,43 @@ if True:
 
     X[np.isnan(X)] = 0
     X_col_med = np.median(X,axis=0)
-    col_order = np.flip(np.argsort(X_col_med))
+    #print(X.shape)
+    order = ['lda',
+'vpac',
+'phate',
+'nmf-nnsvd',
+'ivis',
+'icm',
+'snmf',
+'kpca-cos',
+'fa',
+'zifa',
+'psmf',
+'vasc',
+'fica',
+'spca',
+'bd',
+'pca',
+'ipca',
+'lsnmf',
+'tsvd',
+'pmf',
+'tsne',
+'nsnmf',
+'spca-batch',
+'spectral',
+'umap',
+'kpca-rbf',
+'lle',
+'isomap',
+'nmf-lee',
+'kpca-pol',
+'srp',
+'grp',
+'saucie']
+    
+    #col_order = np.flip(np.argsort(X_col_med))
+    col_order = [xlabs.index(i) for i in order ]
 
     fig, axes = plt.subplots(3,1,sharex='col')
 
