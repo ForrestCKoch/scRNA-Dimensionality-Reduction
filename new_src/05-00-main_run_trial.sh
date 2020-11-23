@@ -1,4 +1,6 @@
 #!/bin/sh
+#
+# Runs one of the the queues prepared by Step 04.
 
 queuefile=$1
 dims=$(echo $1|rev|cut -d'/' -f1|rev|cut -d'.' -f1)

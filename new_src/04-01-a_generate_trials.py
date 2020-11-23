@@ -1,3 +1,8 @@
+"""
+    04-01-a_generate_trials.py
+
+    This script is called by 04-01_main_generate_queues.sh. It prints out random samples of the DBSCAN hyperparameter space.
+"""
 import sys
 import pickle
 

@@ -3,10 +3,6 @@ import sys
 import pandas as pd
 import numpy as np
 
-#import seaborn as sns
-#import matplotlib.pyplot as plt
-
-
 if __name__ == '__main__':
     z = pd.read_csv('data/results/internal_validation_measures/internal_measures_reduced.csv').dropna()
     y = pd.read_csv('data/results/pairwise_distances/pairwise_correlations_all.csv')

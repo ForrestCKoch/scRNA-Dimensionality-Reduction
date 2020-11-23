@@ -1,3 +1,5 @@
+# Calculate pairwise sign tests comparing methods (pairwise) across datasets
+
 x <- read.csv('data/results/internal_validation_measures/internal_measures_standardized.csv')
 
 n.datasets <- length(unique(x$dataset))
@@ -12,7 +14,6 @@ for(m in unique(x$measure)){
     sign.test.results <- matrix(0,n.methods,n.methods)
     rownames(sign.test.results) <- methods
     colnames(sign.test.results) <- methods
-#for(m in c('vrc')){
     y <- subset(x,measure==m)
     y[is.na(y)] <- 0 # Autofail ... 
     for(i in c(1:n.methods)){
@@ -26,11 +27,7 @@ for(m in unique(x$measure)){
                 n.eq <- sum(method.i==method.j)
                 sign.test.results[methods[i],methods[j]] <- pbinom(n.gt,n.datasets-n.eq+1,0.5,n.gt<(n.datasets-n.eq+1)/2)
             }
-            #cat(',')
-            #cat(pbinom(n.gt,n.datasets,0.5,n.gt<n.datasets/2))
-            #cat(paste(methods[i],methods[j],n.gt,n.datasets,n.gt<n.datasets/2,pbinom(n.gt,n.datasets,0.5,n.gt<n.datasets/2),'\n'))
         }
-        #cat('\n')
     }
     write.csv(sign.test.results,paste0('writeup/spreadsheets/ivm_sign_tests/ivm_sign_test_',sub('_','-',m),'.csv'))
 }

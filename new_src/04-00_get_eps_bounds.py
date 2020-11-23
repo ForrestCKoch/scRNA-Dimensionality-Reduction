@@ -1,3 +1,11 @@
+"""
+    04-00_get_eps_bounds.py
+
+    This script should be called as:
+        find data/embeddings -type f -name '*.pkl' | xargs -n 1 python3 new_src/04-00_get_eps_bounds.py > data/results/eps_upperbounds.csv
+    This script prints out the maximum epsilon that should be considered for DBSCAN. Eps values above this point will not produce different
+    clusterings because everything will be considered as one cluster.
+"""
 from sklearn.neighbors import NearestNeighbors as NN
 from sklearn.metrics import pairwise_distances
 from heapq import heappush, heappop
