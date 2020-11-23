@@ -1,5 +1,6 @@
 import sys
 import re
+import pprint
 
 import pandas as pd
 import numpy as np
@@ -60,10 +61,13 @@ if __name__ == '__main__':
     ylabs = np.array([re.sub('TabulaMuris_','',i[1]) for i in X.index.values])
     xlabs = np.array(X.columns.values)
     ylabs = ylabs[np.argsort(np.median(v,1))]
-    xlabs = xlabs[np.flip(np.argsort(np.median(v,0)))]
+    pprint.PrettyPrinter(depth=6).pprint(dict(zip(xlabs,np.mean(v,0))))
+    xlabs = xlabs[np.flip(np.argsort(np.mean(v,0)))]
+    to_replace = {'mctsne':'tsne','nmf2':'nmf-lee','nmf':'nmf-nnsvd'}
+    xlabs = [i if i not in to_replace else to_replace[i] for i in xlabs]
 
     # sort columns and rows by median
-    v = v[np.argsort(np.median(v,1)),:][:,np.flip(np.argsort(np.median(v,0)))]
+    v = v[np.argsort(np.median(v,1)),:][:,np.flip(np.argsort(np.mean(v,0)))]
 
     plt.rcParams.update({'font.size': 8})
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2,figsize=(10,8),sharex='col',sharey='row',gridspec_kw={"height_ratios": (.15, .85),"width_ratios":(0.85,0.15)})
@@ -85,9 +89,10 @@ if __name__ == '__main__':
     #print(','.join(['measure,metric']+list(np.sort(xlabs))+['overall']))
 
     # Heatmap
-    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=[i.upper() for i in xlabs], ax=ax3,vmin=0,vmax=1,cbar=False)
+    ax = sns.heatmap(v.T,cmap='viridis',xticklabels=ylabs,yticklabels=[i.lower() for i in xlabs], ax=ax3,vmin=0,vmax=1,cbar=False)
     plt.rcParams.update({'axes.labelsize':'x-small'})
     plt.tight_layout()
     #plt.show()
-    plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'_transparent.pdf',transparent=True)
+    #plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'_transparent.pdf',transparent=True)
+    plt.savefig('writeup/plots/dbscan_new_heatmaps/dbscan_'+metric+'_'+opt+'_'+acc+'.pdf',transparent=False)
     #X.to_csv('data/results/optimal_dbscan_trials/optimal_dbscan_trials_summarized_'+metric+'_'+opt+'_'+acc+'.csv')
